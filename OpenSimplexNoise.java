@@ -267,7 +267,7 @@ public class OpenSimplexNoise {
 					dz_ext0 = dz_ext1 = dz0 - 3 * SQUISH_CONSTANT_3D;
 				}
 			} else { //(1,1,1) is not one of the closest two tetrahedral vertices.
-                byte c = (byte)(aPoint & bPoint); //Our two extra vertices are determined by the closest two.
+                		byte c = (byte)(aPoint & bPoint); //Our two extra vertices are determined by the closest two.
 				
 				if ((c & 0x01) != 0) {
 					xsv_ext0 = xsb + 1;
