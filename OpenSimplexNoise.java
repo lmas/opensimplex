@@ -1,8 +1,20 @@
 /*
- * OpenSimplex (Simplectic) Noise for 3D in Java
- * (Preliminary Release)
+ * OpenSimplex (Simplectic) Noise in Java
+ * Copyright 2014 Kurt Spencer
  * 
- * KdotJPG
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * (v0.0.1 with new gradient set and corresponding normalization factor, 9/19/14)
  */
 
 public class OpenSimplexNoise {
@@ -14,7 +26,7 @@ public class OpenSimplexNoise {
 	private short[] permGradIndex3D;
 	
 	public OpenSimplexNoise() {
-		this(perm_default);
+		this(PERM_DEFAULT);
 	}
 	
 	public OpenSimplexNoise(short[] perm) {
@@ -607,7 +619,10 @@ public class OpenSimplexNoise {
 			value += attn_ext1 * attn_ext1 * extrapolate(xsv_ext1, ysv_ext1, zsv_ext1, dx_ext1, dy_ext1, dz_ext1);
 		}
 
-		return value / 18;
+		//Normalization constant tested using over 4 billion evaluations to bound range within [-1,1].
+		//This is a safe upper bound. Actual min/max values found over the course of the 4 billion
+		//evaluations were -28.12974224468639 (min) and 28.134269887817773 (max).
+		return value / 28.25;
 	}
 	
 	private double extrapolate(int xsb, int ysb, int zsb, double dx, double dy, double dz)
@@ -623,20 +638,19 @@ public class OpenSimplexNoise {
 		return x < xi ? xi - 1 : xi;
 	}
 	
-	//Array of gradient values.
-	//I may release an updated version of this with a better set if I figure one out. This works though.
-	//Note: bytes in Java are signed. Keep this in mind if porting to another language.
+	//Array of gradient values for 3D.
+	//(New gradient set 9/19/14)
 	private static byte[] gradients3D = new byte[] {
-		0,1,2,      0,2,1,      1,0,2,      2,0,1,      1,2,0,      2,1,0,
-		0,-1,2,     0,2,-1,     -1,0,2,     2,0,-1,     -1,2,0,     2,-1,0,
-		0,1,-2,     0,-2,1,     1,0,-2,     -2,0,1,     1,-2,0,     -2,1,0,
-		0,-1,-2,    0,-2,-1,    -1,0,-2,    -2,0,-1,    -1,-2,0,    -2,-1,0,
+		 0, 3, 2,    0, 2, 3,    3, 0, 2,    2, 0, 3,   3, 2, 0,     2, 3, 0,
+		 0,-3, 2,    0, 2,-3,   -3, 0, 2,    2, 0,-3,  -3, 2, 0,     2,-3, 0,
+		 0, 3,-2,    0,-2, 3,    3, 0,-2,   -2, 0, 3,   3,-2, 0,    -2, 3, 0,
+		 0,-3,-2,    0,-2,-3,   -3, 0,-2,   -2, 0,-3,  -3,-2, 0,    -2,-3, 0,
 	};
 	
-	//The standardized permutation order as used in Ken Perlin's "Improved Noise" 2002,
-	//(and basically every noise implementation on the Internet)
+	//The standardized permutation order as used in Ken Perlin's "Improved Noise"
+	//(and basically every noise implementation on the Internet).
 	//Also note that there's no reason this can't be a byte array other than that this is Java.
-	private static short[] perm_default = new short[] {
+	public static final short[] PERM_DEFAULT = new short[] {
 		151,160,137, 91, 90, 15,131, 13,201, 95, 96, 53,194,233,  7,225,
 		140, 36,103, 30, 69,142,  8, 99, 37,240, 21, 10, 23,190,  6,148,
 		247,120,234, 75,  0, 26,197, 62, 94,252,219,203,117, 35, 11, 32,
@@ -655,11 +669,3 @@ public class OpenSimplexNoise {
 		222,114, 67, 29, 24, 72,243,141,128,195, 78, 66,215, 61,156,180
 	};
 }
-
-/*
-* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
-* LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-* WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
-* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-*/

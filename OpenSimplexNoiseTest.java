@@ -1,3 +1,9 @@
+/*
+ * OpenSimplex Noise sample class.
+ * 
+ * Public Domain
+ */
+
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import java.io.*;
@@ -23,6 +29,5 @@ public class OpenSimplexNoiseTest
 			}
 		}
 		ImageIO.write(image, "png", new File("noise.png"));
-		
 	}
 }
