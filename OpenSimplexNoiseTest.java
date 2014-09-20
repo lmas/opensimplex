@@ -1,7 +1,5 @@
 /*
  * OpenSimplex Noise sample class.
- * 
- * Public Domain
  */
 
 import java.awt.image.BufferedImage;
