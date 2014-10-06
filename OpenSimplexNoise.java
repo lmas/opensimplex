@@ -9,6 +9,9 @@
  *   rhyme and reason behind it.
  * - Removed default permutation array in favor of
  *   default seed.
+ * - Changed seed-based constructor to be independent
+ *   of any particular randomization library, so results
+ *   will be the same when ported to other languages.
  */
  
 public class OpenSimplexNoise {
