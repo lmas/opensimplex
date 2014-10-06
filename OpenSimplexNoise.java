@@ -1277,7 +1277,7 @@ public class OpenSimplexNoise {
 				aIsBiggerSide = false;
 			}
 			
-			//Where each of the two closest points are determines how the extra two or three vertices are calculated.
+			//Where each of the two closest points are determines how the extra three vertices are calculated.
 			if (aIsBiggerSide == bIsBiggerSide) {
 				if (aIsBiggerSide) { //Both closest points on the bigger side
 					byte c1 = (byte)(aPoint | bPoint);
@@ -1706,7 +1706,7 @@ public class OpenSimplexNoise {
 				aIsBiggerSide = false;
 			}
 			
-			//Where each of the two closest points are determines how the extra two or three vertices are calculated.
+			//Where each of the two closest points are determines how the extra three vertices are calculated.
 			if (aIsBiggerSide == bIsBiggerSide) {
 				if (aIsBiggerSide) { //Both closest points on the bigger side
 					byte c1 = (byte)(aPoint & bPoint);
