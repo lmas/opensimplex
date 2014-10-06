@@ -768,7 +768,7 @@ public class OpenSimplexNoise {
 		double zb = zsb + squishOffset;
 		double wb = wsb + squishOffset;
 		
-		//Compute simplectic honeycomb coordinates relative to rhombohedral origin.
+		//Compute simplectic honeycomb coordinates relative to rhombo-hypercube origin.
 		double xins = xs - xsb;
 		double yins = ys - ysb;
 		double zins = zs - zsb;
