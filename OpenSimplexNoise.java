@@ -13,12 +13,12 @@
  
 public class OpenSimplexNoise {
 
-	private static final double STRETCH_CONSTANT_2D = -0.211324865405187;	//(1/Math.sqrt(2+1)-1)/2;
-	private static final double SQUISH_CONSTANT_2D = 0.366025403784439;		//(Math.sqrt(2+1)-1)/2;
-	private static final double STRETCH_CONSTANT_3D = -1.0 / 6;				//(1/Math.sqrt(3+1)-1)/3;
-	private static final double SQUISH_CONSTANT_3D = 1.0 / 3;				//(Math.sqrt(3+1)-1)/3;
-	private static final double STRETCH_CONSTANT_4D = -0.138196601125011;	//(1/Math.sqrt(4+1)-1)/4;
-	private static final double SQUISH_CONSTANT_4D = 0.309016994374947;		//(Math.sqrt(4+1)-1)/4;
+	private static final double STRETCH_CONSTANT_2D = -0.211324865405187;    //(1/Math.sqrt(2+1)-1)/2;
+	private static final double SQUISH_CONSTANT_2D = 0.366025403784439;      //(Math.sqrt(2+1)-1)/2;
+	private static final double STRETCH_CONSTANT_3D = -1.0 / 6;              //(1/Math.sqrt(3+1)-1)/3;
+	private static final double SQUISH_CONSTANT_3D = 1.0 / 3;                //(Math.sqrt(3+1)-1)/3;
+	private static final double STRETCH_CONSTANT_4D = -0.138196601125011;    //(1/Math.sqrt(4+1)-1)/4;
+	private static final double SQUISH_CONSTANT_4D = 0.309016994374947;      //(Math.sqrt(4+1)-1)/4;
 	
 	private static final double NORM_CONSTANT_2D = 47;
 	private static final double NORM_CONSTANT_3D = 103;
@@ -38,7 +38,7 @@ public class OpenSimplexNoise {
 		permGradIndex3D = new short[256];
 		
 		for (int i = 0; i < 256; i++) {
-			 //Since 3D has 24 gradients, simple bitmask won't work, so precompute modulo array.
+			//Since 3D has 24 gradients, simple bitmask won't work, so precompute modulo array.
 			permGradIndex3D[i] = (short)((perm[i] % (gradients3D.length / 3)) * 3);
 		}
 	}
