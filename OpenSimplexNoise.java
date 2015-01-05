@@ -1,5 +1,5 @@
 /*
- * OpenSimplex (Simplectic) Noise in Java.
+ * OpenSimplex Noise in Java.
  * by Kurt Spencer
  * 
  * v1.1 (October 5, 2014)
@@ -69,7 +69,7 @@ public class OpenSimplexNoise {
 		}
 	}
 	
-	//2D OpenSimplex (Simplectic) Noise.
+	//2D OpenSimplex Noise.
 	public double eval(double x, double y) {
 	
 		//Place input coordinates onto grid.
@@ -184,7 +184,7 @@ public class OpenSimplexNoise {
 		return value / NORM_CONSTANT_2D;
 	}
 	
-	//3D OpenSimplex (Simplectic) Noise.
+	//3D OpenSimplex Noise.
 	public double eval(double x, double y, double z) {
 	
 		//Place input coordinates on simplectic honeycomb.
@@ -745,7 +745,7 @@ public class OpenSimplexNoise {
 		return value / NORM_CONSTANT_3D;
 	}
 	
-	//4D OpenSimplex (Simplectic) Noise.
+	//4D OpenSimplex Noise.
 	public double eval(double x, double y, double z, double w) {
 	
 		//Place input coordinates on simplectic honeycomb.
