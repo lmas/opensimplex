@@ -1,6 +1,8 @@
 # Open Simplex 2D Noise
 # Based on: https:#gist.github.com/KdotJPG/b1270127455a94ac5d19
 
+from ctypes import c_long
+
 STRETCH_CONSTANT_2D = -0.211324865405187 #(1/Math.sqrt(2+1)-1)/2
 SQUISH_CONSTANT_2D = 0.366025403784439 #(Math.sqrt(2+1)-1)/2
 NORM_CONSTANT_2D = 47
@@ -15,6 +17,9 @@ gradients2D = [
     -5, -2,   -2, -5,
 ]
 
+def overflow_int(x):
+    return c_long(x).value
+
 def fastFloor(x):
     xi = int(x)
     return xi - 1 if x < xi else xi
@@ -27,19 +32,19 @@ class OpenSimplexNoise(object):
         # Initializes the class using a permutation array generated from a 64-bit seed.
         # Generates a proper permutation (i.e. doesn't merely perform N
         # successive pair swaps on a base array)
-        self.perm = []
+        self.perm = [0] * 256
         source = []
         for i in range(0, 256):
             source.append(i)
-        seed = seed * 6364136223846793005l + 1442695040888963407l
-        seed = seed * 6364136223846793005l + 1442695040888963407l
-        seed = seed * 6364136223846793005l + 1442695040888963407l
-        for i in range(0, 256):
-            seed = seed * 6364136223846793005l + 1442695040888963407l
+        seed = overflow_int(seed * 6364136223846793005l + 1442695040888963407l)
+        seed = overflow_int(seed * 6364136223846793005l + 1442695040888963407l)
+        seed = overflow_int(seed * 6364136223846793005l + 1442695040888963407l)
+        for i in range(255, -1, -1):
+            seed = overflow_int(seed * 6364136223846793005l + 1442695040888963407l)
             r = int((seed + 31) % (i + 1))
             if r < 0:
                 r += (i + 1)
-            self.perm.append(source[r])
+            self.perm[i] = source[r]
             source[r] = source[i]
 
     def extrapolate(self, xsb, ysb, dx, dy):
