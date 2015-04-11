@@ -1,5 +1,4 @@
-import random
-import time
+
 from PIL import Image # Depends on the Pillow lib
 
 from opensimplex import OpenSimplexNoise
@@ -9,9 +8,7 @@ HEIGHT = 512
 FEATURE_SIZE = 24
 
 def main():
-    random.seed(time.time())
-    seed = random.randint(0, 100000)
-    simplex = OpenSimplexNoise(seed)
+    simplex = OpenSimplexNoise()
     im = Image.new('L', (WIDTH, HEIGHT))
 
     for y in range(0, HEIGHT):
