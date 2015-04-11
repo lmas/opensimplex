@@ -17,7 +17,6 @@ gradients2D = [
 
 def fastFloor(x):
     xi = int(x)
-    #return x < xi ? xi - 1 : xi
     return xi - 1 if x < xi else xi
 
 class OpenSimplexNoise(object):
@@ -31,7 +30,6 @@ class OpenSimplexNoise(object):
         self.perm = []
         source = []
         for i in range(0, 256):
-            #source[i] = i
             source.append(i)
         seed = seed * 6364136223846793005l + 1442695040888963407l
         seed = seed * 6364136223846793005l + 1442695040888963407l
@@ -41,7 +39,6 @@ class OpenSimplexNoise(object):
             r = int((seed + 31) % (i + 1))
             if r < 0:
                 r += (i + 1)
-            #self.perm[i] = source[r]
             self.perm.append(source[r])
             source[r] = source[i]
 

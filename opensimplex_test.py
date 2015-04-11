@@ -16,7 +16,8 @@ def main():
 
     for y in range(0, HEIGHT):
         for x in range(0, WIDTH):
-            value = simplex.noise2d(x / FEATURE_SIZE, y / FEATURE_SIZE)
+            #value = simplex.noise2d(x / FEATURE_SIZE, y / FEATURE_SIZE)
+            value = simplex.noise2d(x * 0.05, y * 0.05)
             color = int((value + 1) * 128)
             im.putpixel((x, y), color)
 
