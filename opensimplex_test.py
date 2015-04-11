@@ -19,6 +19,7 @@ def main():
             im.putpixel((x, y), color)
 
     im.show()
+    im.save('noise.png')
 
 if __name__ == '__main__':
     main()
