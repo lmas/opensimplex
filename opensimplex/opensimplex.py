@@ -1,13 +1,22 @@
 
-# Based on: https:#gist.github.com/KdotJPG/b1270127455a94ac5d19
+# Based on: https://gist.github.com/KdotJPG/b1270127455a94ac5d19
 
 from ctypes import c_long
 
 
-STRETCH_CONSTANT_2D = -0.211324865405187 #(1/Math.sqrt(2+1)-1)/2
-SQUISH_CONSTANT_2D = 0.366025403784439 #(Math.sqrt(2+1)-1)/2
-NORM_CONSTANT_2D = 47
+STRETCH_CONSTANT_2D = -0.211324865405187     #(1/Math.sqrt(2+1)-1)/2
+SQUISH_CONSTANT_2D = 0.366025403784439       #(Math.sqrt(2+1)-1)/2
+STRETCH_CONSTANT_3D = -1.0 / 6;              # (1/Math.sqrt(3+1)-1)/3;
+SQUISH_CONSTANT_3D = 1.0 / 3;                # (Math.sqrt(3+1)-1)/3;
+STRETCH_CONSTANT_4D = -0.138196601125011;    # (1/Math.sqrt(4+1)-1)/4;
+SQUISH_CONSTANT_4D = 0.309016994374947;      # (Math.sqrt(4+1)-1)/4;
+
+NORM_CONSTANT_2D = 47;
+NORM_CONSTANT_3D = 103;
+NORM_CONSTANT_4D = 30;
+
 DEFAULT_SEED = 0
+
 
 # Gradients for 2D. They approximate the directions to the
 # vertices of an octagon from the center.
@@ -16,6 +25,44 @@ gradients2D = [
     -5,  2,   -2,  5,
      5, -2,    2, -5,
     -5, -2,   -2, -5,
+]
+
+# Gradients for 3D. They approximate the directions to the
+# vertices of a rhombicuboctahedron from the center, skewed so
+# that the triangular and square facets can be inscribed inside
+# circles of the same radius.
+gradients3D = [
+    -11,  4,  4,     -4,  11,  4,    -4,  4,  11,
+     11,  4,  4,      4,  11,  4,     4,  4,  11,
+    -11, -4,  4,     -4, -11,  4,    -4, -4,  11,
+     11, -4,  4,      4, -11,  4,     4, -4,  11,
+    -11,  4, -4,     -4,  11, -4,    -4,  4, -11,
+     11,  4, -4,      4,  11, -4,     4,  4, -11,
+    -11, -4, -4,     -4, -11, -4,    -4, -4, -11,
+     11, -4, -4,      4, -11, -4,     4, -4, -11,
+]
+
+# Gradients for 4D. They approximate the directions to the
+# vertices of a disprismatotesseractihexadecachoron from the center,
+# skewed so that the tetrahedral and cubic facets can be inscribed inside
+# spheres of the same radius.
+gradients4D = [
+     3,  1,  1,  1,      1,  3,  1,  1,      1,  1,  3,  1,      1,  1,  1,  3,
+    -3,  1,  1,  1,     -1,  3,  1,  1,     -1,  1,  3,  1,     -1,  1,  1,  3,
+     3, -1,  1,  1,      1, -3,  1,  1,      1, -1,  3,  1,      1, -1,  1,  3,
+    -3, -1,  1,  1,     -1, -3,  1,  1,     -1, -1,  3,  1,     -1, -1,  1,  3,
+     3,  1, -1,  1,      1,  3, -1,  1,      1,  1, -3,  1,      1,  1, -1,  3,
+    -3,  1, -1,  1,     -1,  3, -1,  1,     -1,  1, -3,  1,     -1,  1, -1,  3,
+     3, -1, -1,  1,      1, -3, -1,  1,      1, -1, -3,  1,      1, -1, -1,  3,
+    -3, -1, -1,  1,     -1, -3, -1,  1,     -1, -1, -3,  1,     -1, -1, -1,  3,
+     3,  1,  1, -1,      1,  3,  1, -1,      1,  1,  3, -1,      1,  1,  1, -3,
+    -3,  1,  1, -1,     -1,  3,  1, -1,     -1,  1,  3, -1,     -1,  1,  1, -3,
+     3, -1,  1, -1,      1, -3,  1, -1,      1, -1,  3, -1,      1, -1,  1, -3,
+    -3, -1,  1, -1,     -1, -3,  1, -1,     -1, -1,  3, -1,     -1, -1,  1, -3,
+     3,  1, -1, -1,      1,  3, -1, -1,      1,  1, -3, -1,      1,  1, -1, -3,
+    -3,  1, -1, -1,     -1,  3, -1, -1,     -1,  1, -3, -1,     -1,  1, -1, -3,
+     3, -1, -1, -1,      1, -3, -1, -1,      1, -1, -3, -1,      1, -1, -1, -3,
+    -3, -1, -1, -1,     -1, -3, -1, -1,     -1, -1, -3, -1,     -1, -1, -1, -3,
 ]
 
 
