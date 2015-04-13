@@ -26,4 +26,5 @@ TODO
 --------------------------------------------------------------------------------
 - documentation
 - show noise images for test comparision
+- add note about the patent issues
 
