@@ -15,8 +15,8 @@ USAGE
 
 CREDITS
 --------------------------------------------------------------------------------
-- Kurt Spencer - Original work.
-- A. Svensson - Python port.
+- Kurt Spencer: Original work
+- A. Svensson: Python port
 
 LICENSE
 --------------------------------------------------------------------------------
@@ -25,4 +25,5 @@ Released into the public domain, please see the UNLICENSE file.
 TODO
 --------------------------------------------------------------------------------
 - documentation
+- show noise images for test comparision
 

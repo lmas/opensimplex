@@ -77,6 +77,8 @@ def fastFloor(x):
 
 
 class OpenSimplexNoise(object):
+    '''TODO.'''
+
     def __init__(self, seed=None):
         if not seed:
             seed = DEFAULT_SEED
@@ -123,6 +125,7 @@ class OpenSimplexNoise(object):
             + gradients4D[index + 1] * dy \
             + gradients4D[index + 2] * dz \
             + gradients4D[index + 3] * dw
+
 
     def noise2d(self, x, y):
         '''2D OpenSimplex Noise.'''
