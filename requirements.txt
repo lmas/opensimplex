@@ -1,0 +1,4 @@
+
+# Dev. requirements
+Pillow
+
