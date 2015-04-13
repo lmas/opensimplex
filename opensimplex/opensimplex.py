@@ -105,15 +105,15 @@ class OpenSimplexNoise(object):
         index = self.perm[(self.perm[xsb & 0xFF] + ysb) & 0xFF] & 0x0E
         return gradients2D[index] * dx + gradients2D[index + 1] * dy
 
-    def extrapolate3d(xsb, ysb, zsb, dx, dy, dz):
+    def extrapolate3d(self, xsb, ysb, zsb, dx, dy, dz):
         index = self.permGradIndex3D[
-            (perm[(self.perm[xsb & 0xFF] + ysb) & 0xFF] + zsb) & 0xFF
+            (self.perm[(self.perm[xsb & 0xFF] + ysb) & 0xFF] + zsb) & 0xFF
         ]
         return gradients3D[index] * dx \
             + gradients3D[index + 1] * dy \
             + gradients3D[index + 2] * dz
 
-    def extrapolate4d(xsb, ysb, zsb, wsb, dx, dy, dz, dw):
+    def extrapolate4d(self, xsb, ysb, zsb, wsb, dx, dy, dz, dw):
         index = self.perm[(
             self.perm[(
                     self.perm[(self.perm[xsb & 0xFF] + ysb) & 0xFF] + zsb
@@ -230,7 +230,7 @@ class OpenSimplexNoise(object):
         return value / NORM_CONSTANT_2D
 
 
-    def noise3d(x, y, z):
+    def noise3d(self, x, y, z):
         '''3D OpenSimplex Noise.'''
         # Place input coordinates on simplectic honeycomb.
         stretchOffset = (x + y + z) * STRETCH_CONSTANT_3D
@@ -263,10 +263,10 @@ class OpenSimplexNoise(object):
         dz0 = z - zb
 
         # We'll be defining these inside the next block and using them afterwards.
-        dx_ext0, dy_ext0, dz_ext0
-        dx_ext1, dy_ext1, dz_ext1
-        xsv_ext0, ysv_ext0, zsv_ext0
-        xsv_ext1, ysv_ext1, zsv_ext1
+        dx_ext0, dy_ext0, dz_ext0 = 0, 0, 0
+        dx_ext1, dy_ext1, dz_ext1 = 0, 0, 0
+        xsv_ext0, ysv_ext0, zsv_ext0 = 0, 0, 0
+        xsv_ext1, ysv_ext1, zsv_ext1 = 0, 0, 0
 
         value = 0
         if (inSum <= 1): # We're inside the tetrahedron (3-Simplex) at (0,0,0)
@@ -356,7 +356,7 @@ class OpenSimplexNoise(object):
             attn0 = 2 - dx0 * dx0 - dy0 * dy0 - dz0 * dz0
             if (attn0 > 0):
                 attn0 *= attn0
-                value += attn0 * attn0 * extrapolate(xsb + 0, ysb + 0, zsb + 0, dx0, dy0, dz0)
+                value += attn0 * attn0 * self.extrapolate3d(xsb + 0, ysb + 0, zsb + 0, dx0, dy0, dz0)
 
             # Contribution (1,0,0)
             dx1 = dx0 - 1 - SQUISH_CONSTANT_3D
@@ -365,7 +365,7 @@ class OpenSimplexNoise(object):
             attn1 = 2 - dx1 * dx1 - dy1 * dy1 - dz1 * dz1
             if (attn1 > 0):
                 attn1 *= attn1
-                value += attn1 * attn1 * extrapolate(xsb + 1, ysb + 0, zsb + 0, dx1, dy1, dz1)
+                value += attn1 * attn1 * self.extrapolate3d(xsb + 1, ysb + 0, zsb + 0, dx1, dy1, dz1)
 
             # Contribution (0,1,0)
             dx2 = dx0 - 0 - SQUISH_CONSTANT_3D
@@ -374,7 +374,7 @@ class OpenSimplexNoise(object):
             attn2 = 2 - dx2 * dx2 - dy2 * dy2 - dz2 * dz2
             if (attn2 > 0):
                 attn2 *= attn2
-                value += attn2 * attn2 * extrapolate(xsb + 0, ysb + 1, zsb + 0, dx2, dy2, dz2)
+                value += attn2 * attn2 * self.extrapolate3d(xsb + 0, ysb + 1, zsb + 0, dx2, dy2, dz2)
 
             # Contribution (0,0,1)
             dx3 = dx2
@@ -383,7 +383,7 @@ class OpenSimplexNoise(object):
             attn3 = 2 - dx3 * dx3 - dy3 * dy3 - dz3 * dz3
             if (attn3 > 0):
                 attn3 *= attn3
-                value += attn3 * attn3 * extrapolate(xsb + 0, ysb + 0, zsb + 1, dx3, dy3, dz3)
+                value += attn3 * attn3 * self.extrapolate3d(xsb + 0, ysb + 0, zsb + 1, dx3, dy3, dz3)
         elif (inSum >= 2): # We're inside the tetrahedron (3-Simplex) at (1,1,1)
 
             # Determine which two tetrahedral vertices are the closest, out of (1,1,0), (1,0,1), (0,1,1) but not (1,1,1).
@@ -474,7 +474,7 @@ class OpenSimplexNoise(object):
             attn3 = 2 - dx3 * dx3 - dy3 * dy3 - dz3 * dz3
             if (attn3 > 0):
                 attn3 *= attn3
-                value += attn3 * attn3 * extrapolate(xsb + 1, ysb + 1, zsb + 0, dx3, dy3, dz3)
+                value += attn3 * attn3 * self.extrapolate3d(xsb + 1, ysb + 1, zsb + 0, dx3, dy3, dz3)
 
             # Contribution (1,0,1)
             dx2 = dx3
@@ -483,7 +483,7 @@ class OpenSimplexNoise(object):
             attn2 = 2 - dx2 * dx2 - dy2 * dy2 - dz2 * dz2
             if (attn2 > 0):
                 attn2 *= attn2
-                value += attn2 * attn2 * extrapolate(xsb + 1, ysb + 0, zsb + 1, dx2, dy2, dz2)
+                value += attn2 * attn2 * self.extrapolate3d(xsb + 1, ysb + 0, zsb + 1, dx2, dy2, dz2)
 
             # Contribution (0,1,1)
             dx1 = dx0 - 0 - 2 * SQUISH_CONSTANT_3D
@@ -492,7 +492,7 @@ class OpenSimplexNoise(object):
             attn1 = 2 - dx1 * dx1 - dy1 * dy1 - dz1 * dz1
             if (attn1 > 0):
                 attn1 *= attn1
-                value += attn1 * attn1 * extrapolate(xsb + 0, ysb + 1, zsb + 1, dx1, dy1, dz1)
+                value += attn1 * attn1 * self.extrapolate3d(xsb + 0, ysb + 1, zsb + 1, dx1, dy1, dz1)
 
             # Contribution (1,1,1)
             dx0 = dx0 - 1 - 3 * SQUISH_CONSTANT_3D
@@ -501,7 +501,7 @@ class OpenSimplexNoise(object):
             attn0 = 2 - dx0 * dx0 - dy0 * dy0 - dz0 * dz0
             if (attn0 > 0):
                 attn0 *= attn0
-                value += attn0 * attn0 * extrapolate(xsb + 1, ysb + 1, zsb + 1, dx0, dy0, dz0)
+                value += attn0 * attn0 * self.extrapolate3d(xsb + 1, ysb + 1, zsb + 1, dx0, dy0, dz0)
         else: # We're inside the octahedron (Rectified 3-Simplex) in between.
             aScore = 0
             aPoint = 0
@@ -624,7 +624,7 @@ class OpenSimplexNoise(object):
                         ysv_ext1 = ysb + 1
                         zsv_ext1 = zsb - 1
             else: # One point on (0,0,0) side, one point on (1,1,1) side
-                c1, c2
+                c1, c2 = 0, 0
                 if (aIsFurtherSide):
                     c1 = aPoint
                     c2 = bPoint
@@ -679,7 +679,7 @@ class OpenSimplexNoise(object):
             attn1 = 2 - dx1 * dx1 - dy1 * dy1 - dz1 * dz1
             if (attn1 > 0):
                 attn1 *= attn1
-                value += attn1 * attn1 * extrapolate(xsb + 1, ysb + 0, zsb + 0, dx1, dy1, dz1)
+                value += attn1 * attn1 * self.extrapolate3d(xsb + 1, ysb + 0, zsb + 0, dx1, dy1, dz1)
 
             # Contribution (0,1,0)
             dx2 = dx0 - 0 - SQUISH_CONSTANT_3D
@@ -688,7 +688,7 @@ class OpenSimplexNoise(object):
             attn2 = 2 - dx2 * dx2 - dy2 * dy2 - dz2 * dz2
             if (attn2 > 0):
                 attn2 *= attn2
-                value += attn2 * attn2 * extrapolate(xsb + 0, ysb + 1, zsb + 0, dx2, dy2, dz2)
+                value += attn2 * attn2 * self.extrapolate3d(xsb + 0, ysb + 1, zsb + 0, dx2, dy2, dz2)
 
             # Contribution (0,0,1)
             dx3 = dx2
@@ -697,7 +697,7 @@ class OpenSimplexNoise(object):
             attn3 = 2 - dx3 * dx3 - dy3 * dy3 - dz3 * dz3
             if (attn3 > 0):
                 attn3 *= attn3
-                value += attn3 * attn3 * extrapolate(xsb + 0, ysb + 0, zsb + 1, dx3, dy3, dz3)
+                value += attn3 * attn3 * self.extrapolate3d(xsb + 0, ysb + 0, zsb + 1, dx3, dy3, dz3)
 
             # Contribution (1,1,0)
             dx4 = dx0 - 1 - 2 * SQUISH_CONSTANT_3D
@@ -706,7 +706,7 @@ class OpenSimplexNoise(object):
             attn4 = 2 - dx4 * dx4 - dy4 * dy4 - dz4 * dz4
             if (attn4 > 0):
                 attn4 *= attn4
-                value += attn4 * attn4 * extrapolate(xsb + 1, ysb + 1, zsb + 0, dx4, dy4, dz4)
+                value += attn4 * attn4 * self.extrapolate3d(xsb + 1, ysb + 1, zsb + 0, dx4, dy4, dz4)
 
             # Contribution (1,0,1)
             dx5 = dx4
@@ -715,7 +715,7 @@ class OpenSimplexNoise(object):
             attn5 = 2 - dx5 * dx5 - dy5 * dy5 - dz5 * dz5
             if (attn5 > 0):
                 attn5 *= attn5
-                value += attn5 * attn5 * extrapolate(xsb + 1, ysb + 0, zsb + 1, dx5, dy5, dz5)
+                value += attn5 * attn5 * self.extrapolate3d(xsb + 1, ysb + 0, zsb + 1, dx5, dy5, dz5)
 
             # Contribution (0,1,1)
             dx6 = dx0 - 0 - 2 * SQUISH_CONSTANT_3D
@@ -724,18 +724,18 @@ class OpenSimplexNoise(object):
             attn6 = 2 - dx6 * dx6 - dy6 * dy6 - dz6 * dz6
             if (attn6 > 0):
                 attn6 *= attn6
-                value += attn6 * attn6 * extrapolate(xsb + 0, ysb + 1, zsb + 1, dx6, dy6, dz6)
+                value += attn6 * attn6 * self.extrapolate3d(xsb + 0, ysb + 1, zsb + 1, dx6, dy6, dz6)
 
         # First extra vertex
         attn_ext0 = 2 - dx_ext0 * dx_ext0 - dy_ext0 * dy_ext0 - dz_ext0 * dz_ext0
         if (attn_ext0 > 0):
             attn_ext0 *= attn_ext0
-            value += attn_ext0 * attn_ext0 * extrapolate(xsv_ext0, ysv_ext0, zsv_ext0, dx_ext0, dy_ext0, dz_ext0)
+            value += attn_ext0 * attn_ext0 * self.extrapolate3d(xsv_ext0, ysv_ext0, zsv_ext0, dx_ext0, dy_ext0, dz_ext0)
 
         # Second extra vertex
         attn_ext1 = 2 - dx_ext1 * dx_ext1 - dy_ext1 * dy_ext1 - dz_ext1 * dz_ext1
         if (attn_ext1 > 0):
             attn_ext1 *= attn_ext1
-            value += attn_ext1 * attn_ext1 * extrapolate(xsv_ext1, ysv_ext1, zsv_ext1, dx_ext1, dy_ext1, dz_ext1)
+            value += attn_ext1 * attn_ext1 * self.extrapolate3d(xsv_ext1, ysv_ext1, zsv_ext1, dx_ext1, dy_ext1, dz_ext1)
 
         return value / NORM_CONSTANT_3D
