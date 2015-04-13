@@ -85,6 +85,7 @@ class OpenSimplexNoise(object):
         # Generates a proper permutation (i.e. doesn't merely perform N
         # successive pair swaps on a base array)
         self.perm = [0] * 256 # Have to zero fill so we can properly loop over it later
+        self.permGradIndex3D = [0] * 256
         source = []
         for i in range(0, 256):
             source.append(i)
@@ -97,11 +98,31 @@ class OpenSimplexNoise(object):
             if r < 0:
                 r += (i + 1)
             self.perm[i] = source[r]
+            self.permGradIndex3D[i] = int((self.perm[i] % (len(gradients3D) / 3)) * 3)
             source[r] = source[i]
 
-    def extrapolate(self, xsb, ysb, dx, dy):
+    def extrapolate2d(self, xsb, ysb, dx, dy):
         index = self.perm[(self.perm[xsb & 0xFF] + ysb) & 0xFF] & 0x0E
         return gradients2D[index] * dx + gradients2D[index + 1] * dy
+
+    def extrapolate3d(xsb, ysb, zsb, dx, dy, dz):
+        index = self.permGradIndex3D[
+            (perm[(self.perm[xsb & 0xFF] + ysb) & 0xFF] + zsb) & 0xFF
+        ]
+        return gradients3D[index] * dx \
+            + gradients3D[index + 1] * dy \
+            + gradients3D[index + 2] * dz
+
+    def extrapolate4d(xsb, ysb, zsb, wsb, dx, dy, dz, dw):
+        index = self.perm[(
+            self.perm[(
+                    self.perm[(self.perm[xsb & 0xFF] + ysb) & 0xFF] + zsb
+                ) & 0xFF] + wsb
+        ) & 0xFF] & 0xFC
+        return gradients4D[index] * dx \
+            + gradients4D[index + 1] * dy \
+            + gradients4D[index + 2] * dz \
+            + gradients4D[index + 3] * dw
 
     def noise2d(self, x, y):
         '''2D OpenSimplex Noise.'''
@@ -143,7 +164,7 @@ class OpenSimplexNoise(object):
         attn1 = 2 - dx1 * dx1 - dy1 * dy1
         if (attn1 > 0):
             attn1 *= attn1
-            value += attn1 * attn1 * self.extrapolate(xsb + 1, ysb + 0, dx1, dy1)
+            value += attn1 * attn1 * self.extrapolate2d(xsb + 1, ysb + 0, dx1, dy1)
 
         # Contribution (0,1)
         dx2 = dx0 - 0 - SQUISH_CONSTANT_2D
@@ -151,7 +172,7 @@ class OpenSimplexNoise(object):
         attn2 = 2 - dx2 * dx2 - dy2 * dy2
         if (attn2 > 0):
             attn2 *= attn2
-            value += attn2 * attn2 * self.extrapolate(xsb + 0, ysb + 1, dx2, dy2)
+            value += attn2 * attn2 * self.extrapolate2d(xsb + 0, ysb + 1, dx2, dy2)
 
         if (inSum <= 1): # We're inside the triangle (2-Simplex) at (0,0)
             zins = 1 - inSum
@@ -198,13 +219,13 @@ class OpenSimplexNoise(object):
         attn0 = 2 - dx0 * dx0 - dy0 * dy0
         if (attn0 > 0):
             attn0 *= attn0
-            value += attn0 * attn0 * self.extrapolate(xsb, ysb, dx0, dy0)
+            value += attn0 * attn0 * self.extrapolate2d(xsb, ysb, dx0, dy0)
 
         # Extra Vertex
         attn_ext = 2 - dx_ext * dx_ext - dy_ext * dy_ext
         if (attn_ext > 0):
             attn_ext *= attn_ext
-            value += attn_ext * attn_ext * self.extrapolate(xsv_ext, ysv_ext, dx_ext, dy_ext)
+            value += attn_ext * attn_ext * self.extrapolate2d(xsv_ext, ysv_ext, dx_ext, dy_ext)
 
         return value / NORM_CONSTANT_2D
 
