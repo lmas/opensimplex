@@ -15,8 +15,8 @@ USAGE
 
 CREDITS
 --------------------------------------------------------------------------------
-- Kurt Spencer: Original work
-- A. Svensson: Python port
+- Kurt Spencer - Original work
+- A Svensson - Python port
 
 LICENSE
 --------------------------------------------------------------------------------
