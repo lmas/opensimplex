@@ -13,12 +13,6 @@ public domain, and neatly wrapped up in a package.
 USAGE
 --------------------------------------------------------------------------------
 
-Expected Output
---------------------------------------------------------------------------------
-.. image:: images/noise2d.png
-.. image:: images/noise3d.png
-.. image:: images/noise4d.png
-
 CREDITS
 --------------------------------------------------------------------------------
 - Kurt Spencer - Original work
@@ -33,4 +27,11 @@ TODO
 - documentation
 - show noise images for test comparision
 - add note about the patent issues
+- scale down the images somehow
+
+Expected Output
+--------------------------------------------------------------------------------
+.. image:: images/noise2d.png
+.. image:: images/noise3d.png
+.. image:: images/noise4d.png
 
