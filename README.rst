@@ -31,7 +31,12 @@ TODO
 
 Expected Output
 --------------------------------------------------------------------------------
+2D noise:
 .. image:: images/noise2d.png
+
+3D noise:
 .. image:: images/noise3d.png
+
+4D noise:
 .. image:: images/noise4d.png
 
