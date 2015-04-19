@@ -64,7 +64,7 @@ FAQ
 CREDITS
 ================================================================================
 - Kurt Spencer - Original work
-- A Svensson - Python port
+- A Svensson - Python port and package author
 
 LICENSE
 ================================================================================
