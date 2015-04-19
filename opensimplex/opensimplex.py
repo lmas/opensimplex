@@ -76,7 +76,7 @@ def fastFloor(x):
     return xi - 1 if x < xi else xi
 
 
-class OpenSimplexNoise(object):
+class OpenSimplex(object):
     '''TODO.'''
 
     def __init__(self, seed=None):

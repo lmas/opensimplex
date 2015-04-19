@@ -1,5 +1,5 @@
 
 __version__ = 0.1
 
-from opensimplex import OpenSimplexNoise
+from opensimplex import OpenSimplex
 
