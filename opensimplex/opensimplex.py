@@ -77,9 +77,10 @@ def fastFloor(x):
 
 
 class OpenSimplex(object):
-    '''TODO.'''
+    '''OpenSimplex n-dimensional gradient noise functions.'''
 
     def __init__(self, seed=None):
+        '''Initiate the class and generate permutation arrays from a seed number.'''
         if not seed:
             seed = DEFAULT_SEED
 
@@ -128,7 +129,7 @@ class OpenSimplex(object):
 
 
     def noise2d(self, x, y):
-        '''2D OpenSimplex Noise.'''
+        '''Generate 2D OpenSimplex noise from X,Y coordinates.'''
 
         # Place input coordinates onto grid.
         stretchOffset = (x + y) * STRETCH_CONSTANT_2D
@@ -234,7 +235,7 @@ class OpenSimplex(object):
 
 
     def noise3d(self, x, y, z):
-        '''3D OpenSimplex Noise.'''
+        '''Generate 3D OpenSimplex noise from X,Y,Z coordinates.'''
         # Place input coordinates on simplectic honeycomb.
         stretchOffset = (x + y + z) * STRETCH_CONSTANT_3D
         xs = x + stretchOffset
@@ -745,7 +746,7 @@ class OpenSimplex(object):
 
 
     def noise4d(self, x, y, z, w):
-        '''4D OpenSimplex Noise.'''
+        '''Generate 4D OpenSimplex noise from X,Y,Z,W coordinates.'''
 
         # Place input coordinates on simplectic honeycomb.
         stretchOffset = (x + y + z + w) * STRETCH_CONSTANT_4D
