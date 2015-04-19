@@ -52,9 +52,26 @@ LICENSE
 ================================================================================
 Released into the public domain, please see the UNLICENSE file.
 
+FAQ
+================================================================================
+- Is this relevantly different enough to avoid any real trouble with the original patent?
+
+    If you read the `patent claims`_:
+
+    Claim #1 talks about the hardware-implementation-optimized gradient generator. Most software implementations of Simplex Noise don't use this anyway, and OpenSimplex Noise certainly doesn't.
+
+    Claim #2(&3&4) talk about using (x',y',z')=(x+s,y+s,z+s) where s=(x+y+z)/3 to transform the input (render space) coordinate onto a simplical grid, with the intention to make all of the "scissor-simplices" approximately regular. OpenSimplex Noise (in 3D) uses s=-(x+y+z)/6 to transform the input point to a point on the Simplectic honeycomb lattice so that the simplices bounding the (hyper)cubes at (0,0,..,0) and (1,1,...,1) work out to be regular. It then mathematically works out that s=(x+y+z)/3 is needed for the inverse transform, but that's performing a different (and opposite) function.
+
+    Claim #5(&6) are specific to the scissor-simplex lattice. Simplex Noise divides the (squashed) n-dimensional (hyper)cube into n! simplices based on ordered edge traversals, whereas OpenSimplex Noise divides the (stretched) n-dimensional (hyper)cube into n polytopes (simplices, rectified simplices, birectified simplices, etc.) based on the separation (hyper)planes at integer values of (x'+y'+z'+...).
+
+    Another interesting point is that, if you read all of the claims, none of them appear to apply to the 2D analogue of Simplex noise so long as it uses a gradient generator separate from the one described in claim #1. The skew function in Claim #2 only applies to 3D, and #5 explicitly refers to n>=3.
+
+    And none of the patent claims speak about using surflets / "spherically symmetric kernels" to generate the "images with texture that do not have visible grid artifacts," which is probably the biggest similarity between the two algorithms.
+
+    - **Kurt**, on Reddit_.
+
 TODO
 ================================================================================
-- add note about the patent issues
 - scale down the images somehow
 
 Expected Output
@@ -71,3 +88,6 @@ Expected Output
 
 .. image:: images/noise4d.png
 
+
+.. _Reddit: https://www.reddit.com/r/proceduralgeneration/comments/2gu3e7/like_perlins_simplex_noise_but_dont_like_the/ckmqz2y
+.. _`patent claims`: http://www.google.com/patents/US6867776
