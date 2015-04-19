@@ -76,14 +76,20 @@ Expected Output
 2D noise (with default seed):
 
 .. image:: images/noise2d.png
+   :height: 100
+   :width: 100
 
 3D noise:
 
 .. image:: images/noise3d.png
+   :height: 100
+   :width: 100
 
 4D noise:
 
 .. image:: images/noise4d.png
+   :height: 100
+   :width: 100
 
 
 .. _Reddit: https://www.reddit.com/r/proceduralgeneration/comments/2gu3e7/like_perlins_simplex_noise_but_dont_like_the/ckmqz2y
