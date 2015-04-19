@@ -50,7 +50,8 @@ CREDITS
 
 LICENSE
 ================================================================================
-Released into the public domain, please see the UNLICENSE file.
+While the original work was released to the public domain by Kurt, this package
+is using the MIT license. Please see the file LICENSE for details.
 
 FAQ
 ================================================================================
@@ -70,13 +71,9 @@ FAQ
 
     - **Kurt**, on Reddit_.
 
-TODO
-================================================================================
-- scale down the images somehow
-
 Expected Output
 ================================================================================
-2D noise:
+2D noise (with default seed):
 
 .. image:: images/noise2d.png
 
