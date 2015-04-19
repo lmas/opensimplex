@@ -43,16 +43,6 @@ OpenSimplex.noise3d(x, y, z)
 OpenSimplex.noise4d(x, y, z, w)
     Generate 4D OpenSimplex noise from X,Y,Z,W coordinates.
 
-CREDITS
-================================================================================
-- Kurt Spencer - Original work
-- A Svensson - Python port
-
-LICENSE
-================================================================================
-While the original work was released to the public domain by Kurt, this package
-is using the MIT license. Please see the file LICENSE for details.
-
 FAQ
 ================================================================================
 - Is this relevantly different enough to avoid any real trouble with the original patent?
@@ -70,6 +60,16 @@ FAQ
     And none of the patent claims speak about using surflets / "spherically symmetric kernels" to generate the "images with texture that do not have visible grid artifacts," which is probably the biggest similarity between the two algorithms.
 
     - **Kurt**, on Reddit_.
+
+CREDITS
+================================================================================
+- Kurt Spencer - Original work
+- A Svensson - Python port
+
+LICENSE
+================================================================================
+While the original work was released to the public domain by Kurt, this package
+is using the MIT license. Please see the file LICENSE for details.
 
 Expected Output
 ================================================================================
