@@ -2,3 +2,5 @@
 /noise2d.png
 /noise3d.png
 /noise4d.png
+dist/
+opensimplex.egg-info/
