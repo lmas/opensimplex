@@ -91,11 +91,11 @@ class OpenSimplex(object):
         source = []
         for i in range(0, 256):
             source.append(i)
-        seed = overflow(seed * 6364136223846793005l + 1442695040888963407l)
-        seed = overflow(seed * 6364136223846793005l + 1442695040888963407l)
-        seed = overflow(seed * 6364136223846793005l + 1442695040888963407l)
+        seed = overflow(seed * 6364136223846793005 + 1442695040888963407)
+        seed = overflow(seed * 6364136223846793005 + 1442695040888963407)
+        seed = overflow(seed * 6364136223846793005 + 1442695040888963407)
         for i in range(255, -1, -1):
-            seed = overflow(seed * 6364136223846793005l + 1442695040888963407l)
+            seed = overflow(seed * 6364136223846793005 + 1442695040888963407)
             r = int((seed + 31) % (i + 1))
             if r < 0:
                 r += (i + 1)

@@ -1,5 +1,5 @@
 
 __version__ = 0.1
 
-from opensimplex import OpenSimplex
+from .opensimplex import OpenSimplex
 
