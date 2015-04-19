@@ -16,8 +16,6 @@ setup(
     author_email='lmasvensson@gmail.com',
     license='Public Domain',
     packages=find_packages(),
-    install_requires=[],
-    scripts=['bin/yanktv'],
     include_package_data=True,
     zip_safe=False,
     classifiers=[ # See: http://pypi.python.org/pypi?%3Aaction=list_classifiers
