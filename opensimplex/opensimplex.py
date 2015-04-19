@@ -743,6 +743,7 @@ class OpenSimplex(object):
 
         return value / NORM_CONSTANT_3D
 
+
     def noise4d(self, x, y, z, w):
         '''4D OpenSimplex Noise.'''
 
@@ -811,7 +812,6 @@ class OpenSimplex(object):
                 aScore = wins
                 aPo = 0x08
 
-
             # Now we determine the three lattice pos not part of the pentachoron that may contribute.
             # This depends on the closest two pentachoron vertices, including (0,0,0,0)
             uins = 1 - inSum
@@ -826,7 +826,6 @@ class OpenSimplex(object):
                     xsv_ext0 = xsv_ext1 = xsv_ext2 = xsb + 1
                     dx_ext0 = dx_ext1 = dx_ext2 = dx0 - 1
 
-
                 if ((c & 0x02) == 0):
                     ysv_ext0 = ysv_ext1 = ysv_ext2 = ysb
                     dy_ext0 = dy_ext1 = dy_ext2 = dy0
@@ -840,7 +839,6 @@ class OpenSimplex(object):
                 else:
                     ysv_ext0 = ysv_ext1 = ysv_ext2 = ysb + 1
                     dy_ext0 = dy_ext1 = dy_ext2 = dy0 - 1
-
 
                 if ((c & 0x04) == 0):
                     zsv_ext0 = zsv_ext1 = zsv_ext2 = zsb
@@ -885,7 +883,6 @@ class OpenSimplex(object):
                     dx_ext0 = dx0 - 1 - 2 * SQUISH_CONSTANT_4D
                     dx_ext1 = dx_ext2 = dx0 - 1 - SQUISH_CONSTANT_4D
 
-
                 if ((c & 0x02) == 0):
                     ysv_ext0 = ysv_ext1 = ysv_ext2 = ysb
                     dy_ext0 = dy0 - 2 * SQUISH_CONSTANT_4D
@@ -901,7 +898,6 @@ class OpenSimplex(object):
                     ysv_ext0 = ysv_ext1 = ysv_ext2 = ysb + 1
                     dy_ext0 = dy0 - 1 - 2 * SQUISH_CONSTANT_4D
                     dy_ext1 = dy_ext2 = dy0 - 1 - SQUISH_CONSTANT_4D
-
 
                 if ((c & 0x04) == 0):
                     zsv_ext0 = zsv_ext1 = zsv_ext2 = zsb
@@ -931,14 +927,11 @@ class OpenSimplex(object):
                     dw_ext0 = dw0 - 1 - 2 * SQUISH_CONSTANT_4D
                     dw_ext1 = dw_ext2 = dw0 - 1 - SQUISH_CONSTANT_4D
 
-
-
             # Contribution (0,0,0,0)
             attn0 = 2 - dx0 * dx0 - dy0 * dy0 - dz0 * dz0 - dw0 * dw0
             if (attn0 > 0):
                 attn0 *= attn0
                 value += attn0 * attn0 * self._extrapolate4d(xsb + 0, ysb + 0, zsb + 0, wsb + 0, dx0, dy0, dz0, dw0)
-
 
             # Contribution (1,0,0,0)
             dx1 = dx0 - 1 - SQUISH_CONSTANT_4D
@@ -950,7 +943,6 @@ class OpenSimplex(object):
                 attn1 *= attn1
                 value += attn1 * attn1 * self._extrapolate4d(xsb + 1, ysb + 0, zsb + 0, wsb + 0, dx1, dy1, dz1, dw1)
 
-
             # Contribution (0,1,0,0)
             dx2 = dx0 - 0 - SQUISH_CONSTANT_4D
             dy2 = dy0 - 1 - SQUISH_CONSTANT_4D
@@ -961,7 +953,6 @@ class OpenSimplex(object):
                 attn2 *= attn2
                 value += attn2 * attn2 * self._extrapolate4d(xsb + 0, ysb + 1, zsb + 0, wsb + 0, dx2, dy2, dz2, dw2)
 
-
             # Contribution (0,0,1,0)
             dx3 = dx2
             dy3 = dy1
@@ -971,7 +962,6 @@ class OpenSimplex(object):
             if (attn3 > 0):
                 attn3 *= attn3
                 value += attn3 * attn3 * self._extrapolate4d(xsb + 0, ysb + 0, zsb + 1, wsb + 0, dx3, dy3, dz3, dw3)
-
 
             # Contribution (0,0,0,1)
             dx4 = dx2
@@ -1003,7 +993,6 @@ class OpenSimplex(object):
                 aScore = wins
                 aPo = 0x07
 
-
             # Now we determine the three lattice pos not part of the pentachoron that may contribute.
             # This depends on the closest two pentachoron vertices, including (0,0,0,0)
             uins = 4 - inSum
@@ -1019,7 +1008,6 @@ class OpenSimplex(object):
                     xsv_ext0 = xsv_ext1 = xsv_ext2 = xsb
                     dx_ext0 = dx_ext1 = dx_ext2 = dx0 - 4 * SQUISH_CONSTANT_4D
 
-
                 if ((c & 0x02) != 0):
                     ysv_ext0 = ysv_ext1 = ysv_ext2 = ysb + 1
                     dy_ext0 = dy_ext1 = dy_ext2 = dy0 - 1 - 4 * SQUISH_CONSTANT_4D
@@ -1033,7 +1021,6 @@ class OpenSimplex(object):
                 else:
                     ysv_ext0 = ysv_ext1 = ysv_ext2 = ysb
                     dy_ext0 = dy_ext1 = dy_ext2 = dy0 - 4 * SQUISH_CONSTANT_4D
-
 
                 if ((c & 0x04) != 0):
                     zsv_ext0 = zsv_ext1 = zsv_ext2 = zsb + 1
@@ -1053,7 +1040,6 @@ class OpenSimplex(object):
                 else:
                     zsv_ext0 = zsv_ext1 = zsv_ext2 = zsb
                     dz_ext0 = dz_ext1 = dz_ext2 = dz0 - 4 * SQUISH_CONSTANT_4D
-
 
                 if ((c & 0x08) != 0):
                     wsv_ext0 = wsv_ext1 = wsb + 1
@@ -1078,7 +1064,6 @@ class OpenSimplex(object):
                     dx_ext0 = dx0 - 2 * SQUISH_CONSTANT_4D
                     dx_ext1 = dx_ext2 = dx0 - 3 * SQUISH_CONSTANT_4D
 
-
                 if ((c & 0x02) != 0):
                     ysv_ext0 = ysv_ext1 = ysv_ext2 = ysb + 1
                     dy_ext0 = dy0 - 1 - 2 * SQUISH_CONSTANT_4D
@@ -1094,7 +1079,6 @@ class OpenSimplex(object):
                     ysv_ext0 = ysv_ext1 = ysv_ext2 = ysb
                     dy_ext0 = dy0 - 2 * SQUISH_CONSTANT_4D
                     dy_ext1 = dy_ext2 = dy0 - 3 * SQUISH_CONSTANT_4D
-
 
                 if ((c & 0x04) != 0):
                     zsv_ext0 = zsv_ext1 = zsv_ext2 = zsb + 1
@@ -1112,7 +1096,6 @@ class OpenSimplex(object):
                     dz_ext0 = dz0 - 2 * SQUISH_CONSTANT_4D
                     dz_ext1 = dz_ext2 = dz0 - 3 * SQUISH_CONSTANT_4D
 
-
                 if ((c & 0x08) != 0):
                     wsv_ext0 = wsv_ext1 = wsb + 1
                     wsv_ext2 = wsb + 2
@@ -1124,8 +1107,6 @@ class OpenSimplex(object):
                     dw_ext0 = dw0 - 2 * SQUISH_CONSTANT_4D
                     dw_ext1 = dw_ext2 = dw0 - 3 * SQUISH_CONSTANT_4D
 
-
-
             # Contribution (1,1,1,0)
             dx4 = dx0 - 1 - 3 * SQUISH_CONSTANT_4D
             dy4 = dy0 - 1 - 3 * SQUISH_CONSTANT_4D
@@ -1135,7 +1116,6 @@ class OpenSimplex(object):
             if (attn4 > 0):
                 attn4 *= attn4
                 value += attn4 * attn4 * self._extrapolate4d(xsb + 1, ysb + 1, zsb + 1, wsb + 0, dx4, dy4, dz4, dw4)
-
 
             # Contribution (1,1,0,1)
             dx3 = dx4
@@ -1147,7 +1127,6 @@ class OpenSimplex(object):
                 attn3 *= attn3
                 value += attn3 * attn3 * self._extrapolate4d(xsb + 1, ysb + 1, zsb + 0, wsb + 1, dx3, dy3, dz3, dw3)
 
-
             # Contribution (1,0,1,1)
             dx2 = dx4
             dy2 = dy0 - 3 * SQUISH_CONSTANT_4D
@@ -1158,7 +1137,6 @@ class OpenSimplex(object):
                 attn2 *= attn2
                 value += attn2 * attn2 * self._extrapolate4d(xsb + 1, ysb + 0, zsb + 1, wsb + 1, dx2, dy2, dz2, dw2)
 
-
             # Contribution (0,1,1,1)
             dx1 = dx0 - 3 * SQUISH_CONSTANT_4D
             dz1 = dz4
@@ -1168,7 +1146,6 @@ class OpenSimplex(object):
             if (attn1 > 0):
                 attn1 *= attn1
                 value += attn1 * attn1 * self._extrapolate4d(xsb + 0, ysb + 1, zsb + 1, wsb + 1, dx1, dy1, dz1, dw1)
-
 
             # Contribution (1,1,1,1)
             dx0 = dx0 - 1 - 4 * SQUISH_CONSTANT_4D
@@ -1196,7 +1173,6 @@ class OpenSimplex(object):
                 aScore = zins + wins
                 aPo = 0x0C
 
-
             # Decide between (1,0,1,0) and (0,1,0,1)
             if (xins + zins > yins + wins):
                 bScore = xins + zins
@@ -1204,7 +1180,6 @@ class OpenSimplex(object):
             else:
                 bScore = yins + wins
                 bPo = 0x0A
-
 
             # Closer between (1,0,0,1) and (0,1,1,0) will replace the further of a and b, if closer.
             if (xins + wins > yins + zins):
@@ -1225,8 +1200,6 @@ class OpenSimplex(object):
                     aScore = score
                     aPo = 0x06
 
-
-
             # Decide if (1,0,0,0) is closer.
             p1 = 2 - inSum + xins
             if (aScore >= bScore and p1 > bScore):
@@ -1237,7 +1210,6 @@ class OpenSimplex(object):
                 aScore = p1
                 aPo = 0x01
                 aIsBiggerSide = False
-
 
             # Decide if (0,1,0,0) is closer.
             p2 = 2 - inSum + yins
@@ -1250,7 +1222,6 @@ class OpenSimplex(object):
                 aPo = 0x02
                 aIsBiggerSide = False
 
-
             # Decide if (0,0,1,0) is closer.
             p3 = 2 - inSum + zins
             if (aScore >= bScore and p3 > bScore):
@@ -1262,7 +1233,6 @@ class OpenSimplex(object):
                 aPo = 0x04
                 aIsBiggerSide = False
 
-
             # Decide if (0,0,0,1) is closer.
             p4 = 2 - inSum + wins
             if (aScore >= bScore and p4 > bScore):
@@ -1273,7 +1243,6 @@ class OpenSimplex(object):
                 aScore = p4
                 aPo = 0x08
                 aIsBiggerSide = False
-
 
             # Where each of the two closest pos are determines how the extra three vertices are calculated.
             if (aIsBiggerSide == bIsBiggerSide):
@@ -1290,7 +1259,6 @@ class OpenSimplex(object):
                         dx_ext0 = dx0 - 1 - 3 * SQUISH_CONSTANT_4D
                         dx_ext1 = dx0 - 1 - 2 * SQUISH_CONSTANT_4D
 
-
                     if ((c1 & 0x02) == 0):
                         ysv_ext0 = ysb
                         ysv_ext1 = ysb - 1
@@ -1300,7 +1268,6 @@ class OpenSimplex(object):
                         ysv_ext0 = ysv_ext1 = ysb + 1
                         dy_ext0 = dy0 - 1 - 3 * SQUISH_CONSTANT_4D
                         dy_ext1 = dy0 - 1 - 2 * SQUISH_CONSTANT_4D
-
 
                     if ((c1 & 0x04) == 0):
                         zsv_ext0 = zsb
@@ -1312,7 +1279,6 @@ class OpenSimplex(object):
                         dz_ext0 = dz0 - 1 - 3 * SQUISH_CONSTANT_4D
                         dz_ext1 = dz0 - 1 - 2 * SQUISH_CONSTANT_4D
 
-
                     if ((c1 & 0x08) == 0):
                         wsv_ext0 = wsb
                         wsv_ext1 = wsb - 1
@@ -1322,7 +1288,6 @@ class OpenSimplex(object):
                         wsv_ext0 = wsv_ext1 = wsb + 1
                         dw_ext0 = dw0 - 1 - 3 * SQUISH_CONSTANT_4D
                         dw_ext1 = dw0 - 1 - 2 * SQUISH_CONSTANT_4D
-
 
                     # One combination is a _permutation of (0,0,0,2) based on c2
                     xsv_ext2 = xsb
@@ -1345,7 +1310,6 @@ class OpenSimplex(object):
                     else:
                         wsv_ext2 += 2
                         dw_ext2 -= 2
-
 
                 else: # Both closest pos on the smaller side
                     # One of the two extra pos is (0,0,0,0)
@@ -1370,7 +1334,6 @@ class OpenSimplex(object):
                         xsv_ext0 = xsv_ext1 = xsb + 1
                         dx_ext0 = dx_ext1 = dx0 - 1 - SQUISH_CONSTANT_4D
 
-
                     if ((c & 0x02) == 0):
                         ysv_ext0 = ysv_ext1 = ysb
                         dy_ext0 = dy_ext1 = dy0 - SQUISH_CONSTANT_4D
@@ -1384,7 +1347,6 @@ class OpenSimplex(object):
                     else:
                         ysv_ext0 = ysv_ext1 = ysb + 1
                         dy_ext0 = dy_ext1 = dy0 - 1 - SQUISH_CONSTANT_4D
-
 
                     if ((c & 0x04) == 0):
                         zsv_ext0 = zsv_ext1 = zsb
@@ -1410,8 +1372,6 @@ class OpenSimplex(object):
                         wsv_ext0 = wsv_ext1 = wsb + 1
                         dw_ext0 = dw_ext1 = dw0 - 1 - SQUISH_CONSTANT_4D
 
-
-
             else: # One po on each "side"
                 c1, c2 = 0, 0
                 if (aIsBiggerSide):
@@ -1420,7 +1380,6 @@ class OpenSimplex(object):
                 else:
                     c1 = bPo
                     c2 = aPo
-
 
                 # Two contributions are the bigger-sided po with each 0 replaced with -1.
                 if ((c1 & 0x01) == 0):
@@ -1431,7 +1390,6 @@ class OpenSimplex(object):
                 else:
                     xsv_ext0 = xsv_ext1 = xsb + 1
                     dx_ext0 = dx_ext1 = dx0 - 1 - SQUISH_CONSTANT_4D
-
 
                 if ((c1 & 0x02) == 0):
                     ysv_ext0 = ysv_ext1 = ysb
@@ -1447,7 +1405,6 @@ class OpenSimplex(object):
                     ysv_ext0 = ysv_ext1 = ysb + 1
                     dy_ext0 = dy_ext1 = dy0 - 1 - SQUISH_CONSTANT_4D
 
-
                 if ((c1 & 0x04) == 0):
                     zsv_ext0 = zsv_ext1 = zsb
                     dz_ext0 = dz_ext1 = dz0 - SQUISH_CONSTANT_4D
@@ -1462,7 +1419,6 @@ class OpenSimplex(object):
                     zsv_ext0 = zsv_ext1 = zsb + 1
                     dz_ext0 = dz_ext1 = dz0 - 1 - SQUISH_CONSTANT_4D
 
-
                 if ((c1 & 0x08) == 0):
                     wsv_ext0 = wsb
                     wsv_ext1 = wsb - 1
@@ -1471,7 +1427,6 @@ class OpenSimplex(object):
                 else:
                     wsv_ext0 = wsv_ext1 = wsb + 1
                     dw_ext0 = dw_ext1 = dw0 - 1 - SQUISH_CONSTANT_4D
-
 
                 # One contribution is a _permutation of (0,0,0,2) based on the smaller-sided po
                 xsv_ext2 = xsb
@@ -1495,8 +1450,6 @@ class OpenSimplex(object):
                     wsv_ext2 += 2
                     dw_ext2 -= 2
 
-
-
             # Contribution (1,0,0,0)
             dx1 = dx0 - 1 - SQUISH_CONSTANT_4D
             dy1 = dy0 - 0 - SQUISH_CONSTANT_4D
@@ -1506,7 +1459,6 @@ class OpenSimplex(object):
             if (attn1 > 0):
                 attn1 *= attn1
                 value += attn1 * attn1 * self._extrapolate4d(xsb + 1, ysb + 0, zsb + 0, wsb + 0, dx1, dy1, dz1, dw1)
-
 
             # Contribution (0,1,0,0)
             dx2 = dx0 - 0 - SQUISH_CONSTANT_4D
@@ -1518,7 +1470,6 @@ class OpenSimplex(object):
                 attn2 *= attn2
                 value += attn2 * attn2 * self._extrapolate4d(xsb + 0, ysb + 1, zsb + 0, wsb + 0, dx2, dy2, dz2, dw2)
 
-
             # Contribution (0,0,1,0)
             dx3 = dx2
             dy3 = dy1
@@ -1528,7 +1479,6 @@ class OpenSimplex(object):
             if (attn3 > 0):
                 attn3 *= attn3
                 value += attn3 * attn3 * self._extrapolate4d(xsb + 0, ysb + 0, zsb + 1, wsb + 0, dx3, dy3, dz3, dw3)
-
 
             # Contribution (0,0,0,1)
             dx4 = dx2
@@ -1540,7 +1490,6 @@ class OpenSimplex(object):
                 attn4 *= attn4
                 value += attn4 * attn4 * self._extrapolate4d(xsb + 0, ysb + 0, zsb + 0, wsb + 1, dx4, dy4, dz4, dw4)
 
-
             # Contribution (1,1,0,0)
             dx5 = dx0 - 1 - 2 * SQUISH_CONSTANT_4D
             dy5 = dy0 - 1 - 2 * SQUISH_CONSTANT_4D
@@ -1550,7 +1499,6 @@ class OpenSimplex(object):
             if (attn5 > 0):
                 attn5 *= attn5
                 value += attn5 * attn5 * self._extrapolate4d(xsb + 1, ysb + 1, zsb + 0, wsb + 0, dx5, dy5, dz5, dw5)
-
 
             # Contribution (1,0,1,0)
             dx6 = dx0 - 1 - 2 * SQUISH_CONSTANT_4D
@@ -1562,7 +1510,6 @@ class OpenSimplex(object):
                 attn6 *= attn6
                 value += attn6 * attn6 * self._extrapolate4d(xsb + 1, ysb + 0, zsb + 1, wsb + 0, dx6, dy6, dz6, dw6)
 
-
             # Contribution (1,0,0,1)
             dx7 = dx0 - 1 - 2 * SQUISH_CONSTANT_4D
             dy7 = dy0 - 0 - 2 * SQUISH_CONSTANT_4D
@@ -1572,7 +1519,6 @@ class OpenSimplex(object):
             if (attn7 > 0):
                 attn7 *= attn7
                 value += attn7 * attn7 * self._extrapolate4d(xsb + 1, ysb + 0, zsb + 0, wsb + 1, dx7, dy7, dz7, dw7)
-
 
             # Contribution (0,1,1,0)
             dx8 = dx0 - 0 - 2 * SQUISH_CONSTANT_4D
@@ -1584,7 +1530,6 @@ class OpenSimplex(object):
                 attn8 *= attn8
                 value += attn8 * attn8 * self._extrapolate4d(xsb + 0, ysb + 1, zsb + 1, wsb + 0, dx8, dy8, dz8, dw8)
 
-
             # Contribution (0,1,0,1)
             dx9 = dx0 - 0 - 2 * SQUISH_CONSTANT_4D
             dy9 = dy0 - 1 - 2 * SQUISH_CONSTANT_4D
@@ -1594,7 +1539,6 @@ class OpenSimplex(object):
             if (attn9 > 0):
                 attn9 *= attn9
                 value += attn9 * attn9 * self._extrapolate4d(xsb + 0, ysb + 1, zsb + 0, wsb + 1, dx9, dy9, dz9, dw9)
-
 
             # Contribution (0,0,1,1)
             dx10 = dx0 - 0 - 2 * SQUISH_CONSTANT_4D
@@ -1622,7 +1566,6 @@ class OpenSimplex(object):
                 aScore = zins + wins
                 aPo = 0x03
 
-
             # Decide between (0,1,0,1) and (1,0,1,0)
             if (xins + zins < yins + wins):
                 bScore = xins + zins
@@ -1630,7 +1573,6 @@ class OpenSimplex(object):
             else:
                 bScore = yins + wins
                 bPo = 0x05
-
 
             # Closer between (0,1,1,0) and (1,0,0,1) will replace the further of a and b, if closer.
             if (xins + wins < yins + zins):
@@ -1651,8 +1593,6 @@ class OpenSimplex(object):
                     aScore = score
                     aPo = 0x09
 
-
-
             # Decide if (0,1,1,1) is closer.
             p1 = 3 - inSum + xins
             if (aScore <= bScore and p1 < bScore):
@@ -1663,7 +1603,6 @@ class OpenSimplex(object):
                 aScore = p1
                 aPo = 0x0E
                 aIsBiggerSide = False
-
 
             # Decide if (1,0,1,1) is closer.
             p2 = 3 - inSum + yins
@@ -1676,7 +1615,6 @@ class OpenSimplex(object):
                 aPo = 0x0D
                 aIsBiggerSide = False
 
-
             # Decide if (1,1,0,1) is closer.
             p3 = 3 - inSum + zins
             if (aScore <= bScore and p3 < bScore):
@@ -1688,7 +1626,6 @@ class OpenSimplex(object):
                 aPo = 0x0B
                 aIsBiggerSide = False
 
-
             # Decide if (1,1,1,0) is closer.
             p4 = 3 - inSum + wins
             if (aScore <= bScore and p4 < bScore):
@@ -1699,7 +1636,6 @@ class OpenSimplex(object):
                 aScore = p4
                 aPo = 0x07
                 aIsBiggerSide = False
-
 
             # Where each of the two closest pos are determines how the extra three vertices are calculated.
             if (aIsBiggerSide == bIsBiggerSide):
@@ -1741,7 +1677,6 @@ class OpenSimplex(object):
                         wsv_ext1 += 2
                         dw_ext1 -= 2
 
-
                     # One contribution is a _permutation of (1,1,1,-1) based on c2
                     xsv_ext2 = xsb + 1
                     ysv_ext2 = ysb + 1
@@ -1777,7 +1712,6 @@ class OpenSimplex(object):
 
                     # Other two pos are based on the shared axes.
                     c = (aPo & bPo)
-
                     if ((c & 0x01) != 0):
                         xsv_ext0 = xsb + 2
                         xsv_ext1 = xsb + 1
@@ -1786,7 +1720,6 @@ class OpenSimplex(object):
                     else:
                         xsv_ext0 = xsv_ext1 = xsb
                         dx_ext0 = dx_ext1 = dx0 - 3 * SQUISH_CONSTANT_4D
-
 
                     if ((c & 0x02) != 0):
                         ysv_ext0 = ysv_ext1 = ysb + 1
@@ -1801,7 +1734,6 @@ class OpenSimplex(object):
                     else:
                         ysv_ext0 = ysv_ext1 = ysb
                         dy_ext0 = dy_ext1 = dy0 - 3 * SQUISH_CONSTANT_4D
-
 
                     if ((c & 0x04) != 0):
                         zsv_ext0 = zsv_ext1 = zsb + 1
@@ -1827,7 +1759,6 @@ class OpenSimplex(object):
                         wsv_ext0 = wsv_ext1 = wsb
                         dw_ext0 = dw_ext1 = dw0 - 3 * SQUISH_CONSTANT_4D
 
-
             else: # One po on each "side"
                 c1, c2 = 0, 0
                 if (aIsBiggerSide):
@@ -1836,7 +1767,6 @@ class OpenSimplex(object):
                 else:
                     c1 = bPo
                     c2 = aPo
-
 
                 # Two contributions are the bigger-sided po with each 1 replaced with 2.
                 if ((c1 & 0x01) != 0):
@@ -1847,7 +1777,6 @@ class OpenSimplex(object):
                 else:
                     xsv_ext0 = xsv_ext1 = xsb
                     dx_ext0 = dx_ext1 = dx0 - 3 * SQUISH_CONSTANT_4D
-
 
                 if ((c1 & 0x02) != 0):
                     ysv_ext0 = ysv_ext1 = ysb + 1
@@ -1863,7 +1792,6 @@ class OpenSimplex(object):
                     ysv_ext0 = ysv_ext1 = ysb
                     dy_ext0 = dy_ext1 = dy0 - 3 * SQUISH_CONSTANT_4D
 
-
                 if ((c1 & 0x04) != 0):
                     zsv_ext0 = zsv_ext1 = zsb + 1
                     dz_ext0 = dz_ext1 = dz0 - 1 - 3 * SQUISH_CONSTANT_4D
@@ -1878,7 +1806,6 @@ class OpenSimplex(object):
                     zsv_ext0 = zsv_ext1 = zsb
                     dz_ext0 = dz_ext1 = dz0 - 3 * SQUISH_CONSTANT_4D
 
-
                 if ((c1 & 0x08) != 0):
                     wsv_ext0 = wsb + 1
                     wsv_ext1 = wsb + 2
@@ -1887,7 +1814,6 @@ class OpenSimplex(object):
                 else:
                     wsv_ext0 = wsv_ext1 = wsb
                     dw_ext0 = dw_ext1 = dw0 - 3 * SQUISH_CONSTANT_4D
-
 
                 # One contribution is a _permutation of (1,1,1,-1) based on the smaller-sided po
                 xsv_ext2 = xsb + 1
@@ -1911,8 +1837,6 @@ class OpenSimplex(object):
                     wsv_ext2 -= 2
                     dw_ext2 += 2
 
-
-
             # Contribution (1,1,1,0)
             dx4 = dx0 - 1 - 3 * SQUISH_CONSTANT_4D
             dy4 = dy0 - 1 - 3 * SQUISH_CONSTANT_4D
@@ -1922,7 +1846,6 @@ class OpenSimplex(object):
             if (attn4 > 0):
                 attn4 *= attn4
                 value += attn4 * attn4 * self._extrapolate4d(xsb + 1, ysb + 1, zsb + 1, wsb + 0, dx4, dy4, dz4, dw4)
-
 
             # Contribution (1,1,0,1)
             dx3 = dx4
@@ -1934,7 +1857,6 @@ class OpenSimplex(object):
                 attn3 *= attn3
                 value += attn3 * attn3 * self._extrapolate4d(xsb + 1, ysb + 1, zsb + 0, wsb + 1, dx3, dy3, dz3, dw3)
 
-
             # Contribution (1,0,1,1)
             dx2 = dx4
             dy2 = dy0 - 3 * SQUISH_CONSTANT_4D
@@ -1944,7 +1866,6 @@ class OpenSimplex(object):
             if (attn2 > 0):
                 attn2 *= attn2
                 value += attn2 * attn2 * self._extrapolate4d(xsb + 1, ysb + 0, zsb + 1, wsb + 1, dx2, dy2, dz2, dw2)
-
 
             # Contribution (0,1,1,1)
             dx1 = dx0 - 3 * SQUISH_CONSTANT_4D
@@ -1956,7 +1877,6 @@ class OpenSimplex(object):
                 attn1 *= attn1
                 value += attn1 * attn1 * self._extrapolate4d(xsb + 0, ysb + 1, zsb + 1, wsb + 1, dx1, dy1, dz1, dw1)
 
-
             # Contribution (1,1,0,0)
             dx5 = dx0 - 1 - 2 * SQUISH_CONSTANT_4D
             dy5 = dy0 - 1 - 2 * SQUISH_CONSTANT_4D
@@ -1966,7 +1886,6 @@ class OpenSimplex(object):
             if (attn5 > 0):
                 attn5 *= attn5
                 value += attn5 * attn5 * self._extrapolate4d(xsb + 1, ysb + 1, zsb + 0, wsb + 0, dx5, dy5, dz5, dw5)
-
 
             # Contribution (1,0,1,0)
             dx6 = dx0 - 1 - 2 * SQUISH_CONSTANT_4D
@@ -1978,7 +1897,6 @@ class OpenSimplex(object):
                 attn6 *= attn6
                 value += attn6 * attn6 * self._extrapolate4d(xsb + 1, ysb + 0, zsb + 1, wsb + 0, dx6, dy6, dz6, dw6)
 
-
             # Contribution (1,0,0,1)
             dx7 = dx0 - 1 - 2 * SQUISH_CONSTANT_4D
             dy7 = dy0 - 0 - 2 * SQUISH_CONSTANT_4D
@@ -1988,7 +1906,6 @@ class OpenSimplex(object):
             if (attn7 > 0):
                 attn7 *= attn7
                 value += attn7 * attn7 * self._extrapolate4d(xsb + 1, ysb + 0, zsb + 0, wsb + 1, dx7, dy7, dz7, dw7)
-
 
             # Contribution (0,1,1,0)
             dx8 = dx0 - 0 - 2 * SQUISH_CONSTANT_4D
@@ -2000,7 +1917,6 @@ class OpenSimplex(object):
                 attn8 *= attn8
                 value += attn8 * attn8 * self._extrapolate4d(xsb + 0, ysb + 1, zsb + 1, wsb + 0, dx8, dy8, dz8, dw8)
 
-
             # Contribution (0,1,0,1)
             dx9 = dx0 - 0 - 2 * SQUISH_CONSTANT_4D
             dy9 = dy0 - 1 - 2 * SQUISH_CONSTANT_4D
@@ -2010,7 +1926,6 @@ class OpenSimplex(object):
             if (attn9 > 0):
                 attn9 *= attn9
                 value += attn9 * attn9 * self._extrapolate4d(xsb + 0, ysb + 1, zsb + 0, wsb + 1, dx9, dy9, dz9, dw9)
-
 
             # Contribution (0,0,1,1)
             dx10 = dx0 - 0 - 2 * SQUISH_CONSTANT_4D
@@ -2022,21 +1937,17 @@ class OpenSimplex(object):
                 attn10 *= attn10
                 value += attn10 * attn10 * self._extrapolate4d(xsb + 0, ysb + 0, zsb + 1, wsb + 1, dx10, dy10, dz10, dw10)
 
-
-
         # First extra vertex
         attn_ext0 = 2 - dx_ext0 * dx_ext0 - dy_ext0 * dy_ext0 - dz_ext0 * dz_ext0 - dw_ext0 * dw_ext0
         if (attn_ext0 > 0):
             attn_ext0 *= attn_ext0
             value += attn_ext0 * attn_ext0 * self._extrapolate4d(xsv_ext0, ysv_ext0, zsv_ext0, wsv_ext0, dx_ext0, dy_ext0, dz_ext0, dw_ext0)
 
-
         # Second extra vertex
         attn_ext1 = 2 - dx_ext1 * dx_ext1 - dy_ext1 * dy_ext1 - dz_ext1 * dz_ext1 - dw_ext1 * dw_ext1
         if (attn_ext1 > 0):
             attn_ext1 *= attn_ext1
             value += attn_ext1 * attn_ext1 * self._extrapolate4d(xsv_ext1, ysv_ext1, zsv_ext1, wsv_ext1, dx_ext1, dy_ext1, dz_ext1, dw_ext1)
-
 
         # Third extra vertex
         attn_ext2 = 2 - dx_ext2 * dx_ext2 - dy_ext2 * dy_ext2 - dz_ext2 * dz_ext2 - dw_ext2 * dw_ext2
