@@ -1,7 +1,7 @@
 
 from PIL import Image # Depends on the Pillow lib
 
-from opensimplex import OpenSimplexNoise
+from opensimplex import OpenSimplex
 
 WIDTH = 512
 HEIGHT = 512
@@ -9,7 +9,7 @@ FEATURE_SIZE = 24.0
 
 
 def main():
-    simplex = OpenSimplexNoise()
+    simplex = OpenSimplex()
 
     print 'Generating 2D image...'
     im = Image.new('L', (WIDTH, HEIGHT))
@@ -37,7 +37,6 @@ def main():
             color = int((value + 1) * 128)
             im.putpixel((x, y), color)
     im.save('noise4d.png')
-
 
 
 if __name__ == '__main__':
