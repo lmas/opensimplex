@@ -21,7 +21,7 @@ DEFAULT_SEED = 0
 
 # Gradients for 2D. They approximate the directions to the
 # vertices of an octagon from the center.
-gradients2D = (
+GRADIENTS_2D = (
      5,  2,    2,  5,
     -5,  2,   -2,  5,
      5, -2,    2, -5,
@@ -32,7 +32,7 @@ gradients2D = (
 # vertices of a rhombicuboctahedron from the center, skewed so
 # that the triangular and square facets can be inscribed inside
 # circles of the same radius.
-gradients3D = (
+GRADIENTS_3D = (
     -11,  4,  4,     -4,  11,  4,    -4,  4,  11,
      11,  4,  4,      4,  11,  4,     4,  4,  11,
     -11, -4,  4,     -4, -11,  4,    -4, -4,  11,
@@ -47,7 +47,7 @@ gradients3D = (
 # vertices of a disprismatotesseractihexadecachoron from the center,
 # skewed so that the tetrahedral and cubic facets can be inscribed inside
 # spheres of the same radius.
-gradients4D = (
+GRADIENTS_4D = (
      3,  1,  1,  1,      1,  3,  1,  1,      1,  1,  3,  1,      1,  1,  1,  3,
     -3,  1,  1,  1,     -1,  3,  1,  1,     -1,  1,  3,  1,     -1,  1,  1,  3,
      3, -1,  1,  1,      1, -3,  1,  1,      1, -1,  3,  1,      1, -1,  1,  3,
@@ -102,14 +102,14 @@ class OpenSimplex(object):
             if r < 0:
                 r += i + 1
             self._perm[i] = source[r]
-            self._permGradIndex3D[i] = int((self._perm[i] % (len(gradients3D) / 3)) * 3)
+            self._permGradIndex3D[i] = int((self._perm[i] % (len(GRADIENTS_3D) / 3)) * 3)
             source[r] = source[i]
 
     def _extrapolate2d(self, xsb, ysb, dx, dy):
         perm = self._perm
         index = perm[(perm[xsb & 0xFF] + ysb) & 0xFF] & 0x0E
 
-        g1, g2 = gradients3D[index:index + 2]
+        g1, g2 = GRADIENTS_2D[index:index + 2]
         return g1 * dx + g2 * dy
 
     def _extrapolate3d(self, xsb, ysb, zsb, dx, dy, dz):
@@ -118,7 +118,7 @@ class OpenSimplex(object):
             (perm[(perm[xsb & 0xFF] + ysb) & 0xFF] + zsb) & 0xFF
             ]
 
-        g1, g2, g3 = gradients3D[index:index + 3]
+        g1, g2, g3 = GRADIENTS_3D[index:index + 3]
         return g1 * dx + g2 * dy + g3 * dz
 
     def _extrapolate4d(self, xsb, ysb, zsb, wsb, dx, dy, dz, dw):
@@ -129,7 +129,7 @@ class OpenSimplex(object):
                 ) & 0xFF] + wsb
         ) & 0xFF] & 0xFC
 
-        g1, g2, g3, g4 = gradients3D[index:index + 4]
+        g1, g2, g3, g4 = GRADIENTS_4D[index:index + 4]
         return g1 * dx + g2 * dy + g3 * dz + g4 * dw
 
 
@@ -242,7 +242,7 @@ class OpenSimplex(object):
         """
         Generate 3D OpenSimplex noise from X,Y,Z coordinates.
         """
-        
+
         # Place input coordinates on simplectic honeycomb.
         stretchOffset = (x + y + z) * STRETCH_CONSTANT_3D
         xs = x + stretchOffset
