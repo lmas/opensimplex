@@ -86,7 +86,7 @@ class OpenSimplex(object):
         # Generates a proper permutation (i.e. doesn't merely perform N
         # successive pair swaps on a base array)
         perm = self._perm = [0] * 256 # Have to zero fill so we can properly loop over it later
-        permGradIndex3D = self._permGradIndex3D = [0] * 256
+        perm_grad_index_3D = self._perm_grad_index_3D = [0] * 256
         source = [i for i in range(0, 256)]
         seed = overflow(seed * 6364136223846793005 + 1442695040888963407)
         seed = overflow(seed * 6364136223846793005 + 1442695040888963407)
@@ -97,7 +97,7 @@ class OpenSimplex(object):
             if r < 0:
                 r += i + 1
             perm[i] = source[r]
-            permGradIndex3D[i] = int((perm[i] % (len(GRADIENTS_3D) / 3)) * 3)
+            perm_grad_index_3D[i] = int((perm[i] % (len(GRADIENTS_3D) / 3)) * 3)
             source[r] = source[i]
 
     def _extrapolate2d(self, xsb, ysb, dx, dy):
@@ -109,7 +109,7 @@ class OpenSimplex(object):
 
     def _extrapolate3d(self, xsb, ysb, zsb, dx, dy, dz):
         perm = self._perm
-        index = self._permGradIndex3D[
+        index = self._perm_grad_index_3D[
             (perm[(perm[xsb & 0xFF] + ysb) & 0xFF] + zsb) & 0xFF
             ]
 
@@ -133,25 +133,25 @@ class OpenSimplex(object):
         Generate 2D OpenSimplex noise from X,Y coordinates.
         """
         # Place input coordinates onto grid.
-        stretchOffset = (x + y) * STRETCH_CONSTANT_2D
-        xs = x + stretchOffset
-        ys = y + stretchOffset
+        stretch_offset = (x + y) * STRETCH_CONSTANT_2D
+        xs = x + stretch_offset
+        ys = y + stretch_offset
 
         # Floor to get grid coordinates of rhombus (stretched square) super-cell origin.
         xsb = floor(xs)
         ysb = floor(ys)
 
         # Skew out to get actual coordinates of rhombus origin. We'll need these later.
-        squishOffset = (xsb + ysb) * SQUISH_CONSTANT_2D
-        xb = xsb + squishOffset
-        yb = ysb + squishOffset
+        squish_offset = (xsb + ysb) * SQUISH_CONSTANT_2D
+        xb = xsb + squish_offset
+        yb = ysb + squish_offset
 
         # Compute grid coordinates relative to rhombus origin.
         xins = xs - xsb
         yins = ys - ysb
 
         # Sum those together to get a value that determines which region we're in.
-        inSum = xins + yins
+        in_sum = xins + yins
 
         # Positions relative to origin point.
         dx0 = x - xb
@@ -176,8 +176,8 @@ class OpenSimplex(object):
             attn2 *= attn2
             value += attn2 * attn2 * extrapolate(xsb + 0, ysb + 1, dx2, dy2)
 
-        if inSum <= 1: # We're inside the triangle (2-Simplex) at (0,0)
-            zins = 1 - inSum
+        if in_sum <= 1: # We're inside the triangle (2-Simplex) at (0,0)
+            zins = 1 - in_sum
             if zins > xins or zins > yins: # (0,0) is one of the closest two triangular vertices
                 if xins > yins:
                     xsv_ext = xsb + 1
@@ -195,7 +195,7 @@ class OpenSimplex(object):
                 dx_ext = dx0 - 1 - 2 * SQUISH_CONSTANT_2D
                 dy_ext = dy0 - 1 - 2 * SQUISH_CONSTANT_2D
         else: # We're inside the triangle (2-Simplex) at (1,1)
-            zins = 2 - inSum
+            zins = 2 - in_sum
             if zins < xins or zins < yins: # (0,0) is one of the closest two triangular vertices
                 if xins > yins:
                     xsv_ext = xsb + 2
@@ -237,10 +237,10 @@ class OpenSimplex(object):
         Generate 3D OpenSimplex noise from X,Y,Z coordinates.
         """
         # Place input coordinates on simplectic honeycomb.
-        stretchOffset = (x + y + z) * STRETCH_CONSTANT_3D
-        xs = x + stretchOffset
-        ys = y + stretchOffset
-        zs = z + stretchOffset
+        stretch_offset = (x + y + z) * STRETCH_CONSTANT_3D
+        xs = x + stretch_offset
+        ys = y + stretch_offset
+        zs = z + stretch_offset
 
         # Floor to get simplectic honeycomb coordinates of rhombohedron (stretched cube) super-cell origin.
         xsb = floor(xs)
@@ -248,10 +248,10 @@ class OpenSimplex(object):
         zsb = floor(zs)
 
         # Skew out to get actual coordinates of rhombohedron origin. We'll need these later.
-        squishOffset = (xsb + ysb + zsb) * SQUISH_CONSTANT_3D
-        xb = xsb + squishOffset
-        yb = ysb + squishOffset
-        zb = zsb + squishOffset
+        squish_offset = (xsb + ysb + zsb) * SQUISH_CONSTANT_3D
+        xb = xsb + squish_offset
+        yb = ysb + squish_offset
+        zb = zsb + squish_offset
 
         # Compute simplectic honeycomb coordinates relative to rhombohedral origin.
         xins = xs - xsb
@@ -259,7 +259,7 @@ class OpenSimplex(object):
         zins = zs - zsb
 
         # Sum those together to get a value that determines which region we're in.
-        inSum = xins + yins + zins
+        in_sum = xins + yins + zins
 
         # Positions relative to origin point.
         dx0 = x - xb
@@ -268,25 +268,25 @@ class OpenSimplex(object):
 
         value = 0
         extrapolate = self._extrapolate3d
-        if inSum <= 1: # We're inside the tetrahedron (3-Simplex) at (0,0,0)
+        if in_sum <= 1: # We're inside the tetrahedron (3-Simplex) at (0,0,0)
 
             # Determine which two of (0,0,1), (0,1,0), (1,0,0) are closest.
-            aPoint = 0x01
-            aScore = xins
-            bPoint = 0x02
-            bScore = yins
-            if aScore >= bScore and zins > bScore:
-                bScore = zins
-                bPoint = 0x04
-            elif aScore < bScore and zins > aScore:
-                aScore = zins
-                aPoint = 0x04
+            a_point = 0x01
+            a_score = xins
+            b_point = 0x02
+            b_score = yins
+            if a_score >= b_score and zins > b_score:
+                b_score = zins
+                b_point = 0x04
+            elif a_score < b_score and zins > a_score:
+                a_score = zins
+                a_point = 0x04
 
             # Now we determine the two lattice points not part of the tetrahedron that may contribute.
             # This depends on the closest two tetrahedral vertices, including (0,0,0)
-            wins = 1 - inSum
-            if wins > aScore or wins > bScore: # (0,0,0) is one of the closest two tetrahedral vertices.
-                c = bPoint if (bScore > aScore) else aPoint # Our other closest vertex is the closest out of a and b.
+            wins = 1 - in_sum
+            if wins > a_score or wins > b_score: # (0,0,0) is one of the closest two tetrahedral vertices.
+                c = b_point if (b_score > a_score) else a_point # Our other closest vertex is the closest out of a and b.
 
                 if (c & 0x01) == 0:
                     xsv_ext0 = xsb - 1
@@ -319,7 +319,7 @@ class OpenSimplex(object):
                     zsv_ext0 = zsv_ext1 = zsb + 1
                     dz_ext0 = dz_ext1 = dz0 - 1
             else: # (0,0,0) is not one of the closest two tetrahedral vertices.
-                c = (aPoint | bPoint) # Our two extra vertices are determined by the closest two.
+                c = (a_point | b_point) # Our two extra vertices are determined by the closest two.
 
                 if (c & 0x01) == 0:
                     xsv_ext0 = xsb
@@ -383,25 +383,25 @@ class OpenSimplex(object):
             if attn3 > 0:
                 attn3 *= attn3
                 value += attn3 * attn3 * extrapolate(xsb + 0, ysb + 0, zsb + 1, dx3, dy3, dz3)
-        elif inSum >= 2: # We're inside the tetrahedron (3-Simplex) at (1,1,1)
+        elif in_sum >= 2: # We're inside the tetrahedron (3-Simplex) at (1,1,1)
 
             # Determine which two tetrahedral vertices are the closest, out of (1,1,0), (1,0,1), (0,1,1) but not (1,1,1).
-            aPoint = 0x06
-            aScore = xins
-            bPoint = 0x05
-            bScore = yins
-            if aScore <= bScore and zins < bScore:
-                bScore = zins
-                bPoint = 0x03
-            elif aScore > bScore and zins < aScore:
-                aScore = zins
-                aPoint = 0x03
+            a_point = 0x06
+            a_score = xins
+            b_point = 0x05
+            b_score = yins
+            if a_score <= b_score and zins < b_score:
+                b_score = zins
+                b_point = 0x03
+            elif a_score > b_score and zins < a_score:
+                a_score = zins
+                a_point = 0x03
 
             # Now we determine the two lattice points not part of the tetrahedron that may contribute.
             # This depends on the closest two tetrahedral vertices, including (1,1,1)
-            wins = 3 - inSum
-            if wins < aScore or wins < bScore: # (1,1,1) is one of the closest two tetrahedral vertices.
-                c = bPoint if (bScore < aScore) else aPoint # Our other closest vertex is the closest out of a and b.
+            wins = 3 - in_sum
+            if wins < a_score or wins < b_score: # (1,1,1) is one of the closest two tetrahedral vertices.
+                c = b_point if (b_score < a_score) else a_point # Our other closest vertex is the closest out of a and b.
 
                 if (c & 0x01) != 0:
                     xsv_ext0 = xsb + 2
@@ -434,7 +434,7 @@ class OpenSimplex(object):
                     zsv_ext0 = zsv_ext1 = zsb
                     dz_ext0 = dz_ext1 = dz0 - 3 * SQUISH_CONSTANT_3D
             else: # (1,1,1) is not one of the closest two tetrahedral vertices.
-                c = (aPoint & bPoint) # Our two extra vertices are determined by the closest two.
+                c = (a_point & b_point) # Our two extra vertices are determined by the closest two.
 
                 if (c & 0x01) != 0:
                     xsv_ext0 = xsb + 1
@@ -505,47 +505,47 @@ class OpenSimplex(object):
             # Decide between point (0,0,1) and (1,1,0) as closest
             p1 = xins + yins
             if p1 > 1:
-                aScore = p1 - 1
-                aPoint = 0x03
-                aIsFurtherSide = True
+                a_score = p1 - 1
+                a_point = 0x03
+                a_is_further_side = True
             else:
-                aScore = 1 - p1
-                aPoint = 0x04
-                aIsFurtherSide = False
+                a_score = 1 - p1
+                a_point = 0x04
+                a_is_further_side = False
 
             # Decide between point (0,1,0) and (1,0,1) as closest
             p2 = xins + zins
             if p2 > 1:
-                bScore = p2 - 1
-                bPoint = 0x05
-                bIsFurtherSide = True
+                b_score = p2 - 1
+                b_point = 0x05
+                b_is_further_side = True
             else:
-                bScore = 1 - p2
-                bPoint = 0x02
-                bIsFurtherSide = False
+                b_score = 1 - p2
+                b_point = 0x02
+                b_is_further_side = False
 
             # The closest out of the two (1,0,0) and (0,1,1) will replace the furthest out of the two decided above, if closer.
             p3 = yins + zins
             if p3 > 1:
                 score = p3 - 1
-                if aScore <= bScore and aScore < score:
-                    aPoint = 0x06
-                    aIsFurtherSide = True
-                elif aScore > bScore and bScore < score:
-                    bPoint = 0x06
-                    bIsFurtherSide = True
+                if a_score <= b_score and a_score < score:
+                    a_point = 0x06
+                    a_is_further_side = True
+                elif a_score > b_score and b_score < score:
+                    b_point = 0x06
+                    b_is_further_side = True
             else:
                 score = 1 - p3
-                if aScore <= bScore and aScore < score:
-                    aPoint = 0x01
-                    aIsFurtherSide = False
-                elif aScore > bScore and bScore < score:
-                    bPoint = 0x01
-                    bIsFurtherSide = False
+                if a_score <= b_score and a_score < score:
+                    a_point = 0x01
+                    a_is_further_side = False
+                elif a_score > b_score and b_score < score:
+                    b_point = 0x01
+                    b_is_further_side = False
 
             # Where each of the two closest points are determines how the extra two vertices are calculated.
-            if aIsFurtherSide == bIsFurtherSide:
-                if aIsFurtherSide: # Both closest points on (1,1,1) side
+            if a_is_further_side == b_is_further_side:
+                if a_is_further_side: # Both closest points on (1,1,1) side
 
                     # One of the two extra points is (1,1,1)
                     dx_ext0 = dx0 - 1 - 3 * SQUISH_CONSTANT_3D
@@ -556,7 +556,7 @@ class OpenSimplex(object):
                     zsv_ext0 = zsb + 1
 
                     # Other extra point is based on the shared axis.
-                    c = (aPoint & bPoint)
+                    c = (a_point & b_point)
                     if (c & 0x01) != 0:
                         dx_ext1 = dx0 - 2 - 2 * SQUISH_CONSTANT_3D
                         dy_ext1 = dy0 - 2 * SQUISH_CONSTANT_3D
@@ -589,7 +589,7 @@ class OpenSimplex(object):
                     zsv_ext0 = zsb
 
                     # Other extra point is based on the omitted axis.
-                    c = (aPoint | bPoint)
+                    c = (a_point | b_point)
                     if (c & 0x01) == 0:
                         dx_ext1 = dx0 + 1 - SQUISH_CONSTANT_3D
                         dy_ext1 = dy0 - 1 - SQUISH_CONSTANT_3D
@@ -612,12 +612,12 @@ class OpenSimplex(object):
                         ysv_ext1 = ysb + 1
                         zsv_ext1 = zsb - 1
             else: # One point on (0,0,0) side, one point on (1,1,1) side
-                if aIsFurtherSide:
-                    c1 = aPoint
-                    c2 = bPoint
+                if a_is_further_side:
+                    c1 = a_point
+                    c2 = b_point
                 else:
-                    c1 = bPoint
-                    c2 = aPoint
+                    c1 = b_point
+                    c2 = a_point
 
                 # One contribution is a _permutation of (1,1,-1)
                 if (c1 & 0x01) == 0:
@@ -733,11 +733,11 @@ class OpenSimplex(object):
         Generate 4D OpenSimplex noise from X,Y,Z,W coordinates.
         """
         # Place input coordinates on simplectic honeycomb.
-        stretchOffset = (x + y + z + w) * STRETCH_CONSTANT_4D
-        xs = x + stretchOffset
-        ys = y + stretchOffset
-        zs = z + stretchOffset
-        ws = w + stretchOffset
+        stretch_offset = (x + y + z + w) * STRETCH_CONSTANT_4D
+        xs = x + stretch_offset
+        ys = y + stretch_offset
+        zs = z + stretch_offset
+        ws = w + stretch_offset
 
         # Floor to get simplectic honeycomb coordinates of rhombo-hypercube super-cell origin.
         xsb = floor(xs)
@@ -746,11 +746,11 @@ class OpenSimplex(object):
         wsb = floor(ws)
 
         # Skew out to get actual coordinates of stretched rhombo-hypercube origin. We'll need these later.
-        squishOffset = (xsb + ysb + zsb + wsb) * SQUISH_CONSTANT_4D
-        xb = xsb + squishOffset
-        yb = ysb + squishOffset
-        zb = zsb + squishOffset
-        wb = wsb + squishOffset
+        squish_offset = (xsb + ysb + zsb + wsb) * SQUISH_CONSTANT_4D
+        xb = xsb + squish_offset
+        yb = ysb + squish_offset
+        zb = zsb + squish_offset
+        wb = wsb + squish_offset
 
         # Compute simplectic honeycomb coordinates relative to rhombo-hypercube origin.
         xins = xs - xsb
@@ -759,7 +759,7 @@ class OpenSimplex(object):
         wins = ws - wsb
 
         # Sum those together to get a value that determines which region we're in.
-        inSum = xins + yins + zins + wins
+        in_sum = xins + yins + zins + wins
 
         # Positions relative to origin po.
         dx0 = x - xb
@@ -769,32 +769,32 @@ class OpenSimplex(object):
 
         value = 0
         extrapolate = self._extrapolate4d
-        if inSum <= 1: # We're inside the pentachoron (4-Simplex) at (0,0,0,0)
+        if in_sum <= 1: # We're inside the pentachoron (4-Simplex) at (0,0,0,0)
 
             # Determine which two of (0,0,0,1), (0,0,1,0), (0,1,0,0), (1,0,0,0) are closest.
-            aPo = 0x01
-            aScore = xins
-            bPo = 0x02
-            bScore = yins
-            if aScore >= bScore and zins > bScore:
-                bScore = zins
-                bPo = 0x04
-            elif aScore < bScore and zins > aScore:
-                aScore = zins
-                aPo = 0x04
+            a_po = 0x01
+            a_score = xins
+            b_po = 0x02
+            b_score = yins
+            if a_score >= b_score and zins > b_score:
+                b_score = zins
+                b_po = 0x04
+            elif a_score < b_score and zins > a_score:
+                a_score = zins
+                a_po = 0x04
 
-            if aScore >= bScore and wins > bScore:
-                bScore = wins
-                bPo = 0x08
-            elif aScore < bScore and wins > aScore:
-                aScore = wins
-                aPo = 0x08
+            if a_score >= b_score and wins > b_score:
+                b_score = wins
+                b_po = 0x08
+            elif a_score < b_score and wins > a_score:
+                a_score = wins
+                a_po = 0x08
 
             # Now we determine the three lattice pos not part of the pentachoron that may contribute.
             # This depends on the closest two pentachoron vertices, including (0,0,0,0)
-            uins = 1 - inSum
-            if uins > aScore or uins > bScore: # (0,0,0,0) is one of the closest two pentachoron vertices.
-                c = bPo if (bScore > aScore) else aPo # Our other closest vertex is the closest out of a and b.
+            uins = 1 - in_sum
+            if uins > a_score or uins > b_score: # (0,0,0,0) is one of the closest two pentachoron vertices.
+                c = b_po if (b_score > a_score) else a_po # Our other closest vertex is the closest out of a and b.
                 if (c & 0x01) == 0:
                     xsv_ext0 = xsb - 1
                     xsv_ext1 = xsv_ext2 = xsb
@@ -848,7 +848,7 @@ class OpenSimplex(object):
                     dw_ext0 = dw_ext1 = dw_ext2 = dw0 - 1
 
             else: # (0,0,0,0) is not one of the closest two pentachoron vertices.
-                c = (aPo | bPo) # Our three extra vertices are determined by the closest two.
+                c = (a_po | b_po) # Our three extra vertices are determined by the closest two.
 
                 if (c & 0x01) == 0:
                     xsv_ext0 = xsv_ext2 = xsb
@@ -951,31 +951,31 @@ class OpenSimplex(object):
                 attn4 *= attn4
                 value += attn4 * attn4 * extrapolate(xsb + 0, ysb + 0, zsb + 0, wsb + 1, dx4, dy4, dz4, dw4)
 
-        elif inSum >= 3: # We're inside the pentachoron (4-Simplex) at (1,1,1,1)
+        elif in_sum >= 3: # We're inside the pentachoron (4-Simplex) at (1,1,1,1)
             # Determine which two of (1,1,1,0), (1,1,0,1), (1,0,1,1), (0,1,1,1) are closest.
-            aPo = 0x0E
-            aScore = xins
-            bPo = 0x0D
-            bScore = yins
-            if aScore <= bScore and zins < bScore:
-                bScore = zins
-                bPo = 0x0B
-            elif aScore > bScore and zins < aScore:
-                aScore = zins
-                aPo = 0x0B
+            a_po = 0x0E
+            a_score = xins
+            b_po = 0x0D
+            b_score = yins
+            if a_score <= b_score and zins < b_score:
+                b_score = zins
+                b_po = 0x0B
+            elif a_score > b_score and zins < a_score:
+                a_score = zins
+                a_po = 0x0B
 
-            if aScore <= bScore and wins < bScore:
-                bScore = wins
-                bPo = 0x07
-            elif aScore > bScore and wins < aScore:
-                aScore = wins
-                aPo = 0x07
+            if a_score <= b_score and wins < b_score:
+                b_score = wins
+                b_po = 0x07
+            elif a_score > b_score and wins < a_score:
+                a_score = wins
+                a_po = 0x07
 
             # Now we determine the three lattice pos not part of the pentachoron that may contribute.
             # This depends on the closest two pentachoron vertices, including (0,0,0,0)
-            uins = 4 - inSum
-            if uins < aScore or uins < bScore: # (1,1,1,1) is one of the closest two pentachoron vertices.
-                c = bPo if (bScore < aScore) else aPo # Our other closest vertex is the closest out of a and b.
+            uins = 4 - in_sum
+            if uins < a_score or uins < b_score: # (1,1,1,1) is one of the closest two pentachoron vertices.
+                c = b_po if (b_score < a_score) else a_po # Our other closest vertex is the closest out of a and b.
 
                 if (c & 0x01) != 0:
                     xsv_ext0 = xsb + 2
@@ -1029,7 +1029,7 @@ class OpenSimplex(object):
                     dw_ext0 = dw_ext1 = dw_ext2 = dw0 - 4 * SQUISH_CONSTANT_4D
 
             else: # (1,1,1,1) is not one of the closest two pentachoron vertices.
-                c = (aPo & bPo) # Our three extra vertices are determined by the closest two.
+                c = (a_po & b_po) # Our three extra vertices are determined by the closest two.
 
                 if (c & 0x01) != 0:
                     xsv_ext0 = xsv_ext2 = xsb + 1
@@ -1135,92 +1135,92 @@ class OpenSimplex(object):
                 attn0 *= attn0
                 value += attn0 * attn0 * extrapolate(xsb + 1, ysb + 1, zsb + 1, wsb + 1, dx0, dy0, dz0, dw0)
 
-        elif inSum <= 2: # We're inside the first dispentachoron (Rectified 4-Simplex)
-            aIsBiggerSide = True
-            bIsBiggerSide = True
+        elif in_sum <= 2: # We're inside the first dispentachoron (Rectified 4-Simplex)
+            a_is_bigger_side = True
+            b_is_bigger_side = True
 
             # Decide between (1,1,0,0) and (0,0,1,1)
             if xins + yins > zins + wins:
-                aScore = xins + yins
-                aPo = 0x03
+                a_score = xins + yins
+                a_po = 0x03
             else:
-                aScore = zins + wins
-                aPo = 0x0C
+                a_score = zins + wins
+                a_po = 0x0C
 
             # Decide between (1,0,1,0) and (0,1,0,1)
             if xins + zins > yins + wins:
-                bScore = xins + zins
-                bPo = 0x05
+                b_score = xins + zins
+                b_po = 0x05
             else:
-                bScore = yins + wins
-                bPo = 0x0A
+                b_score = yins + wins
+                b_po = 0x0A
 
             # Closer between (1,0,0,1) and (0,1,1,0) will replace the further of a and b, if closer.
             if xins + wins > yins + zins:
                 score = xins + wins
-                if aScore >= bScore and score > bScore:
-                    bScore = score
-                    bPo = 0x09
-                elif aScore < bScore and score > aScore:
-                    aScore = score
-                    aPo = 0x09
+                if a_score >= b_score and score > b_score:
+                    b_score = score
+                    b_po = 0x09
+                elif a_score < b_score and score > a_score:
+                    a_score = score
+                    a_po = 0x09
 
             else:
                 score = yins + zins
-                if aScore >= bScore and score > bScore:
-                    bScore = score
-                    bPo = 0x06
-                elif aScore < bScore and score > aScore:
-                    aScore = score
-                    aPo = 0x06
+                if a_score >= b_score and score > b_score:
+                    b_score = score
+                    b_po = 0x06
+                elif a_score < b_score and score > a_score:
+                    a_score = score
+                    a_po = 0x06
 
             # Decide if (1,0,0,0) is closer.
-            p1 = 2 - inSum + xins
-            if aScore >= bScore and p1 > bScore:
-                bScore = p1
-                bPo = 0x01
-                bIsBiggerSide = False
-            elif aScore < bScore and p1 > aScore:
-                aScore = p1
-                aPo = 0x01
-                aIsBiggerSide = False
+            p1 = 2 - in_sum + xins
+            if a_score >= b_score and p1 > b_score:
+                b_score = p1
+                b_po = 0x01
+                b_is_bigger_side = False
+            elif a_score < b_score and p1 > a_score:
+                a_score = p1
+                a_po = 0x01
+                a_is_bigger_side = False
 
             # Decide if (0,1,0,0) is closer.
-            p2 = 2 - inSum + yins
-            if aScore >= bScore and p2 > bScore:
-                bScore = p2
-                bPo = 0x02
-                bIsBiggerSide = False
-            elif aScore < bScore and p2 > aScore:
-                aScore = p2
-                aPo = 0x02
-                aIsBiggerSide = False
+            p2 = 2 - in_sum + yins
+            if a_score >= b_score and p2 > b_score:
+                b_score = p2
+                b_po = 0x02
+                b_is_bigger_side = False
+            elif a_score < b_score and p2 > a_score:
+                a_score = p2
+                a_po = 0x02
+                a_is_bigger_side = False
 
             # Decide if (0,0,1,0) is closer.
-            p3 = 2 - inSum + zins
-            if aScore >= bScore and p3 > bScore:
-                bScore = p3
-                bPo = 0x04
-                bIsBiggerSide = False
-            elif aScore < bScore and p3 > aScore:
-                aScore = p3
-                aPo = 0x04
-                aIsBiggerSide = False
+            p3 = 2 - in_sum + zins
+            if a_score >= b_score and p3 > b_score:
+                b_score = p3
+                b_po = 0x04
+                b_is_bigger_side = False
+            elif a_score < b_score and p3 > a_score:
+                a_score = p3
+                a_po = 0x04
+                a_is_bigger_side = False
 
             # Decide if (0,0,0,1) is closer.
-            p4 = 2 - inSum + wins
-            if aScore >= bScore and p4 > bScore:
-                bPo = 0x08
-                bIsBiggerSide = False
-            elif aScore < bScore and p4 > aScore:
-                aPo = 0x08
-                aIsBiggerSide = False
+            p4 = 2 - in_sum + wins
+            if a_score >= b_score and p4 > b_score:
+                b_po = 0x08
+                b_is_bigger_side = False
+            elif a_score < b_score and p4 > a_score:
+                a_po = 0x08
+                a_is_bigger_side = False
 
             # Where each of the two closest pos are determines how the extra three vertices are calculated.
-            if aIsBiggerSide == bIsBiggerSide:
-                if aIsBiggerSide: # Both closest pos on the bigger side
-                    c1 = (aPo | bPo)
-                    c2 = (aPo & bPo)
+            if a_is_bigger_side == b_is_bigger_side:
+                if a_is_bigger_side: # Both closest pos on the bigger side
+                    c1 = (a_po | b_po)
+                    c2 = (a_po & b_po)
                     if (c1 & 0x01) == 0:
                         xsv_ext0 = xsb
                         xsv_ext1 = xsb - 1
@@ -1295,7 +1295,7 @@ class OpenSimplex(object):
                     dw_ext2 = dw0
 
                     # Other two pos are based on the omitted axes.
-                    c = (aPo | bPo)
+                    c = (a_po | b_po)
 
                     if (c & 0x01) == 0:
                         xsv_ext0 = xsb - 1
@@ -1345,12 +1345,12 @@ class OpenSimplex(object):
                         dw_ext0 = dw_ext1 = dw0 - 1 - SQUISH_CONSTANT_4D
 
             else: # One po on each "side"
-                if aIsBiggerSide:
-                    c1 = aPo
-                    c2 = bPo
+                if a_is_bigger_side:
+                    c1 = a_po
+                    c2 = b_po
                 else:
-                    c1 = bPo
-                    c2 = aPo
+                    c1 = b_po
+                    c2 = a_po
 
                 # Two contributions are the bigger-sided po with each 0 replaced with -1.
                 if (c1 & 0x01) == 0:
@@ -1522,91 +1522,91 @@ class OpenSimplex(object):
                 value += attn10 * attn10 * extrapolate(xsb + 0, ysb + 0, zsb + 1, wsb + 1, dx10, dy10, dz10, dw10)
 
         else: # We're inside the second dispentachoron (Rectified 4-Simplex)
-            aIsBiggerSide = True
-            bIsBiggerSide = True
+            a_is_bigger_side = True
+            b_is_bigger_side = True
 
             # Decide between (0,0,1,1) and (1,1,0,0)
             if xins + yins < zins + wins:
-                aScore = xins + yins
-                aPo = 0x0C
+                a_score = xins + yins
+                a_po = 0x0C
             else:
-                aScore = zins + wins
-                aPo = 0x03
+                a_score = zins + wins
+                a_po = 0x03
 
             # Decide between (0,1,0,1) and (1,0,1,0)
             if xins + zins < yins + wins:
-                bScore = xins + zins
-                bPo = 0x0A
+                b_score = xins + zins
+                b_po = 0x0A
             else:
-                bScore = yins + wins
-                bPo = 0x05
+                b_score = yins + wins
+                b_po = 0x05
 
             # Closer between (0,1,1,0) and (1,0,0,1) will replace the further of a and b, if closer.
             if xins + wins < yins + zins:
                 score = xins + wins
-                if aScore <= bScore and score < bScore:
-                    bScore = score
-                    bPo = 0x06
-                elif aScore > bScore and score < aScore:
-                    aScore = score
-                    aPo = 0x06
+                if a_score <= b_score and score < b_score:
+                    b_score = score
+                    b_po = 0x06
+                elif a_score > b_score and score < a_score:
+                    a_score = score
+                    a_po = 0x06
 
             else:
                 score = yins + zins
-                if aScore <= bScore and score < bScore:
-                    bScore = score
-                    bPo = 0x09
-                elif aScore > bScore and score < aScore:
-                    aScore = score
-                    aPo = 0x09
+                if a_score <= b_score and score < b_score:
+                    b_score = score
+                    b_po = 0x09
+                elif a_score > b_score and score < a_score:
+                    a_score = score
+                    a_po = 0x09
 
             # Decide if (0,1,1,1) is closer.
-            p1 = 3 - inSum + xins
-            if aScore <= bScore and p1 < bScore:
-                bScore = p1
-                bPo = 0x0E
-                bIsBiggerSide = False
-            elif aScore > bScore and p1 < aScore:
-                aScore = p1
-                aPo = 0x0E
-                aIsBiggerSide = False
+            p1 = 3 - in_sum + xins
+            if a_score <= b_score and p1 < b_score:
+                b_score = p1
+                b_po = 0x0E
+                b_is_bigger_side = False
+            elif a_score > b_score and p1 < a_score:
+                a_score = p1
+                a_po = 0x0E
+                a_is_bigger_side = False
 
             # Decide if (1,0,1,1) is closer.
-            p2 = 3 - inSum + yins
-            if aScore <= bScore and p2 < bScore:
-                bScore = p2
-                bPo = 0x0D
-                bIsBiggerSide = False
-            elif aScore > bScore and p2 < aScore:
-                aScore = p2
-                aPo = 0x0D
-                aIsBiggerSide = False
+            p2 = 3 - in_sum + yins
+            if a_score <= b_score and p2 < b_score:
+                b_score = p2
+                b_po = 0x0D
+                b_is_bigger_side = False
+            elif a_score > b_score and p2 < a_score:
+                a_score = p2
+                a_po = 0x0D
+                a_is_bigger_side = False
 
             # Decide if (1,1,0,1) is closer.
-            p3 = 3 - inSum + zins
-            if aScore <= bScore and p3 < bScore:
-                bScore = p3
-                bPo = 0x0B
-                bIsBiggerSide = False
-            elif aScore > bScore and p3 < aScore:
-                aScore = p3
-                aPo = 0x0B
-                aIsBiggerSide = False
+            p3 = 3 - in_sum + zins
+            if a_score <= b_score and p3 < b_score:
+                b_score = p3
+                b_po = 0x0B
+                b_is_bigger_side = False
+            elif a_score > b_score and p3 < a_score:
+                a_score = p3
+                a_po = 0x0B
+                a_is_bigger_side = False
 
             # Decide if (1,1,1,0) is closer.
-            p4 = 3 - inSum + wins
-            if aScore <= bScore and p4 < bScore:
-                bPo = 0x07
-                bIsBiggerSide = False
-            elif aScore > bScore and p4 < aScore:
-                aPo = 0x07
-                aIsBiggerSide = False
+            p4 = 3 - in_sum + wins
+            if a_score <= b_score and p4 < b_score:
+                b_po = 0x07
+                b_is_bigger_side = False
+            elif a_score > b_score and p4 < a_score:
+                a_po = 0x07
+                a_is_bigger_side = False
 
             # Where each of the two closest pos are determines how the extra three vertices are calculated.
-            if aIsBiggerSide == bIsBiggerSide:
-                if aIsBiggerSide: # Both closest pos on the bigger side
-                    c1 = (aPo & bPo)
-                    c2 = (aPo | bPo)
+            if a_is_bigger_side == b_is_bigger_side:
+                if a_is_bigger_side: # Both closest pos on the bigger side
+                    c1 = (a_po & b_po)
+                    c2 = (a_po | b_po)
 
                     # Two contributions are _permutations of (0,0,0,1) and (0,0,0,2) based on c1
                     xsv_ext0 = xsv_ext1 = xsb
@@ -1676,7 +1676,7 @@ class OpenSimplex(object):
                     dw_ext2 = dw0 - 1 - 4 * SQUISH_CONSTANT_4D
 
                     # Other two pos are based on the shared axes.
-                    c = (aPo & bPo)
+                    c = (a_po & b_po)
                     if (c & 0x01) != 0:
                         xsv_ext0 = xsb + 2
                         xsv_ext1 = xsb + 1
@@ -1725,12 +1725,12 @@ class OpenSimplex(object):
                         dw_ext0 = dw_ext1 = dw0 - 3 * SQUISH_CONSTANT_4D
 
             else: # One po on each "side"
-                if aIsBiggerSide:
-                    c1 = aPo
-                    c2 = bPo
+                if a_is_bigger_side:
+                    c1 = a_po
+                    c2 = b_po
                 else:
-                    c1 = bPo
-                    c2 = aPo
+                    c1 = b_po
+                    c2 = a_po
 
                 # Two contributions are the bigger-sided po with each 1 replaced with 2.
                 if (c1 & 0x01) != 0:
