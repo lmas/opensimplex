@@ -5,8 +5,8 @@ from ctypes import c_long
 from math import floor
 
 
-STRETCH_CONSTANT_2D = -0.211324865405187    #(1/Math.sqrt(2+1)-1)/2
-SQUISH_CONSTANT_2D = 0.366025403784439      #(Math.sqrt(2+1)-1)/2
+STRETCH_CONSTANT_2D = -0.211324865405187    # (1/Math.sqrt(2+1)-1)/2
+SQUISH_CONSTANT_2D = 0.366025403784439      # (Math.sqrt(2+1)-1)/2
 STRETCH_CONSTANT_3D = -1.0 / 6              # (1/Math.sqrt(3+1)-1)/3
 SQUISH_CONSTANT_3D = 1.0 / 3                # (Math.sqrt(3+1)-1)/3
 STRETCH_CONSTANT_4D = -0.138196601125011    # (1/Math.sqrt(4+1)-1)/4
@@ -85,11 +85,9 @@ class OpenSimplex(object):
         # Initializes the class using a permutation array generated from a 64-bit seed.
         # Generates a proper permutation (i.e. doesn't merely perform N
         # successive pair swaps on a base array)
-        self._perm = [0] * 256 # Have to zero fill so we can properly loop over it later
-        self._permGradIndex3D = [0] * 256
-        source = []
-        for i in range(0, 256):
-            source.append(i)
+        perm = self._perm = [0] * 256 # Have to zero fill so we can properly loop over it later
+        permGradIndex3D = self._permGradIndex3D = [0] * 256
+        source = [i for i in range(0, 256)]
         seed = overflow(seed * 6364136223846793005 + 1442695040888963407)
         seed = overflow(seed * 6364136223846793005 + 1442695040888963407)
         seed = overflow(seed * 6364136223846793005 + 1442695040888963407)
@@ -98,8 +96,8 @@ class OpenSimplex(object):
             r = int((seed + 31) % (i + 1))
             if r < 0:
                 r += i + 1
-            self._perm[i] = source[r]
-            self._permGradIndex3D[i] = int((self._perm[i] % (len(GRADIENTS_3D) / 3)) * 3)
+            perm[i] = source[r]
+            permGradIndex3D[i] = int((perm[i] % (len(GRADIENTS_3D) / 3)) * 3)
             source[r] = source[i]
 
     def _extrapolate2d(self, xsb, ysb, dx, dy):
@@ -267,12 +265,6 @@ class OpenSimplex(object):
         dx0 = x - xb
         dy0 = y - yb
         dz0 = z - zb
-
-        # We'll be defining these inside the next block and using them afterwards.
-        dx_ext0, dy_ext0, dz_ext0 = 0, 0, 0
-        dx_ext1, dy_ext1, dz_ext1 = 0, 0, 0
-        xsv_ext0, ysv_ext0, zsv_ext0 = 0, 0, 0
-        xsv_ext1, ysv_ext1, zsv_ext1 = 0, 0, 0
 
         value = 0
         extrapolate = self._extrapolate3d
@@ -537,21 +529,17 @@ class OpenSimplex(object):
             if p3 > 1:
                 score = p3 - 1
                 if aScore <= bScore and aScore < score:
-                    aScore = score
                     aPoint = 0x06
                     aIsFurtherSide = True
                 elif aScore > bScore and bScore < score:
-                    bScore = score
                     bPoint = 0x06
                     bIsFurtherSide = True
             else:
                 score = 1 - p3
                 if aScore <= bScore and aScore < score:
-                    aScore = score
                     aPoint = 0x01
                     aIsFurtherSide = False
                 elif aScore > bScore and bScore < score:
-                    bScore = score
                     bPoint = 0x01
                     bIsFurtherSide = False
 
@@ -624,7 +612,6 @@ class OpenSimplex(object):
                         ysv_ext1 = ysb + 1
                         zsv_ext1 = zsb - 1
             else: # One point on (0,0,0) side, one point on (1,1,1) side
-                c1, c2 = 0, 0
                 if aIsFurtherSide:
                     c1 = aPoint
                     c2 = bPoint
@@ -1223,11 +1210,9 @@ class OpenSimplex(object):
             # Decide if (0,0,0,1) is closer.
             p4 = 2 - inSum + wins
             if aScore >= bScore and p4 > bScore:
-                bScore = p4
                 bPo = 0x08
                 bIsBiggerSide = False
             elif aScore < bScore and p4 > aScore:
-                aScore = p4
                 aPo = 0x08
                 aIsBiggerSide = False
 
@@ -1611,11 +1596,9 @@ class OpenSimplex(object):
             # Decide if (1,1,1,0) is closer.
             p4 = 3 - inSum + wins
             if aScore <= bScore and p4 < bScore:
-                bScore = p4
                 bPo = 0x07
                 bIsBiggerSide = False
             elif aScore > bScore and p4 < aScore:
-                aScore = p4
                 aPo = 0x07
                 aIsBiggerSide = False
 
