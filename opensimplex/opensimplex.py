@@ -78,13 +78,10 @@ class OpenSimplex(object):
     OpenSimplex n-dimensional gradient noise functions.
     """
 
-    def __init__(self, seed=None):
+    def __init__(self, seed=DEFAULT_SEED):
         """
         Initiate the class and generate permutation arrays from a seed number.
         """
-        if seed is None:
-            seed = DEFAULT_SEED
-
         # Initializes the class using a permutation array generated from a 64-bit seed.
         # Generates a proper permutation (i.e. doesn't merely perform N
         # successive pair swaps on a base array)
@@ -137,7 +134,6 @@ class OpenSimplex(object):
         """
         Generate 2D OpenSimplex noise from X,Y coordinates.
         """
-
         # Place input coordinates onto grid.
         stretchOffset = (x + y) * STRETCH_CONSTANT_2D
         xs = x + stretchOffset
@@ -242,7 +238,6 @@ class OpenSimplex(object):
         """
         Generate 3D OpenSimplex noise from X,Y,Z coordinates.
         """
-
         # Place input coordinates on simplectic honeycomb.
         stretchOffset = (x + y + z) * STRETCH_CONSTANT_3D
         xs = x + stretchOffset
@@ -750,7 +745,6 @@ class OpenSimplex(object):
         """
         Generate 4D OpenSimplex noise from X,Y,Z,W coordinates.
         """
-
         # Place input coordinates on simplectic honeycomb.
         stretchOffset = (x + y + z + w) * STRETCH_CONSTANT_4D
         xs = x + stretchOffset
