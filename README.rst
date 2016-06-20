@@ -2,8 +2,7 @@
 ################################################################################
 OpenSimplex Noise
 ################################################################################
-.. image:: https://travis-ci.org/lmas/opensimplex.svg?branch=master :target: https://travis-ci.org/lmas/opensimplex
- .. image:: https://coveralls.io/repos/github/lmas/opensimplex/badge.svg?branch=master :target: https://coveralls.io/github/lmas/opensimplex?branch=master
+|build-status| |coverage-status|
 
     OpenSimplex noise is an n-dimensional gradient noise function that was
     developed in order to overcome the patent-related issues surrounding
@@ -97,3 +96,5 @@ Expected Output
 
 .. _Reddit: https://www.reddit.com/r/proceduralgeneration/comments/2gu3e7/like_perlins_simplex_noise_but_dont_like_the/ckmqz2y
 .. _`patent claims`: http://www.google.com/patents/US6867776
+.. |build-status| image:: https://travis-ci.org/lmas/opensimplex.svg?branch=master :target: https://travis-ci.org/lmas/opensimplex
+.. |coverage-status| image:: https://coveralls.io/repos/github/lmas/opensimplex/badge.svg?branch=master :target: https://coveralls.io/github/lmas/opensimplex?branch=master
