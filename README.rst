@@ -2,6 +2,9 @@
 ################################################################################
 OpenSimplex Noise
 ################################################################################
+.. image:: https://travis-ci.org/lmas/opensimplex.svg?branch=master :target: https://travis-ci.org/lmas/opensimplex
+ .. image:: https://coveralls.io/repos/github/lmas/opensimplex/badge.svg?branch=master :target: https://coveralls.io/github/lmas/opensimplex?branch=master
+
     OpenSimplex noise is an n-dimensional gradient noise function that was
     developed in order to overcome the patent-related issues surrounding
     Simplex noise, while continuing to also avoid the visually-significant
