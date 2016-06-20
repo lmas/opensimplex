@@ -66,7 +66,8 @@ FAQ
 CREDITS
 ================================================================================
 - Kurt Spencer - Original work
-- A Svensson - Python port and package author
+- A. Svensson - Python port and package author
+- CreamyCookie - Cleanup and optimizations
 
 LICENSE
 ================================================================================
