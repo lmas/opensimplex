@@ -1,5 +1,6 @@
-
-# Dev. requirements
-docutils
+# Development requirements, only
 Pillow
+coverage
+docutils
+nose
 
