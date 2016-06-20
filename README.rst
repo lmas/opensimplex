@@ -45,6 +45,22 @@ OpenSimplex.noise3d(x, y, z)
 OpenSimplex.noise4d(x, y, z, w)
     Generate 4D OpenSimplex noise from X,Y,Z,W coordinates.
 
+Running tests and benchmarks:
+--------------------------------------------------------------------------------
+
+First make a virtualenv and install the dev. requirements:
+
+    virtualenv venv
+    source venv/bin/activate
+    pip install -r requirements.txt
+
+and then simply run the tests:
+
+    make test
+
+or the basic benchmark:
+    make benchmark
+
 FAQ
 ================================================================================
 - Is this relevantly different enough to avoid any real trouble with the original patent?
@@ -66,7 +82,7 @@ FAQ
 CREDITS
 ================================================================================
 - Kurt Spencer - Original work
-- A. Svensson - Python port and package author
+- A Svensson - Python port and package author
 - CreamyCookie - Cleanup and optimizations
 
 LICENSE
