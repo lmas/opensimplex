@@ -1,4 +1,8 @@
 
+# This test was completely stolen from:
+# https://github.com/ojrac/opensimplex-go/blob/master/opensimplex_test.go
+# Full credits to Owen Raccuglia (ojrac).
+
 import gzip
 import json
 import unittest
