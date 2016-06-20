@@ -7,7 +7,10 @@ from opensimplex import OpenSimplex
 class TestOpensimplex(unittest.TestCase):
     def load_samples(self):
         for line in gzip.open("tests/samples.json.gz"):
-            yield json.loads(line)
+            # Python3: need to decode the line as it's a bytes object and json
+            # will only work on strings!
+            # TODO BUG: it will also take about 14 seconds to run the tests now! wtf
+            yield json.loads(line.decode("utf-8"))
 
     def test_samples(self):
         simplex = OpenSimplex(seed=0)
