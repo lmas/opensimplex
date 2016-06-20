@@ -9,7 +9,7 @@ upload-test: build
 	twine upload -r testpypi dist/*
 
 test:
-	python -m opensimplex.tests.opensimplex_test
+	export PYTHONPATH=$PYTHONPATH:./opensimplex && python tests/test_opensimplex.py
 
 html:
 	python setup.py --long-description | rst2html.py > README.html
