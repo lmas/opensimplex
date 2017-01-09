@@ -9,8 +9,15 @@ OpenSimplex Noise
     Simplex noise, while continuing to also avoid the visually-significant
     directional artifacts characteristic of Perlin noise.
 
-This is merely a python port of Kurt Spencer's original code, released to the
-public domain, and neatly wrapped up in a package.
+This is merely a python port of Kurt Spencer's original code (released to the
+public domain) and neatly wrapped up in a package.
+
+STATUS
+================================================================================
+Library is stable, it has pretty good test coverage but haven't gotten much
+optimizations. 
+I like to think that the lack of recent commits is a sign of stable and feature
+complete code ;)
 
 USAGE
 ================================================================================
@@ -59,6 +66,7 @@ and then simply run the tests:
     make test
 
 or the basic benchmark:
+
     make benchmark
 
 FAQ
