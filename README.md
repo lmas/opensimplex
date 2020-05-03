@@ -18,7 +18,7 @@ STATUS
 Library is stable, it has pretty good test coverage but haven't gotten
 much optimizations.
 
-**Tested with Python 2.7, 3.5, 3.6, 3.7, 3.8 on Linux, MacOS and
+**Tested with Python 3.6, 3.7, 3.8 on Linux, MacOS and
 Windows**
 
 I like to think that the lack of recent commits is a sign of stable and
