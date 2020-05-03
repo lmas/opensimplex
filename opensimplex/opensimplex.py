@@ -2,7 +2,7 @@
 # Based on: https://gist.github.com/KdotJPG/b1270127455a94ac5d19
 
 import sys
-from ctypes import c_long
+from ctypes import c_int64
 from math import floor as _floor
 
 
@@ -78,7 +78,7 @@ GRADIENTS_4D = (
 def overflow(x):
     # Since normal python ints and longs can be quite humongous we have to use
     # this hack to make them be able to overflow
-    return c_long(x).value
+    return c_int64(x).value
 
 
 class OpenSimplex(object):
