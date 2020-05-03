@@ -12,8 +12,7 @@ test:
 	nosetests --with-coverage --cover-package=opensimplex tests/
 
 benchmark:
-	export PYTHONPATH=$PYTHONPATH:./opensimplex
-	python tests/benchmark_opensimplex.py
+	export PYTHONPATH=.; python tests/benchmark_opensimplex.py
 
 html:
 	python setup.py --long-description | rst2html.py > README.html
