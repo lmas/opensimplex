@@ -88,9 +88,8 @@ class OpenSimplex(object):
 
     def __init__(self, seed=DEFAULT_SEED):
         """
-        Initiate the class and generate permutation arrays from a seed number.
+        Initiate the class using a permutation array generated from a 64-bit seed number.
         """
-        # Initializes the class using a permutation array generated from a 64-bit seed.
         # Generates a proper permutation (i.e. doesn't merely perform N
         # successive pair swaps on a base array)
         perm = self._perm = [0] * 256 # Have to zero fill so we can properly loop over it later
@@ -127,14 +126,13 @@ class OpenSimplex(object):
     def _extrapolate4d(self, xsb, ysb, zsb, wsb, dx, dy, dz, dw):
         perm = self._perm
         index = perm[(
-                         perm[(
-                                  perm[(perm[xsb & 0xFF] + ysb) & 0xFF] + zsb
-                ) & 0xFF] + wsb
+            perm[(
+                perm[(perm[xsb & 0xFF] + ysb) & 0xFF] + zsb
+            ) & 0xFF] + wsb
         ) & 0xFF] & 0xFC
 
         g1, g2, g3, g4 = GRADIENTS_4D[index:index + 4]
         return g1 * dx + g2 * dy + g3 * dz + g4 * dw
-
 
     def noise2d(self, x, y):
         """
@@ -238,7 +236,6 @@ class OpenSimplex(object):
             value += attn_ext * attn_ext * extrapolate(xsv_ext, ysv_ext, dx_ext, dy_ext)
 
         return value / NORM_CONSTANT_2D
-
 
     def noise3d(self, x, y, z):
         """
@@ -735,7 +732,6 @@ class OpenSimplex(object):
 
         return value / NORM_CONSTANT_3D
 
-
     def noise4d(self, x, y, z, w):
         """
         Generate 4D OpenSimplex noise from X,Y,Z,W coordinates.
@@ -845,7 +841,6 @@ class OpenSimplex(object):
                     zsv_ext0 = zsv_ext1 = zsv_ext2 = zsb + 1
                     dz_ext0 = dz_ext1 = dz_ext2 = dz0 - 1
 
-
                 if (c & 0x08) == 0:
                     wsv_ext0 = wsv_ext1 = wsb
                     wsv_ext2 = wsb - 1
@@ -900,7 +895,6 @@ class OpenSimplex(object):
                     zsv_ext0 = zsv_ext1 = zsv_ext2 = zsb + 1
                     dz_ext0 = dz0 - 1 - 2 * SQUISH_CONSTANT_4D
                     dz_ext1 = dz_ext2 = dz0 - 1 - SQUISH_CONSTANT_4D
-
 
                 if (c & 0x08) == 0:
                     wsv_ext0 = wsv_ext1 = wsb
@@ -1342,7 +1336,6 @@ class OpenSimplex(object):
                         zsv_ext0 = zsv_ext1 = zsb + 1
                         dz_ext0 = dz_ext1 = dz0 - 1 - SQUISH_CONSTANT_4D
 
-
                     if (c & 0x08) == 0:
                         wsv_ext0 = wsb
                         wsv_ext1 = wsb - 1
@@ -1722,7 +1715,6 @@ class OpenSimplex(object):
                         zsv_ext0 = zsv_ext1 = zsb
                         dz_ext0 = dz_ext1 = dz0 - 3 * SQUISH_CONSTANT_4D
 
-
                     if (c & 0x08) != 0:
                         wsv_ext0 = wsb + 1
                         wsv_ext1 = wsb + 2
@@ -1928,4 +1920,3 @@ class OpenSimplex(object):
             value += attn_ext2 * attn_ext2 * extrapolate(xsv_ext2, ysv_ext2, zsv_ext2, wsv_ext2, dx_ext2, dy_ext2, dz_ext2, dw_ext2)
 
         return value / NORM_CONSTANT_4D
-

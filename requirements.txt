@@ -1,5 +1,5 @@
 # Development requirements, only
 coverage
-docutils
 nose
-
+pycodestyle
+twine
