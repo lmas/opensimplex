@@ -93,6 +93,8 @@ CREDITS
 - A Svensson - Python port and package author
 - CreamyCookie - Cleanup and optimizations
 - Owen Raccuglia - Test cases
+- /u/redblobgames - Fixed conversion for Java's long type, see `Reddit <https://old.reddit.com/r/proceduralgeneration/comments/327zkm/repeated_patterns_in_opensimplex_python_port/cq8tth7/>`_
+- PetyaVasya - Found bug with using `c_long` on Windows systems, see `Issue #7 <https://github.com/lmas/opensimplex/issues/7>`_
 
 LICENSE
 ================================================================================
