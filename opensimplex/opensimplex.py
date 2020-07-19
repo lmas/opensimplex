@@ -2,9 +2,7 @@
 # Based on: https://gist.github.com/KdotJPG/b1270127455a94ac5d19
 
 import sys
-from ctypes import c_int64
 from math import floor as _floor
-
 
 if sys.version_info[0] < 3:
     def floor(num):
@@ -12,6 +10,10 @@ if sys.version_info[0] < 3:
 else:
     floor = _floor
 
+import numba
+import numpy as np
+
+overflow = np.int64
 
 STRETCH_CONSTANT_2D = -0.211324865405187    # (1/Math.sqrt(2+1)-1)/2
 SQUISH_CONSTANT_2D = 0.366025403784439      # (Math.sqrt(2+1)-1)/2
@@ -29,18 +31,18 @@ DEFAULT_SEED = 0
 
 # Gradients for 2D. They approximate the directions to the
 # vertices of an octagon from the center.
-GRADIENTS_2D = (
+GRADIENTS_2D = np.array([
      5,  2,    2,  5,
     -5,  2,   -2,  5,
      5, -2,    2, -5,
     -5, -2,   -2, -5,
-)
+], dtype=np.int64)
 
 # Gradients for 3D. They approximate the directions to the
 # vertices of a rhombicuboctahedron from the center, skewed so
 # that the triangular and square facets can be inscribed inside
 # circles of the same radius.
-GRADIENTS_3D = (
+GRADIENTS_3D = np.array([
     -11,  4,  4,     -4,  11,  4,    -4,  4,  11,
      11,  4,  4,      4,  11,  4,     4,  4,  11,
     -11, -4,  4,     -4, -11,  4,    -4, -4,  11,
@@ -49,13 +51,13 @@ GRADIENTS_3D = (
      11,  4, -4,      4,  11, -4,     4,  4, -11,
     -11, -4, -4,     -4, -11, -4,    -4, -4, -11,
      11, -4, -4,      4, -11, -4,     4, -4, -11,
-)
+], dtype=np.int64)
 
 # Gradients for 4D. They approximate the directions to the
 # vertices of a disprismatotesseractihexadecachoron from the center,
 # skewed so that the tetrahedral and cubic facets can be inscribed inside
 # spheres of the same radius.
-GRADIENTS_4D = (
+GRADIENTS_4D = np.array([
      3,  1,  1,  1,      1,  3,  1,  1,      1,  1,  3,  1,      1,  1,  1,  3,
     -3,  1,  1,  1,     -1,  3,  1,  1,     -1,  1,  3,  1,     -1,  1,  1,  3,
      3, -1,  1,  1,      1, -3,  1,  1,      1, -1,  3,  1,      1, -1,  1,  3,
@@ -72,15 +74,14 @@ GRADIENTS_4D = (
     -3,  1, -1, -1,     -1,  3, -1, -1,     -1,  1, -3, -1,     -1,  1, -1, -3,
      3, -1, -1, -1,      1, -3, -1, -1,      1, -1, -3, -1,      1, -1, -1, -3,
     -3, -1, -1, -1,     -1, -3, -1, -1,     -1, -1, -3, -1,     -1, -1, -1, -3,
-)
+], dtype=np.int64)
 
+spec = [
+    ('_perm', numba.int64[:]),               # a simple scalar field
+    ('_perm_grad_index_3D', numba.int64[:]),          # an array field
+]
 
-def overflow(x):
-    # Since normal python ints and longs can be quite humongous we have to use
-    # this hack to make them be able to overflow
-    return c_int64(x).value
-
-
+@numba.jitclass(spec)
 class OpenSimplex(object):
     """
     OpenSimplex n-dimensional gradient noise functions.
@@ -92,8 +93,11 @@ class OpenSimplex(object):
         """
         # Generates a proper permutation (i.e. doesn't merely perform N
         # successive pair swaps on a base array)
-        perm = self._perm = [0] * 256 # Have to zero fill so we can properly loop over it later
-        perm_grad_index_3D = self._perm_grad_index_3D = [0] * 256
+        self._perm = np.zeros(256, dtype=np.int64) # Have to zero fill so we can properly loop over it later 
+        self._perm_grad_index_3D = np.zeros(256, dtype=np.int64)
+        perm = self._perm
+        perm_grad_index_3D = self._perm_grad_index_3D
+
         source = [i for i in range(0, 256)]
         seed = overflow(seed * 6364136223846793005 + 1442695040888963407)
         seed = overflow(seed * 6364136223846793005 + 1442695040888963407)

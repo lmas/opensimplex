@@ -3,3 +3,5 @@ coverage
 nose
 pycodestyle
 twine
+numba
+numpy
