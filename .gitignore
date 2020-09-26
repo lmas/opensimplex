@@ -3,5 +3,6 @@
 /noise3d.png
 /noise4d.png
 dist/
+build/
 opensimplex.egg-info/
 venv/
