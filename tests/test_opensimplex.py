@@ -10,6 +10,12 @@ from opensimplex import OpenSimplex
 
 class TestOpensimplex(unittest.TestCase):
     def load_samples(self):
+        """
+        Yield samples.
+
+        Args:
+            self: (todo): write your description
+        """
         for line in gzip.open("tests/samples.json.gz"):
             # Python3: need to decode the line as it's a bytes object and json
             # will only work on strings!
@@ -17,6 +23,12 @@ class TestOpensimplex(unittest.TestCase):
             yield json.loads(line.decode("utf-8"))
 
     def test_samples(self):
+        """
+        Simulate samples.
+
+        Args:
+            self: (todo): write your description
+        """
         simplex = OpenSimplex(seed=0)
 
         for s in self.load_samples():

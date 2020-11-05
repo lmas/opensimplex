@@ -10,9 +10,22 @@ else:
 
 class Benchmark:
     def __init__(self):
+        """
+        Initialize the simulation.
+
+        Args:
+            self: (todo): write your description
+        """
         self.simplex = OpenSimplex(seed=0)
 
     def run(self, number=100000):
+        """
+        Run the simulation.
+
+        Args:
+            self: (todo): write your description
+            number: (int): write your description
+        """
         for i in _range(number):
             self.simplex.noise2d(0.1, 0.1)
             self.simplex.noise3d(0.1, 0.1, 0.1)
