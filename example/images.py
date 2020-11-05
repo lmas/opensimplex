@@ -9,6 +9,11 @@ FEATURE_SIZE = 24.0
 
 
 def main():
+    """
+    Main function.
+
+    Args:
+    """
     simplex = OpenSimplex()
 
     print('Generating 2D image...')

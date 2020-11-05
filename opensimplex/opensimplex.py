@@ -8,6 +8,12 @@ from math import floor as _floor
 
 if sys.version_info[0] < 3:
     def floor(num):
+        """
+        Returns an integer representing the number.
+
+        Args:
+            num: (int): write your description
+        """
         return int(_floor(num))
 else:
     floor = _floor
@@ -76,6 +82,12 @@ GRADIENTS_4D = (
 
 
 def overflow(x):
+    """
+    Overflow version of integer.
+
+    Args:
+        x: (todo): write your description
+    """
     # Since normal python ints and longs can be quite humongous we have to use
     # this hack to make them be able to overflow
     return c_int64(x).value
@@ -108,6 +120,16 @@ class OpenSimplex(object):
             source[r] = source[i]
 
     def _extrapolate2d(self, xsb, ysb, dx, dy):
+        """
+        Extrapolate 2d ( 2d ( x y ) = ( y ).
+
+        Args:
+            self: (todo): write your description
+            xsb: (array): write your description
+            ysb: (todo): write your description
+            dx: (array): write your description
+            dy: (array): write your description
+        """
         perm = self._perm
         index = perm[(perm[xsb & 0xFF] + ysb) & 0xFF] & 0x0E
 
@@ -115,6 +137,18 @@ class OpenSimplex(object):
         return g1 * dx + g2 * dy
 
     def _extrapolate3d(self, xsb, ysb, zsb, dx, dy, dz):
+        """
+        Name :
+
+        Args:
+            self: (todo): write your description
+            xsb: (array): write your description
+            ysb: (array): write your description
+            zsb: (array): write your description
+            dx: (array): write your description
+            dy: (array): write your description
+            dz: (array): write your description
+        """
         perm = self._perm
         index = self._perm_grad_index_3D[
             (perm[(perm[xsb & 0xFF] + ysb) & 0xFF] + zsb) & 0xFF
@@ -124,6 +158,20 @@ class OpenSimplex(object):
         return g1 * dx + g2 * dy + g3 * dz
 
     def _extrapolate4d(self, xsb, ysb, zsb, wsb, dx, dy, dz, dw):
+        """
+        Extrapolateolate4dz4d.
+
+        Args:
+            self: (todo): write your description
+            xsb: (array): write your description
+            ysb: (todo): write your description
+            zsb: (array): write your description
+            wsb: (array): write your description
+            dx: (array): write your description
+            dy: (array): write your description
+            dz: (array): write your description
+            dw: (array): write your description
+        """
         perm = self._perm
         index = perm[(
             perm[(
