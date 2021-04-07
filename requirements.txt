@@ -1,4 +1,5 @@
 # Development requirements, only
+autopep8
 coverage
 nose
 pycodestyle
