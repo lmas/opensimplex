@@ -21,4 +21,4 @@ class Benchmark:
 if __name__ == "__main__":
     import cProfile
     b = Benchmark()
-    cProfile.run("b.run()", sort="cumtime")
+    cProfile.run("b.run()", sort="tottime")
