@@ -14,9 +14,9 @@ class Benchmark:
 
     def run(self, number=100000):
         for i in _range(number):
-            self.simplex.noise2(0.1, 0.1)
-            self.simplex.noise3(0.1, 0.1, 0.1)
-            self.simplex.noise4(0.1, 0.1, 0.1, 0.1)
+            self.simplex.noise2d(0.1, 0.1)
+            self.simplex.noise3d(0.1, 0.1, 0.1)
+            self.simplex.noise4d(0.1, 0.1, 0.1, 0.1)
 
 if __name__ == "__main__":
     import cProfile
