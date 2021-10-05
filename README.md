@@ -22,6 +22,7 @@ MacOS and Windows**.
 The `dev` branch holds **v0.4**, currently in development, and relies on Numpy
 and optionally Numba for optimizations aimed at heavier work loads. Not properly
 tested or benchmarked yet.
+**Contains breaking changes! API names have been changed!**
 
 Usage
 ================================================================================
