@@ -9,22 +9,22 @@ bench:
 
 .PHONY: format
 format:
-	autopep8 --aggressive --aggressive --max-line-length 120 --in-place --recursive opensimplex
+	autopep8 --aggressive --aggressive --max-line-length 120 --in-place --recursive --verbose opensimplex
 
 .PHONY: lint
 lint:
-	pycodestyle opensimplex
+	pycodestyle --max-line-length 120 opensimplex
 
-.PHONY: test
+.PHONY: build
 build: test
 	python setup.py sdist bdist_wheel
 
 .PHONY: upload
-upload:
+upload: build
 	twine upload -r pypi dist/*
 
 .PHONY: upload-test
-upload-test:
+upload-test: build
 	twine upload -r testpypi dist/*
 
 .PHONY: clean
