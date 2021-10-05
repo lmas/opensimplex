@@ -20,6 +20,9 @@ setup(
     license='MIT',
     packages=find_packages(),
     include_package_data=True,
+    install_requires=[
+		'numba>=1.20',
+    ],
     zip_safe=False,
     classifiers=[
         'Programming Language :: Python :: 3',
