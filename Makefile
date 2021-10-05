@@ -1,7 +1,7 @@
 
 .PHONY: test
 test:
-	nosetests --with-coverage --cover-package=opensimplex tests/
+	export NUMBA_DISABLE_JIT=1 && nosetests --with-coverage --cover-package=opensimplex tests/
 
 .PHONY: bench
 bench:
