@@ -21,7 +21,7 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     install_requires=[
-		'numba>=1.20',
+		'numpy>=1.20',
     ],
     zip_safe=False,
     classifiers=[
