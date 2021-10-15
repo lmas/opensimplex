@@ -16,7 +16,7 @@ Status
 ================================================================================
 
 The `main` branch contains the latest stable **v0.3**, but haven't been optimized
-for heavier python use. It's been tested with **Python 3.6, 3.7, 3.8 on Linux,
+for heavier python use. It's been tested with **Python 3.8, 3.9, 3.10 on Linux,
 MacOS and Windows**.
 
 The `dev` branch holds **v0.4**, currently in development, and relies on Numpy
