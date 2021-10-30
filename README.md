@@ -15,14 +15,19 @@ to the public domain) and neatly wrapped up in a package.
 Status
 ================================================================================
 
-The `main` branch contains the latest stable **v0.3**, but haven't been optimized
-for heavier python use. It's been tested with **Python 3.8, 3.9, 3.10 on Linux,
+The `main` branch contains the latest stable **v0.4**.
+
+This version has been tested with **Python 3.7, 3.8, 3.9 on Linux,
 MacOS and Windows**.
 
-The `dev` branch holds **v0.4**, currently in development, and relies on Numpy
-and optionally Numba for optimizations aimed at heavier work loads. Not properly
-tested or benchmarked yet.
-**Contains breaking changes! API names have been changed!**
+Updates:
+
+- Adds a hard dependency on 'Numpy', for array optimizations aimed at heavier
+  workloads.
+- Adds optional dependency on 'Numba', for further speed optimizations using
+  caching.
+- General refactor and cleanup of the library and tests.
+- **Breaking changes: API function names has been modified.**
 
 Usage
 ================================================================================
@@ -35,8 +40,8 @@ Usage
 
         >>> import opensimplex
         >>> opensimplex.seed(1234)
-        >>> noise_value = opensimplex.noise2(x=10, y=10)
-        >>> print(noise_value)
+        >>> n = opensimplex.noise2(x=10, y=10)
+        >>> print(n)
         0.580279369186297
 
 For more advanced examples, see the files in the `tests` and `example` directory.
@@ -69,7 +74,7 @@ For more advanced examples, see the files in the `tests` and `example` directory
 
         virtualenv venv
         source venv/bin/activate
-        pip install -r requirements.txt
+        make deps
 
 and then simply run the tests:
 
@@ -128,13 +133,14 @@ Credits
 ================================================================================
 
 - Kurt Spencer - Original work
-- A Svensson - Python port and package author
+- Alex - Python port and package author
+
 - CreamyCookie - Cleanup and optimizations
 - Owen Raccuglia - Test cases
 - /u/redblobgames - Fixed conversion for Java's long type, see [Reddit](https://old.reddit.com/r/proceduralgeneration/comments/327zkm/repeated_patterns_in_opensimplex_python_port/cq8tth7/)
 - PetyaVasya - Found bug with using c_long on Windows systems, see [Issue #7](https://github.com/lmas/opensimplex/issues/7)
-- ktritz - First numba/numpy implementation
-- Thomas Rometsch and MightyBOBcnc - Numba optimization tricks
+- ktritz - First numba/numpy implementation, see [Issue #4](https://github.com/lmas/opensimplex/issues/4)
+- Thomas Rometsch and MightyBOBcnc - Numba optimization tricks, see [Issue #4](https://github.com/lmas/opensimplex/issues/4)
 
 License
 ================================================================================

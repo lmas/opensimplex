@@ -1,4 +1,9 @@
 
+.PHONY: deps
+deps:
+	python -m pip install --upgrade pip
+	python -m pip install -r requirements.txt
+
 .PHONY: test
 test:
 	export NUMBA_DISABLE_JIT=1 && nosetests --with-coverage --cover-package=opensimplex tests/
