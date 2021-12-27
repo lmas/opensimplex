@@ -1,22 +1,34 @@
 
-import sys
+import numpy as np
+import opensimplex as simplex
 
-from opensimplex import OpenSimplex
+default_num = 100000
 
-if sys.version_info[0] < 3:
-    _range = xrange
-else:
-    _range = range
 
 class Benchmark:
     def __init__(self):
-        self.simplex = OpenSimplex(seed=0)
+        # Randomized coordinate arrays that will supply the noise funcs.
+        self.x = np.random.random_sample(default_num)
+        self.y = np.random.random_sample(default_num)
+        self.z = np.random.random_sample(default_num)
+        self.w = np.random.random_sample(default_num)
 
-    def run(self, number=100000):
-        for i in _range(number):
-            self.simplex.noise2d(0.1, 0.1)
-            self.simplex.noise3d(0.1, 0.1, 0.1)
-            self.simplex.noise4d(0.1, 0.1, 0.1, 0.1)
+    def run(self):
+        # This is the simplest way of generating a small amount of noise values.
+        # for i in range(default_num):
+        #	self.simplex.noise2d(self.x[i], self.y[i])
+        #	self.simplex.noise3d(self.x[i], self.y[i], self.z[i])
+        #	self.simplex.noise4d(self.x[i], self.y[i], self.z[i], self.w[i])
+
+        # The most performant way of generating a large number of noise values is by
+        # creating a numpy array with your coordinates and use these versions of the
+        # noise funcs, as they are optimized for arrays.
+        simplex.noise2array(self.x, self.y)
+        simplex.noise3array(self.x, self.y, self.z)
+        simplex.noise4array(self.x, self.y, self.z, self.w)
+
+################################################################################
+
 
 if __name__ == "__main__":
     import cProfile

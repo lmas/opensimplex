@@ -1,6 +1,10 @@
 # Development requirements, only
+wheel
+setuptools
 autopep8
 coverage
 nose
 pycodestyle
 twine
+numba
+numpy

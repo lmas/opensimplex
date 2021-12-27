@@ -2,7 +2,8 @@
 OpenSimplex Noise
 ================================================================================
 
-![build-status](https://github.com/lmas/opensimplex/workflows/Tests/badge.svg?branch=master)
+[![build-status](https://github.com/lmas/opensimplex/workflows/Tests/badge.svg?branch=master)](https://github.com/lmas/opensimplex/actions)
+[![pypi-version](https://badge.fury.io/py/opensimplex.svg)](https://pypi.org/project/opensimplex/)
 
         OpenSimplex noise is an n-dimensional gradient noise function that was
         developed in order to overcome the patent-related issues surrounding
@@ -12,67 +13,75 @@ OpenSimplex Noise
 This is merely a python port of Kurt Spencer's original code (released
 to the public domain) and neatly wrapped up in a package.
 
-STATUS
+Status
 ================================================================================
 
-Library is stable, it has pretty good test coverage but haven't gotten
-much optimizations.
+The `main` branch contains the latest stable **v0.4**.
 
-**Tested with Python 3.6, 3.7, 3.8 on Linux, MacOS and
-Windows**
+This version has been tested with **Python 3.7, 3.8, 3.9 on Linux,
+MacOS and Windows**.
 
-I like to think that the lack of recent commits is a sign of stable and
-feature complete code ;)
+Updates:
 
-USAGE
+- Adds a hard dependency on 'Numpy', for array optimizations aimed at heavier
+  workloads.
+- Adds optional dependency on 'Numba', for further speed optimizations using
+  caching.
+- General refactor and cleanup of the library and tests.
+- **Breaking changes: API function names has been modified.**
+
+Usage
 ================================================================================
 
-**Initialization:**
+**Installation:**
 
-        >>> from opensimplex import OpenSimplex
-        >>> tmp = OpenSimplex()
-        >>> print (tmp.noise2d(x=10, y=10))
-        0.732051569572
+        pip install opensimplex
 
-Optionally, the class accepts a seed value:
+**Basic usage:**
 
-        >>> tmp = OpenSimplex(seed=1)
-        >>> print (tmp.noise2d(x=10, y=10))
-        -0.4790979022623557
+        >>> import opensimplex
+        >>> opensimplex.seed(1234)
+        >>> n = opensimplex.noise2(x=10, y=10)
+        >>> print(n)
+        0.580279369186297
 
-The seed must be a valid python number. It's used internally to
-generate some permutation arrays, which is used for the noise
-generation.
+For more advanced examples, see the files in the `tests` and `example` directory.
 
-If it isn't provided the class will **default to use 0 as the seed**.
+**Available functions:**
 
-**Available class methods:**
+*opensimplex.seed(seed)*
+> Seeds the underlying permutation array (which produces different outputs),
+> using a 64-bit seed number.
 
-*OpenSimplex.noise2d(x, y)*
-
+*opensimplex.noise2(x, y)*
 > Generate 2D OpenSimplex noise from X,Y coordinates.
 
-*OpenSimplex.noise3d(x, y, z)*
+*opensimplex.noise2array(x, y)*
+> Same as noise2, but works with numpy arrays for better performance.
 
+*opensimplex.noise3(x, y, z)*
 > Generate 3D OpenSimplex noise from X,Y,Z coordinates.
 
-*OpenSimplex.noise4d(x, y, z, w)*
+*opensimplex.noise3array(x, y, z)*
+> Same as noise3, but works with numpy arrays for better performance.
 
+*opensimplex.noise4(x, y, z, w)*
 > Generate 4D OpenSimplex noise from X,Y,Z,W coordinates.
+
+*opensimplex.noise4array(x, y, z, w)*
+> Same as noise4, but works with numpy arrays for better performance.
 
 **Running tests and benchmarks:**
 
-First make a virtualenv and install the dev. requirements:
-
         virtualenv venv
         source venv/bin/activate
-        pip install -r requirements.txt
+        make deps
 
 and then simply run the tests:
 
         make test
 
-or the basic benchmark:
+or the benchmark:
 
         make benchmark
 
@@ -121,17 +130,20 @@ original patent?
     >
     > - **Kurt**, on [Reddit](https://www.reddit.com/r/proceduralgeneration/comments/2gu3e7/like_perlins_simplex_noise_but_dont_like_the/ckmqz2y)
 
-CREDITS
+Credits
 ================================================================================
 
 - Kurt Spencer - Original work
-- A Svensson - Python port and package author
+- Alex - Python port and package author
+
 - CreamyCookie - Cleanup and optimizations
 - Owen Raccuglia - Test cases
 - /u/redblobgames - Fixed conversion for Java's long type, see [Reddit](https://old.reddit.com/r/proceduralgeneration/comments/327zkm/repeated_patterns_in_opensimplex_python_port/cq8tth7/)
 - PetyaVasya - Found bug with using c_long on Windows systems, see [Issue #7](https://github.com/lmas/opensimplex/issues/7)
+- ktritz - First numba/numpy implementation, see [Issue #4](https://github.com/lmas/opensimplex/issues/4)
+- Thomas Rometsch and MightyBOBcnc - Numba optimization tricks, see [Issue #4](https://github.com/lmas/opensimplex/issues/4)
 
-LICENSE
+License
 ================================================================================
 
 While the original work was released to the public domain by Kurt, this
@@ -141,14 +153,16 @@ details.
 Expected Output
 ================================================================================
 
-2D noise (with default seed):
+Example images visualising 2D, 3D and 4D noise on a 2D plane, using the default seed:
 
-![image](images/noise2d.png){width="100px" height="100px"}
+**2D noise**
 
-3D noise:
+![image](images/noise2d.png)
 
-![image](images/noise3d.png){width="100px" height="100px"}
+**3D noise**
 
-4D noise:
+![image](images/noise3d.png)
 
-![image](images/noise4d.png){width="100px" height="100px"}
+**4D noise**
+
+![image](images/noise4d.png)
