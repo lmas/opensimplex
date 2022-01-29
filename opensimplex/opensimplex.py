@@ -107,11 +107,13 @@ def _noise2a(x, y, perm):
 
 
 @njit(cache=True, parallel=True)
-def _noise3a(x, y, z, perm, perm_grad_index3):
-    noise = np.zeros(x.size, dtype=np.double)
-    for i in prange(x.size):
-        noise[i] = _noise3(x[i], y[i], z[i], perm, perm_grad_index3)
-    return noise
+def _noise3a(X, Y, Z, perm, perm_grad_index3):
+    noise = np.zeros(X.size * Y.size * Z.size, dtype=np.double)
+    for z in prange(Z.size):
+        for y in prange(Y.size):
+            for x in prange(X.size):
+                noise[(y * Y.size + x)+(z * Y.size * X.size)] = _noise3(X[x], Y[y], Z[z], perm, perm_grad_index3)
+    return noise.reshape((Z.size, Y.size, X.size))
 
 
 @njit(cache=True, parallel=True)
