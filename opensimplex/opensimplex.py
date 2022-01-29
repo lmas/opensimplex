@@ -44,7 +44,17 @@ class OpenSimplex(object):
     def noise4(self, x, y, z, w):
         return _noise4(x, y, z, w, self._perm)
 
-    def noise4array(self, x, y, z, w):
+    def noise4array(self, x: np.ndarray, y: np.ndarray, z: np.ndarray, w: np.ndarray):
+        """
+        4D simplex noise using numpy arrays. Takes arrays of indices as input, and ouputs the 
+        generated noise in a 4D array of size(w.size, z.size, y.size, x.size)
+        :param x: numpy array of x-coords
+        :param y: numpy array of y-coords
+        :param z: numpy array of z indices
+        :param w: numpy array of w indices
+        :return: 4D numpy array of shape (w.size, z.size, y.size, x.size) with generated noise for 
+        supplied indices
+        """
         return _noise4a(x, y, z, w, self._perm)
 
 ################################################################################
@@ -133,10 +143,24 @@ def _noise3a(x, y, z, perm, perm_grad_index3):
 
 
 @njit(cache=True, parallel=True)
-def _noise4a(x, y, z, w, perm):
-    noise = np.zeros(x.size, dtype=np.double)
-    for i in prange(x.size):
-        noise[i] = _noise4(x[i], y[i], z[i], w[i], perm)
+def _noise4a(x: np.ndarray, y: np.ndarray, z: np.ndarray, w: np.ndarray, perm: np.ndarray):
+    """
+    4D simplex noise using numpy arrays. Takes arrays of indices as input, and ouputs the 
+    generated noise in a 4D array of size(w.size, z.size, y.size, x.size)
+    :param x: numpy array of x-coords
+    :param y: numpy array of y-coords
+    :param z: numpy array of z indices
+    :param w: numpy array of w indices
+    :param perm: numpy array of generated permutation
+    :return: 4D numpy array of shape (w.size, z.size, y.size, x.size) with generated noise for 
+    supplied indices
+    """
+    noise = np.empty((w.size, z.size, y.size, x.size), dtype=np.double)
+    for w_i in prange(w.size):
+        for z_i in prange(z.size):
+            for y_i in prange(y.size):
+                for x_i in prange(x.size):
+                    noise[w_i, z_i, y_i, x_i] = _noise4(x[x_i], y[_i], z[_i], w[_i], perm)
     return noise
 
 ################################################################################
