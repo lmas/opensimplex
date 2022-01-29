@@ -25,6 +25,14 @@ class OpenSimplex(object):
         return _noise2(x, y, self._perm)
 
     def noise2array(self, x: np.ndarray, y: np.ndarray):
+        """
+        2D simplex noise using numpy arrays. Takes two arrays of indices and outputs the noise for
+        those indices in a 2D array
+        :param x: numpy array of x-coords
+        :param y: numpy array of y-coords
+        :return: numpy array of shape (y.size, x.size) with the generated noise for the supplied
+        coordinates.
+        """
         return _noise2a(x, y, self._perm)
 
     def noise3(self, x, y, z):
