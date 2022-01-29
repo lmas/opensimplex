@@ -24,7 +24,7 @@ class OpenSimplex(object):
     def noise2(self, x, y):
         return _noise2(x, y, self._perm)
 
-    def noise2array(self, x, y):
+    def noise2array(self, x: np.ndarray, y: np.ndarray):
         return _noise2a(x, y, self._perm)
 
     def noise3(self, x, y, z):
@@ -99,10 +99,20 @@ def _extrapolate4(perm, xsb, ysb, zsb, wsb, dx, dy, dz, dw):
 
 
 @njit(cache=True, parallel=True)
-def _noise2a(x, y, perm):
-    noise = np.zeros(x.size, dtype=np.double)
-    for i in prange(x.size):
-        noise[i] = _noise2(x[i], y[i], perm)
+def _noise2a(x: np.ndarray, y: np.ndarray, perm: np.ndarray):
+    """
+    2D simplex noise using numpy arrays. Takes two arrays of indices and outputs the noise for
+    those indices in a 2D array
+    :param x: numpy array of x-coords
+    :param y: numpy array of y-coords
+    :param perm: generated permutation
+    :return: numpy array of shape (y.size, x.size) with the generated noise for the supplied
+    coordinates.
+    """
+    noise = np.empty((y.size, x.size), dtype=np.double)
+    for y_i in prange(y.size):
+        for x_i in prange(x.size):
+            noise[y_i, x_i] = _noise2(x[x_i], y[y_i], perm)
     return noise
 
 
