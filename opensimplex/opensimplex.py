@@ -42,11 +42,31 @@ class OpenSimplex(object):
         """
         return _noise3a(x, y, z, self._perm, self._perm_grad_index3)
 
+    def noise_3d_octaves(self, shape, octaves=1, persistence=0.5):
+        """
+            Returns a layered fractal noise in 3D
+        :param shape: Shape of 3D tensor output
+        :param octaves: Number of levels of fractal noise
+        :param persistence: float between (0-1) -> Rate at which amplitude of each level decreases
+        :return: Fractal noise sample with n lots of 2D images
+        """
+        assert len(shape) == 3
+        noise = np.empty(shape)
+        z, y, x = [np.arange(0, end) for end in shape]
+        frequency = 32
+        amplitude = 1
+        for _ in range(octaves):
+            noise += amplitude * self.noise3array(x / frequency, y / frequency, z / frequency)
+            frequency /= 2
+            amplitude *= persistence
+        return noise
+
     def noise4(self, x, y, z, w):
         return _noise4(x, y, z, w, self._perm)
 
     def noise4array(self, x, y, z, w):
         return _noise4a(x, y, z, w, self._perm)
+
 
 ################################################################################
 
