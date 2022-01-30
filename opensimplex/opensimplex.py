@@ -31,6 +31,15 @@ class OpenSimplex(object):
         return _noise3(x, y, z, self._perm, self._perm_grad_index3)
 
     def noise3array(self, x, y, z):
+        """
+             3D simplex noise using numpy arrays. Takes arrays of indices as input, and outputs the
+             generated noise in a 3D array of size(z.size, y.size, x.size)
+             :param x: numpy array of x-coords
+             :param y: numpy array of y-coords
+             :param z: numpy array of z-coords
+             :return: 3D numpy array of shape (z.size, y.size, x.size) with generated noise for
+             supplied indices
+        """
         return _noise3a(x, y, z, self._perm, self._perm_grad_index3)
 
     def noise4(self, x, y, z, w):
@@ -107,13 +116,13 @@ def _noise2a(x, y, perm):
 
 
 @njit(cache=True, parallel=True)
-def _noise3a(X, Y, Z, perm, perm_grad_index3):
-    noise = np.zeros(X.size * Y.size * Z.size, dtype=np.double)
-    for z in prange(Z.size):
-        for y in prange(Y.size):
-            for x in prange(X.size):
-                noise[(y * Y.size + x)+(z * Y.size * X.size)] = _noise3(X[x], Y[y], Z[z], perm, perm_grad_index3)
-    return noise.reshape((Z.size, Y.size, X.size))
+def _noise3a(x: np.ndarray, y: np.ndarray, z: np.ndarray, perm: np.ndarray, perm_grad_index3: np.ndarray):
+    noise = np.empty((z.size, y.size, x.size), dtype=np.double)
+    for z_i in prange(z.size):
+        for y_i in prange(y.size):
+            for x_i in prange(x.size):
+                noise[z_i, y_i, x_i] = _noise3(x[x_i], y[y_i], z[z_i], perm, perm_grad_index3)
+    return noise
 
 
 @njit(cache=True, parallel=True)
