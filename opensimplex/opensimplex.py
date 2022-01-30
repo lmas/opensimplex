@@ -118,15 +118,6 @@ def _extrapolate4(perm, xsb, ysb, zsb, wsb, dx, dy, dz, dw):
 
 @njit(cache=True, parallel=True)
 def _noise2a(x: np.ndarray, y: np.ndarray, perm: np.ndarray):
-    """
-    2D simplex noise using numpy arrays. Takes two arrays of indices and outputs the noise for
-    those indices in a 2D array
-    :param x: numpy array of x-coords
-    :param y: numpy array of y-coords
-    :param perm: generated permutation
-    :return: numpy array of shape (y.size, x.size) with the generated noise for the supplied
-    coordinates.
-    """
     noise = np.empty((y.size, x.size), dtype=np.double)
     for y_i in prange(y.size):
         for x_i in prange(x.size):
@@ -144,17 +135,6 @@ def _noise3a(x, y, z, perm, perm_grad_index3):
 
 @njit(cache=True, parallel=True)
 def _noise4a(x: np.ndarray, y: np.ndarray, z: np.ndarray, w: np.ndarray, perm: np.ndarray):
-    """
-    4D simplex noise using numpy arrays. Takes arrays of indices as input, and ouputs the 
-    generated noise in a 4D array of size(w.size, z.size, y.size, x.size)
-    :param x: numpy array of x-coords
-    :param y: numpy array of y-coords
-    :param z: numpy array of z indices
-    :param w: numpy array of w indices
-    :param perm: numpy array of generated permutation
-    :return: 4D numpy array of shape (w.size, z.size, y.size, x.size) with generated noise for 
-    supplied indices
-    """
     noise = np.empty((w.size, z.size, y.size, x.size), dtype=np.double)
     for w_i in prange(w.size):
         for z_i in prange(z.size):
