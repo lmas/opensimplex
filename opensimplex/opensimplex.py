@@ -1,4 +1,3 @@
-
 # It all started with this gist, once upon a time:
 # https://gist.github.com/KdotJPG/b1270127455a94ac5d19
 
@@ -14,6 +13,7 @@ except ImportError:
     def njit(*args, **kwargs):
         def wrapper(func):
             return func
+
         return wrapper
 
 
@@ -38,6 +38,7 @@ class OpenSimplex(object):
 
     def noise4array(self, x, y, z, w):
         return _noise4a(x, y, z, w, self._perm)
+
 
 ################################################################################
 
@@ -74,27 +75,21 @@ def _init(seed=DEFAULT_SEED):
 @njit(cache=True)
 def _extrapolate2(perm, xsb, ysb, dx, dy):
     index = perm[(perm[xsb & 0xFF] + ysb) & 0xFF] & 0x0E
-    g1, g2 = GRADIENTS2[index:index + 2]
+    g1, g2 = GRADIENTS2[index : index + 2]
     return g1 * dx + g2 * dy
 
 
 @njit(cache=True)
 def _extrapolate3(perm, perm_grad_index3, xsb, ysb, zsb, dx, dy, dz):
-    index = perm_grad_index3[
-        (perm[(perm[xsb & 0xFF] + ysb) & 0xFF] + zsb) & 0xFF
-    ]
-    g1, g2, g3 = GRADIENTS3[index:index + 3]
+    index = perm_grad_index3[(perm[(perm[xsb & 0xFF] + ysb) & 0xFF] + zsb) & 0xFF]
+    g1, g2, g3 = GRADIENTS3[index : index + 3]
     return g1 * dx + g2 * dy + g3 * dz
 
 
 @njit(cache=True)
 def _extrapolate4(perm, xsb, ysb, zsb, wsb, dx, dy, dz, dw):
-    index = perm[(
-        perm[(
-            perm[(perm[xsb & 0xFF] + ysb) & 0xFF] + zsb
-        ) & 0xFF] + wsb
-    ) & 0xFF] & 0xFC
-    g1, g2, g3, g4 = GRADIENTS4[index:index + 4]
+    index = perm[(perm[(perm[(perm[xsb & 0xFF] + ysb) & 0xFF] + zsb) & 0xFF] + wsb) & 0xFF] & 0xFC
+    g1, g2, g3, g4 = GRADIENTS4[index : index + 4]
     return g1 * dx + g2 * dy + g3 * dz + g4 * dw
 
 
@@ -120,6 +115,7 @@ def _noise4a(x, y, z, w, perm):
     for i in prange(x.size):
         noise[i] = _noise4(x[i], y[i], z[i], w[i], perm)
     return noise
+
 
 ################################################################################
 # There be dragons in the depths below..
@@ -310,7 +306,7 @@ def _noise3(x, y, z, perm, perm_grad_index3):
                 zsv_ext0 = zsv_ext1 = zsb + 1
                 dz_ext0 = dz_ext1 = dz0 - 1
         else:  # (0,0,0) is not one of the closest two tetrahedral vertices.
-            c = (a_point | b_point)  # Our two extra vertices are determined by the closest two.
+            c = a_point | b_point  # Our two extra vertices are determined by the closest two.
 
             if (c & 0x01) == 0:
                 xsv_ext0 = xsb
@@ -425,7 +421,7 @@ def _noise3(x, y, z, perm, perm_grad_index3):
                 zsv_ext0 = zsv_ext1 = zsb
                 dz_ext0 = dz_ext1 = dz0 - 3 * SQUISH_CONSTANT3
         else:  # (1,1,1) is not one of the closest two tetrahedral vertices.
-            c = (a_point & b_point)  # Our two extra vertices are determined by the closest two.
+            c = a_point & b_point  # Our two extra vertices are determined by the closest two.
 
             if (c & 0x01) != 0:
                 xsv_ext0 = xsb + 1
@@ -548,7 +544,7 @@ def _noise3(x, y, z, perm, perm_grad_index3):
                 zsv_ext0 = zsb + 1
 
                 # Other extra point is based on the shared axis.
-                c = (a_point & b_point)
+                c = a_point & b_point
                 if (c & 0x01) != 0:
                     dx_ext1 = dx0 - 2 - 2 * SQUISH_CONSTANT3
                     dy_ext1 = dy0 - 2 * SQUISH_CONSTANT3
@@ -581,7 +577,7 @@ def _noise3(x, y, z, perm, perm_grad_index3):
                 zsv_ext0 = zsb
 
                 # Other extra point is based on the omitted axis.
-                c = (a_point | b_point)
+                c = a_point | b_point
                 if (c & 0x01) == 0:
                     dx_ext1 = dx0 + 1 - SQUISH_CONSTANT3
                     dy_ext1 = dy0 - 1 - SQUISH_CONSTANT3
@@ -709,27 +705,21 @@ def _noise3(x, y, z, perm, perm_grad_index3):
     attn_ext0 = 2 - dx_ext0 * dx_ext0 - dy_ext0 * dy_ext0 - dz_ext0 * dz_ext0
     if attn_ext0 > 0:
         attn_ext0 *= attn_ext0
-        value += attn_ext0 * attn_ext0 * _extrapolate3(perm,
-                                                       perm_grad_index3,
-                                                       xsv_ext0,
-                                                       ysv_ext0,
-                                                       zsv_ext0,
-                                                       dx_ext0,
-                                                       dy_ext0,
-                                                       dz_ext0)
+        value += (
+            attn_ext0
+            * attn_ext0
+            * _extrapolate3(perm, perm_grad_index3, xsv_ext0, ysv_ext0, zsv_ext0, dx_ext0, dy_ext0, dz_ext0)
+        )
 
     # Second extra vertex
     attn_ext1 = 2 - dx_ext1 * dx_ext1 - dy_ext1 * dy_ext1 - dz_ext1 * dz_ext1
     if attn_ext1 > 0:
         attn_ext1 *= attn_ext1
-        value += attn_ext1 * attn_ext1 * _extrapolate3(perm,
-                                                       perm_grad_index3,
-                                                       xsv_ext1,
-                                                       ysv_ext1,
-                                                       zsv_ext1,
-                                                       dx_ext1,
-                                                       dy_ext1,
-                                                       dz_ext1)
+        value += (
+            attn_ext1
+            * attn_ext1
+            * _extrapolate3(perm, perm_grad_index3, xsv_ext1, ysv_ext1, zsv_ext1, dx_ext1, dy_ext1, dz_ext1)
+        )
 
     return value / NORM_CONSTANT3
 
@@ -850,7 +840,7 @@ def _noise4(x, y, z, w, perm):
                 dw_ext0 = dw_ext1 = dw_ext2 = dw0 - 1
 
         else:  # (0,0,0,0) is not one of the closest two pentachoron vertices.
-            c = (a_po | b_po)  # Our three extra vertices are determined by the closest two.
+            c = a_po | b_po  # Our three extra vertices are determined by the closest two.
 
             if (c & 0x01) == 0:
                 xsv_ext0 = xsv_ext2 = xsb
@@ -1030,7 +1020,7 @@ def _noise4(x, y, z, w, perm):
                 dw_ext0 = dw_ext1 = dw_ext2 = dw0 - 4 * SQUISH_CONSTANT4
 
         else:  # (1,1,1,1) is not one of the closest two pentachoron vertices.
-            c = (a_po & b_po)  # Our three extra vertices are determined by the closest two.
+            c = a_po & b_po  # Our three extra vertices are determined by the closest two.
 
             if (c & 0x01) != 0:
                 xsv_ext0 = xsv_ext2 = xsb + 1
@@ -1220,8 +1210,8 @@ def _noise4(x, y, z, w, perm):
         # Where each of the two closest pos are determines how the extra three vertices are calculated.
         if a_is_bigger_side == b_is_bigger_side:
             if a_is_bigger_side:  # Both closest pos on the bigger side
-                c1 = (a_po | b_po)
-                c2 = (a_po & b_po)
+                c1 = a_po | b_po
+                c2 = a_po & b_po
                 if (c1 & 0x01) == 0:
                     xsv_ext0 = xsb
                     xsv_ext1 = xsb - 1
@@ -1296,7 +1286,7 @@ def _noise4(x, y, z, w, perm):
                 dw_ext2 = dw0
 
                 # Other two pos are based on the omitted axes.
-                c = (a_po | b_po)
+                c = a_po | b_po
 
                 if (c & 0x01) == 0:
                     xsv_ext0 = xsb - 1
@@ -1605,8 +1595,8 @@ def _noise4(x, y, z, w, perm):
         # Where each of the two closest pos are determines how the extra three vertices are calculated.
         if a_is_bigger_side == b_is_bigger_side:
             if a_is_bigger_side:  # Both closest pos on the bigger side
-                c1 = (a_po & b_po)
-                c2 = (a_po | b_po)
+                c1 = a_po & b_po
+                c2 = a_po | b_po
 
                 # Two contributions are _permutations of (0,0,0,1) and (0,0,0,2) based on c1
                 xsv_ext0 = xsv_ext1 = xsb
@@ -1676,7 +1666,7 @@ def _noise4(x, y, z, w, perm):
                 dw_ext2 = dw0 - 1 - 4 * SQUISH_CONSTANT4
 
                 # Other two pos are based on the shared axes.
-                c = (a_po & b_po)
+                c = a_po & b_po
                 if (c & 0x01) != 0:
                     xsv_ext0 = xsb + 2
                     xsv_ext1 = xsb + 1
@@ -1904,42 +1894,30 @@ def _noise4(x, y, z, w, perm):
     attn_ext0 = 2 - dx_ext0 * dx_ext0 - dy_ext0 * dy_ext0 - dz_ext0 * dz_ext0 - dw_ext0 * dw_ext0
     if attn_ext0 > 0:
         attn_ext0 *= attn_ext0
-        value += attn_ext0 * attn_ext0 * _extrapolate4(perm,
-                                                       xsv_ext0,
-                                                       ysv_ext0,
-                                                       zsv_ext0,
-                                                       wsv_ext0,
-                                                       dx_ext0,
-                                                       dy_ext0,
-                                                       dz_ext0,
-                                                       dw_ext0)
+        value += (
+            attn_ext0
+            * attn_ext0
+            * _extrapolate4(perm, xsv_ext0, ysv_ext0, zsv_ext0, wsv_ext0, dx_ext0, dy_ext0, dz_ext0, dw_ext0)
+        )
 
     # Second extra vertex
     attn_ext1 = 2 - dx_ext1 * dx_ext1 - dy_ext1 * dy_ext1 - dz_ext1 * dz_ext1 - dw_ext1 * dw_ext1
     if attn_ext1 > 0:
         attn_ext1 *= attn_ext1
-        value += attn_ext1 * attn_ext1 * _extrapolate4(perm,
-                                                       xsv_ext1,
-                                                       ysv_ext1,
-                                                       zsv_ext1,
-                                                       wsv_ext1,
-                                                       dx_ext1,
-                                                       dy_ext1,
-                                                       dz_ext1,
-                                                       dw_ext1)
+        value += (
+            attn_ext1
+            * attn_ext1
+            * _extrapolate4(perm, xsv_ext1, ysv_ext1, zsv_ext1, wsv_ext1, dx_ext1, dy_ext1, dz_ext1, dw_ext1)
+        )
 
     # Third extra vertex
     attn_ext2 = 2 - dx_ext2 * dx_ext2 - dy_ext2 * dy_ext2 - dz_ext2 * dz_ext2 - dw_ext2 * dw_ext2
     if attn_ext2 > 0:
         attn_ext2 *= attn_ext2
-        value += attn_ext2 * attn_ext2 * _extrapolate4(perm,
-                                                       xsv_ext2,
-                                                       ysv_ext2,
-                                                       zsv_ext2,
-                                                       wsv_ext2,
-                                                       dx_ext2,
-                                                       dy_ext2,
-                                                       dz_ext2,
-                                                       dw_ext2)
+        value += (
+            attn_ext2
+            * attn_ext2
+            * _extrapolate4(perm, xsv_ext2, ysv_ext2, zsv_ext2, wsv_ext2, dx_ext2, dy_ext2, dz_ext2, dw_ext2)
+        )
 
     return value / NORM_CONSTANT4

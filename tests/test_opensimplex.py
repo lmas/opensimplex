@@ -1,4 +1,3 @@
-
 # The test samples zip were completely stolen from:
 # https://github.com/ojrac/opensimplex-go/blob/master/opensimplex_test.go
 # Full credits to Owen Raccuglia (ojrac).
@@ -65,6 +64,7 @@ class TestOpensimplex(unittest.TestCase):
         values4 = simplex.noise4array(samples4[:, 0], samples4[:, 1], samples4[:, 2], samples4[:, 3])
         if not np.array_equal(expected4, values4):
             self.fail("Generated noise4d doesn't match samples")
+
 
 ################################################################################
 

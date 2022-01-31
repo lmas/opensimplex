@@ -1,4 +1,3 @@
-
 import numpy as np
 
 # NOTE: this file is being excluded from having black run over it, as black will split up the gradient arrays into
