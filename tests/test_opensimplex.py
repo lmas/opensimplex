@@ -25,7 +25,7 @@ class TestOpensimplex(unittest.TestCase):
             simplex.seed(row[0])
             n = simplex.noise2(0.5, 0.5)
             if n != row[1]:
-                self.fail("expected %s, got %s (using seed %s)" % (n, row[1], row[0]))
+                self.fail("got %s, expected %s (using seed %s)" % (n, row[1], row[0]))
 
     def load_samples(self):
         for line in gzip.open("tests/samples.json.gz"):
