@@ -32,13 +32,13 @@ class OpenSimplex(object):
 
     def noise3array(self, x, y, z):
         """
-             3D simplex noise using numpy arrays. Takes arrays of indices as input, and outputs the
-             generated noise in a 3D array of size(z.size, y.size, x.size)
-             :param x: numpy array of x-coords
-             :param y: numpy array of y-coords
-             :param z: numpy array of z-coords
-             :return: 3D numpy array of shape (z.size, y.size, x.size) with generated noise for
-             supplied indices
+        3D simplex noise using numpy arrays. Takes arrays of indices as input, and outputs the
+        generated noise in a 3D array of size(z.size, y.size, x.size)
+        :param x: numpy array of x-coords
+        :param y: numpy array of y-coords
+        :param z: numpy array of z-coords
+        :return: 3D numpy array of shape (z.size, y.size, x.size) with generated noise for
+        supplied indices
         """
         return _noise3a(x, y, z, self._perm, self._perm_grad_index3)
 
