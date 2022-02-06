@@ -44,26 +44,17 @@ class TestOpensimplex(unittest.TestCase):
 
         for s in self.load_samples():
             if len(s) == 3:
-                samples2 = np.append(samples2, [[s[0], s[1]]], axis=0)
-                expected2 = np.append(expected2, s[2])
+                expected = s[2]
+                actual = simplex.noise2(s[0], s[1])
             elif len(s) == 4:
-                samples3 = np.append(samples3, [[s[0], s[1], s[2]]], axis=0)
-                expected3 = np.append(expected3, s[3])
+                expected = s[3]
+                actual = simplex.noise3(s[0], s[1], s[2])
             elif len(s) == 5:
-                samples4 = np.append(samples4, [[s[0], s[1], s[2], s[3]]], axis=0)
-                expected4 = np.append(expected4, s[4])
+                expected = s[4]
+                actual = simplex.noise4(s[0], s[1], s[2], s[3])
             else:
                 self.fail("Unexpected sample size: " + str(len(s)))
-
-        values2 = simplex.noise2array(samples2[:, 0], samples2[:, 1])
-        if not np.array_equal(expected2, values2):
-            self.fail("Generated noise2d doesn't match samples")
-        values3 = simplex.noise3array(samples3[:, 0], samples3[:, 1], samples3[:, 2])
-        if not np.array_equal(expected3, values3):
-            self.fail("Generated noise3d doesn't match samples")
-        values4 = simplex.noise4array(samples4[:, 0], samples4[:, 1], samples4[:, 2], samples4[:, 3])
-        if not np.array_equal(expected4, values4):
-            self.fail("Generated noise4d doesn't match samples")
+            self.assertEqual(expected, actual)
 
 
 ################################################################################
