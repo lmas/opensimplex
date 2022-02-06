@@ -56,6 +56,30 @@ class TestOpensimplex(unittest.TestCase):
                 self.fail("Unexpected sample size: " + str(len(s)))
             self.assertEqual(expected, actual)
 
+    def test_arrays(self):
+        # Small sample size for now, using primes for array sizes (or each test run will take too long).
+        rng = np.random.default_rng(seed=0)
+        ix, iy, iz, iw = rng.random(11), rng.random(7), rng.random(5), rng.random(3)
+        simplex.seed(0)
+        n2 = simplex.noise2array(ix, iy)
+        self.assertEqual((iy.size, ix.size), n2.shape)
+        n3 = simplex.noise3array(ix, iy, iz)
+        self.assertEqual((iz.size, iy.size, ix.size), n3.shape)
+        n4 = simplex.noise4array(ix, iy, iz, iw)
+        self.assertEqual((iw.size, iz.size, iy.size, ix.size), n4.shape)
+
+        # This sample file was generated with:
+        #  np.savez_compressed("tests/numpy_shapes", noise2=n2, noise3=n3, noise4=n4)
+
+        with np.load("tests/numpy_shapes.npz", allow_pickle=False) as data:
+            l2 = data["noise2"]
+            l3 = data["noise3"]
+            l4 = data["noise4"]
+
+        self.assertEqual(True, np.array_equal(l2, n2))
+        self.assertEqual(True, np.array_equal(l3, n3))
+        self.assertEqual(True, np.array_equal(l4, n4))
+
 
 ################################################################################
 

@@ -8,10 +8,12 @@ default_num = 20
 class Benchmark:
     def __init__(self):
         # Randomized coordinate arrays that will supply the noise funcs.
-        self.x = np.random.random_sample(default_num)
-        self.y = np.random.random_sample(default_num)
-        self.z = np.random.random_sample(default_num)
-        self.w = np.random.random_sample(default_num)
+        rng = np.random.default_rng(seed=0)
+        self.x = rng.random(default_num)
+        self.y = rng.random(default_num)
+        self.z = rng.random(default_num)
+        self.w = rng.random(default_num)
+        simplex.seed(0)
 
     def run(self):
         # This is the simplest way of generating a small amount of noise values.

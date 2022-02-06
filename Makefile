@@ -12,6 +12,10 @@ deps:
 test:
 	export NUMBA_DISABLE_JIT=1 && nosetests --with-coverage --cover-package=opensimplex tests/test_opensimplex.py
 
+.PHONY: coverage
+coverage:
+	coverage html
+
 .PHONY: bench
 bench:
 	export PYTHONPATH=. && python tests/benchmark_opensimplex.py
