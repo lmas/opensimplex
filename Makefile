@@ -1,4 +1,8 @@
 
+.PHONY: dev
+dev:
+	test -d devenv || python -m venv devenv
+
 .PHONY: deps
 deps:
 	python -m pip install --upgrade pip
@@ -12,13 +16,13 @@ test:
 bench:
 	export PYTHONPATH=. && python tests/benchmark_opensimplex.py
 
-.PHONY: format
-format:
-	autopep8 --aggressive --aggressive --max-line-length 120 --in-place --recursive --verbose opensimplex
-
 .PHONY: lint
 lint:
 	pycodestyle --max-line-length 120 opensimplex
+
+.PHONY: format
+format:
+	black --line-length 120 --extend-exclude "opensimplex\/constants\.py" opensimplex/ tests/
 
 .PHONY: build
 build: test
@@ -36,7 +40,7 @@ upload-test: build
 clean:
 	rm -rf build/
 	rm -rf dist/
-	rm -rf opensimplex.egg-info/
+	rm -rf *.egg-info/
 	rm -f noise2d.png noise3d.png noise4d.png README.html
 	rm -f .coverage
 	find ./ -iname '*.pyc' | xargs rm -f

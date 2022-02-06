@@ -1,4 +1,3 @@
-
 # The test samples zip were completely stolen from:
 # https://github.com/ojrac/opensimplex-go/blob/master/opensimplex_test.go
 # Full credits to Owen Raccuglia (ojrac).
@@ -25,7 +24,7 @@ class TestOpensimplex(unittest.TestCase):
             simplex.seed(row[0])
             n = simplex.noise2(0.5, 0.5)
             if n != row[1]:
-                self.fail("expected %s, got %s (using seed %s)" % (n, row[1], row[0]))
+                self.fail("got %s, expected %s (using seed %s)" % (n, row[1], row[0]))
 
     def load_samples(self):
         for line in gzip.open("tests/samples.json.gz"):
@@ -65,6 +64,7 @@ class TestOpensimplex(unittest.TestCase):
         values4 = simplex.noise4array(samples4[:, 0], samples4[:, 1], samples4[:, 2], samples4[:, 3])
         if not np.array_equal(expected4, values4):
             self.fail("Generated noise4d doesn't match samples")
+
 
 ################################################################################
 

@@ -1,5 +1,7 @@
-
 import numpy as np
+
+# NOTE: this file is being excluded from having black run over it, as black will split up the gradient arrays into
+# hundres of lines of single items.
 
 # Why 3 (and not just 0 or something)? Well I ran into a bug with
 # "overflowing int" errors while refactoring in numpy and using a
@@ -52,7 +54,6 @@ GRADIENTS4 = np.array([
     3, -1, -1, -1, 1, -3, -1, -1, 1, -1, -3, -1, 1, -1, -1, -3,
     -3, -1, -1, -1, -1, -3, -1, -1, -1, -1, -3, -1, -1, -1, -1, -3,
 ], dtype=np.int64)
-
 
 STRETCH_CONSTANT2 = -0.211324865405187    # (1/Math.sqrt(2+1)-1)/2
 SQUISH_CONSTANT2 = 0.366025403784439      # (Math.sqrt(2+1)-1)/2
