@@ -57,31 +57,32 @@ For more advanced examples, see the files in the `tests` and `example` directory
 > Generate 2D OpenSimplex noise from X,Y coordinates.
 
 *opensimplex.noise2array(x, y)*
-> Same as noise2, but works with numpy arrays for better performance.
+> Generates 2D OpenSimplex noise using Numpy arrays for increased performance.
 
 *opensimplex.noise3(x, y, z)*
 > Generate 3D OpenSimplex noise from X,Y,Z coordinates.
 
 *opensimplex.noise3array(x, y, z)*
-> Same as noise3, but works with numpy arrays for better performance.
+> Generates 3D OpenSimplex noise using Numpy arrays for increased performance.
 
 *opensimplex.noise4(x, y, z, w)*
 > Generate 4D OpenSimplex noise from X,Y,Z,W coordinates.
 
 *opensimplex.noise4array(x, y, z, w)*
-> Same as noise4, but works with numpy arrays for better performance.
+> Generates 4D OpenSimplex noise using Numpy arrays for increased performance.
 
 **Running tests and benchmarks:**
 
-        virtualenv venv
-        source venv/bin/activate
+Setup a development environment:
+        make dev
+        source devenv/bin/activate
         make deps
 
-and then simply run the tests:
+And then run the tests:
 
         make test
 
-or the benchmark:
+Or the benchmark:
 
         make benchmark
 
@@ -142,6 +143,7 @@ Credits
 - PetyaVasya - Found bug with using c_long on Windows systems, see [Issue #7](https://github.com/lmas/opensimplex/issues/7)
 - ktritz - First numba/numpy implementation, see [Issue #4](https://github.com/lmas/opensimplex/issues/4)
 - Thomas Rometsch and MightyBOBcnc - Numba optimization tricks, see [Issue #4](https://github.com/lmas/opensimplex/issues/4)
+- Daniel Shrimpton and Julian Wyatt - Updated shape of output numpy arrays, see [Issue #23](https://github.com/lmas/opensimplex/issues/23)
 
 License
 ================================================================================
