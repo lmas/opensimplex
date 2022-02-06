@@ -1,7 +1,7 @@
 __author__ = "Alex"
 __version__ = 0.4
 
-from .opensimplex import OpenSimplex
+from .opensimplex import OpenSimplex, np
 
 _default = OpenSimplex()
 
@@ -27,9 +27,12 @@ def noise2(x, y):
     return _default.noise2(x, y)
 
 
-def noise2array(x, y):
+def noise2array(x: np.ndarray, y: np.ndarray):
     """
-    Same as noise2, but works with numpy arrays for better performance.
+    Generates 2D OpenSimplex noise using Numpy arrays for increased performance.
+    :param x: numpy array of x-coords
+    :param y: numpy array of y-coords
+    :return: 2D numpy array of shape (y.size, x.size) with the generated noise for the supplied coordinates.
     """
     return _default.noise2array(x, y)
 
@@ -41,9 +44,13 @@ def noise3(x, y, z):
     return _default.noise3(x, y, z)
 
 
-def noise3array(x, y, z):
+def noise3array(self, x: np.ndarray, y: np.ndarray, z: np.ndarray):
     """
-    Same as noise3, but works with numpy arrays for better performance.
+    Generates 3D OpenSimplex noise using Numpy arrays for increased performance.
+    :param x: numpy array of x-coords
+    :param y: numpy array of y-coords
+    :param z: numpy array of z-coords
+    :return: 3D numpy array of shape (z.size, y.size, x.size) with the generated noise for the supplied coordinates.
     """
     return _default.noise3array(x, y, z)
 
@@ -55,8 +62,14 @@ def noise4(x, y, z, w):
     return _default.noise4(x, y, z, w)
 
 
-def noise4array(x, y, z, w):
+def noise4array(self, x: np.ndarray, y: np.ndarray, z: np.ndarray, w: np.ndarray):
     """
-    Same as noise4, but works with numpy arrays for better performance.
+    Generates 4D OpenSimplex noise using Numpy arrays for increased performance.
+    :param x: numpy array of x-coords
+    :param y: numpy array of y-coords
+    :param z: numpy array of z-coords
+    :param w: numpy array of w-coords
+    :return: 4D numpy array of shape (w.size, z.size, y.size, x.size) with the generated noise for the supplied
+    coordinates.
     """
     return _default.noise4array(x, y, z, w)

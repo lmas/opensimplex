@@ -17,6 +17,7 @@ except ImportError:
         return wrapper
 
 
+# This class is provided for backwards compatibility and might disappear in the future. Use at your own risk.
 class OpenSimplex(object):
     def __init__(self, seed=DEFAULT_SEED):
         self._perm, self._perm_grad_index3 = _init(seed)
@@ -24,46 +25,19 @@ class OpenSimplex(object):
     def noise2(self, x, y):
         return _noise2(x, y, self._perm)
 
-    def noise2array(self, x: np.ndarray, y: np.ndarray):
-        """
-        2D simplex noise using numpy arrays. Takes two arrays of indices and outputs the noise for
-        those indices in a 2D array
-        :param x: numpy array of x-coords
-        :param y: numpy array of y-coords
-        :return: numpy array of shape (y.size, x.size) with the generated noise for the supplied
-        coordinates.
-        """
+    def noise2array(self, x, y):
         return _noise2a(x, y, self._perm)
 
     def noise3(self, x, y, z):
         return _noise3(x, y, z, self._perm, self._perm_grad_index3)
 
     def noise3array(self, x, y, z):
-        """
-        3D simplex noise using numpy arrays. Takes arrays of indices as input, and outputs the
-        generated noise in a 3D array of size(z.size, y.size, x.size)
-        :param x: numpy array of x-coords
-        :param y: numpy array of y-coords
-        :param z: numpy array of z-coords
-        :return: 3D numpy array of shape (z.size, y.size, x.size) with generated noise for
-        supplied indices
-        """
         return _noise3a(x, y, z, self._perm, self._perm_grad_index3)
 
     def noise4(self, x, y, z, w):
         return _noise4(x, y, z, w, self._perm)
 
-    def noise4array(self, x: np.ndarray, y: np.ndarray, z: np.ndarray, w: np.ndarray):
-        """
-        4D simplex noise using numpy arrays. Takes arrays of indices as input, and ouputs the 
-        generated noise in a 4D array of size(w.size, z.size, y.size, x.size)
-        :param x: numpy array of x-coords
-        :param y: numpy array of y-coords
-        :param z: numpy array of z indices
-        :param w: numpy array of w indices
-        :return: 4D numpy array of shape (w.size, z.size, y.size, x.size) with generated noise for 
-        supplied indices
-        """
+    def noise4array(self, x, y, z, w):
         return _noise4a(x, y, z, w, self._perm)
 
 
