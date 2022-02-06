@@ -1,7 +1,8 @@
 import numpy as np
 import opensimplex as simplex
 
-default_num = 100000
+# Keep this number low, 'cuz noise4array() will, for example, generate x^4 noise values.
+default_num = 20
 
 
 class Benchmark:

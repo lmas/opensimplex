@@ -44,7 +44,7 @@ def noise3(x, y, z):
     return _default.noise3(x, y, z)
 
 
-def noise3array(self, x: np.ndarray, y: np.ndarray, z: np.ndarray):
+def noise3array(x: np.ndarray, y: np.ndarray, z: np.ndarray):
     """
     Generates 3D OpenSimplex noise using Numpy arrays for increased performance.
     :param x: numpy array of x-coords
@@ -62,7 +62,7 @@ def noise4(x, y, z, w):
     return _default.noise4(x, y, z, w)
 
 
-def noise4array(self, x: np.ndarray, y: np.ndarray, z: np.ndarray, w: np.ndarray):
+def noise4array(x: np.ndarray, y: np.ndarray, z: np.ndarray, w: np.ndarray):
     """
     Generates 4D OpenSimplex noise using Numpy arrays for increased performance.
     :param x: numpy array of x-coords

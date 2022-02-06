@@ -120,7 +120,7 @@ def _noise4a(x: np.ndarray, y: np.ndarray, z: np.ndarray, w: np.ndarray, perm: n
         for z_i in prange(z.size):
             for y_i in prange(y.size):
                 for x_i in prange(x.size):
-                    noise[w_i, z_i, y_i, x_i] = _noise4(x[x_i], y[_i], z[_i], w[_i], perm)
+                    noise[w_i, z_i, y_i, x_i] = _noise4(x[x_i], y[y_i], z[z_i], w[w_i], perm)
     return noise
 
 
