@@ -16,12 +16,13 @@ to the public domain) and neatly wrapped up in a package.
 Status
 ================================================================================
 
-The `main` branch contains the latest stable **v0.4**.
+The `master` branch contains the latest, potentially unstable, code.
+For the latest stable version, please refer to the [version tags](https://github.com/lmas/opensimplex/tags) for now.
 
 This version has been tested with **Python 3.7, 3.8, 3.9 on Linux,
 MacOS and Windows**.
 
-Updates:
+Updates for **v0.4**:
 
 - Adds a hard dependency on 'Numpy', for array optimizations aimed at heavier
   workloads.
@@ -74,6 +75,7 @@ For more advanced examples, see the files in the `tests` and `example` directory
 **Running tests and benchmarks:**
 
 Setup a development environment:
+
         make dev
         source devenv/bin/activate
         make deps
