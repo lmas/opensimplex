@@ -46,6 +46,7 @@ clean:
 	rm -rf dist/
 	rm -rf *.egg-info/
 	rm -f noise2d.png noise3d.png noise4d.png README.html
-	rm -f .coverage
 	find ./ -iname '*.pyc' | xargs rm -f
 	find ./ -iname '__pycache__' | xargs rm -rf
+	rm -f .coverage
+	rm -rf htmlcov/

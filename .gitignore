@@ -1,8 +1,9 @@
-
 /noise2d.png
 /noise3d.png
 /noise4d.png
 dist/
 build/
 opensimplex.egg-info/
-venv/
+devenv/
+.coverage
+htmlcov/
