@@ -1,6 +1,8 @@
 # It all started with this gist, once upon a time:
 # https://gist.github.com/KdotJPG/b1270127455a94ac5d19
 
+from typing import Tuple
+
 from .constants import *
 from math import floor
 from ctypes import c_int64
@@ -52,7 +54,7 @@ def overflow(x: int) -> int:
     return c_int64(x).value
 
 
-def _init(seed: int = DEFAULT_SEED) -> tuple[np.ndarray, np.ndarray]:
+def _init(seed: int = DEFAULT_SEED) -> Tuple[np.ndarray, np.ndarray]:
     # Have to zero fill so we can properly loop over it later
     perm = np.zeros(256, dtype=np.int64)
     perm_grad_index3 = np.zeros(256, dtype=np.int64)
