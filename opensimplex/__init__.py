@@ -12,14 +12,21 @@ based on work by Kurt Spencer.
 """
 
 
-def seed(seed=-1):
+def seed():
     """
     Seeds the underlying permutation array (which produces different outputs),
-    using a 64-bit seed number. Blank seed or seed of -1 uses system time as seed.
+    using a 64-bit seed number.
     """
     global _default
-    if seed==-1:
-        seed=time.time_ns()
+    _default = OpenSimplex(seed)
+
+def random_seed():
+    """
+    Seeds the underlying permutation array (which produces different outputs),
+    using a 64-bit seed number. Uses system time in ns as seed.
+    """
+    global _default
+    seed = time.time_ns()
     _default = OpenSimplex(seed)
 
 
