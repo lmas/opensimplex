@@ -2,6 +2,7 @@ __author__ = "Alex"
 __version__ = "0.4.2"
 
 from .opensimplex import OpenSimplex, np
+import time
 
 _default = OpenSimplex()
 
@@ -11,12 +12,14 @@ based on work by Kurt Spencer.
 """
 
 
-def seed(seed):
+def seed(seed=-1):
     """
     Seeds the underlying permutation array (which produces different outputs),
-    using a 64-bit seed number.
+    using a 64-bit seed number. Blank seed or seed of -1 uses system time as seed.
     """
     global _default
+    if seed==-1:
+        seed=time.time_ns()
     _default = OpenSimplex(seed)
 
 
