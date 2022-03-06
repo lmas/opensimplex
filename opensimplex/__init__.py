@@ -12,7 +12,7 @@ based on work by Kurt Spencer.
 """
 
 
-def seed():
+def seed(seed):
     """
     Seeds the underlying permutation array (which produces different outputs),
     using a 64-bit seed number.
@@ -22,12 +22,10 @@ def seed():
 
 def random_seed():
     """
-    Seeds the underlying permutation array (which produces different outputs),
-    using a 64-bit seed number. Uses system time in ns as seed.
+    Works just like seed(), except it uses the system (in ns) as a seed value.
+    Not guaranteed to be random so use at your own risk.
     """
-    global _default
-    seed = time.time_ns()
-    _default = OpenSimplex(seed)
+    seed(time.time_ns())
 
 
 def noise2(x, y):

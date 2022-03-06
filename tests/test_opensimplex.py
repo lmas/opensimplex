@@ -26,6 +26,14 @@ class TestOpensimplex(unittest.TestCase):
             if n != row[1]:
                 self.fail("got %s, expected %s (using seed %s)" % (n, row[1], row[0]))
 
+    def test_random_seed(self):
+        simplex.seed(13)
+        n1 = simplex.noise2(0.5, 0.5)
+        simplex.random_seed()
+        n2 = simplex.noise2(0.5, 0.5)
+        if n2 == n1:
+            self.fail("static and randomised seeds produced same noise (%s and %s)" % (n1, n2))
+
     def load_samples(self):
         for line in gzip.open("tests/samples.json.gz"):
             # Python3: need to decode the line as it's a bytes object and json
