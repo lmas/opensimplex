@@ -1,8 +1,6 @@
 # It all started with this gist, once upon a time:
 # https://gist.github.com/KdotJPG/b1270127455a94ac5d19
 
-from typing import Tuple
-
 from .constants import *
 from math import floor
 from ctypes import c_int64
@@ -54,7 +52,14 @@ def overflow(x: int) -> int:
     return c_int64(x).value
 
 
-def _init(seed: int = DEFAULT_SEED) -> Tuple[np.ndarray, np.ndarray]:
+# Python 3.9 ISSUE:
+# See https://github.com/lmas/opensimplex/pull/29 for more info.
+# In short, don't bother adding return type hint for this func
+# while we still maintain support for python < v3.9!
+#
+# Once the minimal version moves up to v3.9, you may add this hint:
+#       ...init(...) -> tuple[np.ndarray, np.ndarray]:
+def _init(seed: int = DEFAULT_SEED):
     # Have to zero fill so we can properly loop over it later
     perm = np.zeros(256, dtype=np.int64)
     perm_grad_index3 = np.zeros(256, dtype=np.int64)
@@ -83,14 +88,18 @@ def _extrapolate2(perm: np.ndarray, xsb: int, ysb: int, dx: float, dy: float) ->
 
 
 @njit(cache=True)
-def _extrapolate3(perm: np.ndarray, perm_grad_index3: np.ndarray, xsb: int, ysb: int, zsb: int, dx: float, dy: float, dz: float) -> np.ndarray:
+def _extrapolate3(
+    perm: np.ndarray, perm_grad_index3: np.ndarray, xsb: int, ysb: int, zsb: int, dx: float, dy: float, dz: float
+) -> np.ndarray:
     index = perm_grad_index3[(perm[(perm[xsb & 0xFF] + ysb) & 0xFF] + zsb) & 0xFF]
     g1, g2, g3 = GRADIENTS3[index : index + 3]
     return g1 * dx + g2 * dy + g3 * dz
 
 
 @njit(cache=True)
-def _extrapolate4(perm: np.ndarray, xsb: int, ysb: int, zsb: int, wsb: int, dx: float, dy: float, dz: float, dw: float) -> np.ndarray:
+def _extrapolate4(
+    perm: np.ndarray, xsb: int, ysb: int, zsb: int, wsb: int, dx: float, dy: float, dz: float, dw: float
+) -> np.ndarray:
     index = perm[(perm[(perm[(perm[xsb & 0xFF] + ysb) & 0xFF] + zsb) & 0xFF] + wsb) & 0xFF] & 0xFC
     g1, g2, g3, g4 = GRADIENTS4[index : index + 4]
     return g1 * dx + g2 * dy + g3 * dz + g4 * dw
