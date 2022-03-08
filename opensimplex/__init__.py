@@ -12,7 +12,7 @@ based on work by Kurt Spencer.
 """
 
 
-def seed(seed):
+def seed(seed: int) -> None:
     """
     Seeds the underlying permutation array (which produces different outputs),
     using a 64-bit seed number.
@@ -21,7 +21,7 @@ def seed(seed):
     _default = OpenSimplex(seed)
 
 
-def random_seed():
+def random_seed() -> None:
     """
     Works just like seed(), except it uses the system time (in ns) as a seed value.
     Not guaranteed to be random so use at your own risk.
@@ -29,14 +29,14 @@ def random_seed():
     seed(time.time_ns())
 
 
-def noise2(x, y):
+def noise2(x: float, y: float) -> float:
     """
     Generate 2D OpenSimplex noise from X,Y coordinates.
     """
     return _default.noise2(x, y)
 
 
-def noise2array(x: np.ndarray, y: np.ndarray):
+def noise2array(x: np.ndarray, y: np.ndarray) -> np.ndarray:
     """
     Generates 2D OpenSimplex noise using Numpy arrays for increased performance.
     :param x: numpy array of x-coords
@@ -46,14 +46,14 @@ def noise2array(x: np.ndarray, y: np.ndarray):
     return _default.noise2array(x, y)
 
 
-def noise3(x, y, z):
+def noise3(x: float, y: float, z: float) -> float:
     """
     Generate 3D OpenSimplex noise from X,Y,Z coordinates.
     """
     return _default.noise3(x, y, z)
 
 
-def noise3array(x: np.ndarray, y: np.ndarray, z: np.ndarray):
+def noise3array(x: np.ndarray, y: np.ndarray, z: np.ndarray) -> np.ndarray:
     """
     Generates 3D OpenSimplex noise using Numpy arrays for increased performance.
     :param x: numpy array of x-coords
@@ -64,14 +64,14 @@ def noise3array(x: np.ndarray, y: np.ndarray, z: np.ndarray):
     return _default.noise3array(x, y, z)
 
 
-def noise4(x, y, z, w):
+def noise4(x: float, y: float, z: float, w: float) -> float:
     """
     Generate 4D OpenSimplex noise from X,Y,Z,W coordinates.
     """
     return _default.noise4(x, y, z, w)
 
 
-def noise4array(x: np.ndarray, y: np.ndarray, z: np.ndarray, w: np.ndarray):
+def noise4array(x: np.ndarray, y: np.ndarray, z: np.ndarray, w: np.ndarray) -> np.ndarray:
     """
     Generates 4D OpenSimplex noise using Numpy arrays for increased performance.
     :param x: numpy array of x-coords

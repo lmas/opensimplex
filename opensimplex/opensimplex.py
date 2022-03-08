@@ -19,25 +19,25 @@ except ImportError:
 
 # This class is provided for backwards compatibility and might disappear in the future. Use at your own risk.
 class OpenSimplex(object):
-    def __init__(self, seed=DEFAULT_SEED):
+    def __init__(self, seed: int = DEFAULT_SEED) -> None:
         self._perm, self._perm_grad_index3 = _init(seed)
 
-    def noise2(self, x, y):
+    def noise2(self, x: float, y: float) -> float:
         return _noise2(x, y, self._perm)
 
-    def noise2array(self, x, y):
+    def noise2array(self, x: np.ndarray, y: np.ndarray) -> np.ndarray:
         return _noise2a(x, y, self._perm)
 
-    def noise3(self, x, y, z):
+    def noise3(self, x: float, y: float, z: float) -> float:
         return _noise3(x, y, z, self._perm, self._perm_grad_index3)
 
-    def noise3array(self, x, y, z):
+    def noise3array(self, x: np.ndarray, y: np.ndarray, z: np.ndarray) -> np.ndarray:
         return _noise3a(x, y, z, self._perm, self._perm_grad_index3)
 
-    def noise4(self, x, y, z, w):
+    def noise4(self, x: float, y: float, z: float, w: float) -> float:
         return _noise4(x, y, z, w, self._perm)
 
-    def noise4array(self, x, y, z, w):
+    def noise4array(self, x: np.ndarray, y: np.ndarray, z: np.ndarray, w: np.ndarray) -> np.ndarray:
         return _noise4a(x, y, z, w, self._perm)
 
 
@@ -52,7 +52,7 @@ def overflow(x):
     return c_int64(x).value
 
 
-def _init(seed=DEFAULT_SEED):
+def _init(seed):
     # Have to zero fill so we can properly loop over it later
     perm = np.zeros(256, dtype=np.int64)
     perm_grad_index3 = np.zeros(256, dtype=np.int64)
@@ -95,7 +95,7 @@ def _extrapolate4(perm, xsb, ysb, zsb, wsb, dx, dy, dz, dw):
 
 
 @njit(cache=True, parallel=True)
-def _noise2a(x: np.ndarray, y: np.ndarray, perm: np.ndarray):
+def _noise2a(x, y, perm):
     noise = np.empty((y.size, x.size), dtype=np.double)
     for y_i in prange(y.size):
         for x_i in prange(x.size):
@@ -104,7 +104,7 @@ def _noise2a(x: np.ndarray, y: np.ndarray, perm: np.ndarray):
 
 
 @njit(cache=True, parallel=True)
-def _noise3a(x: np.ndarray, y: np.ndarray, z: np.ndarray, perm: np.ndarray, perm_grad_index3: np.ndarray):
+def _noise3a(x, y, z, perm, perm_grad_index3):
     noise = np.empty((z.size, y.size, x.size), dtype=np.double)
     for z_i in prange(z.size):
         for y_i in prange(y.size):
@@ -114,7 +114,7 @@ def _noise3a(x: np.ndarray, y: np.ndarray, z: np.ndarray, perm: np.ndarray, perm
 
 
 @njit(cache=True, parallel=True)
-def _noise4a(x: np.ndarray, y: np.ndarray, z: np.ndarray, w: np.ndarray, perm: np.ndarray):
+def _noise4a(x, y, z, w, perm):
     noise = np.empty((w.size, z.size, y.size, x.size), dtype=np.double)
     for w_i in prange(w.size):
         for z_i in prange(z.size):
