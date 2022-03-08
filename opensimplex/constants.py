@@ -3,11 +3,6 @@ import numpy as np
 # NOTE: this file is being excluded from having black run over it, as black will split up the gradient arrays into
 # hundres of lines of single items.
 
-# Why 3 (and not just 0 or something)? Well I ran into a bug with
-# "overflowing int" errors while refactoring in numpy and using a
-# nonzero seed value... This is a reminder
-DEFAULT_SEED = 3
-
 # Gradients for 2D. They approximate the directions to the
 # vertices of an octagon from the center.
 GRADIENTS2 = np.array([

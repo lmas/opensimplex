@@ -17,38 +17,11 @@ except ImportError:
         return wrapper
 
 
-# This class is provided for backwards compatibility and might disappear in the future. Use at your own risk.
-class OpenSimplex(object):
-    def __init__(self, seed: int = DEFAULT_SEED) -> None:
-        self._perm, self._perm_grad_index3 = _init(seed)
-
-    def noise2(self, x: float, y: float) -> float:
-        return _noise2(x, y, self._perm)
-
-    def noise2array(self, x: np.ndarray, y: np.ndarray) -> np.ndarray:
-        return _noise2a(x, y, self._perm)
-
-    def noise3(self, x: float, y: float, z: float) -> float:
-        return _noise3(x, y, z, self._perm, self._perm_grad_index3)
-
-    def noise3array(self, x: np.ndarray, y: np.ndarray, z: np.ndarray) -> np.ndarray:
-        return _noise3a(x, y, z, self._perm, self._perm_grad_index3)
-
-    def noise4(self, x: float, y: float, z: float, w: float) -> float:
-        return _noise4(x, y, z, w, self._perm)
-
-    def noise4array(self, x: np.ndarray, y: np.ndarray, z: np.ndarray, w: np.ndarray) -> np.ndarray:
-        return _noise4a(x, y, z, w, self._perm)
-
-
-################################################################################
-
-
-def overflow(x):
+def _overflow(x):
     # Since normal python ints and longs can be quite humongous we have to use
-    # self hack to make them be able to overflow.
+    # self hack to make them be able to _overflow.
     # Using a np.int64 won't work either, as it will still complain with:
-    # "OverflowError: int too big to convert"
+    # "_overflowError: int too big to convert"
     return c_int64(x).value
 
 
@@ -59,11 +32,11 @@ def _init(seed):
     source = np.arange(256)
     # Generates a proper permutation (i.e. doesn't merely perform N
     # successive pair swaps on a base array)
-    seed = overflow(seed * 6364136223846793005 + 1442695040888963407)
-    seed = overflow(seed * 6364136223846793005 + 1442695040888963407)
-    seed = overflow(seed * 6364136223846793005 + 1442695040888963407)
+    seed = _overflow(seed * 6364136223846793005 + 1442695040888963407)
+    seed = _overflow(seed * 6364136223846793005 + 1442695040888963407)
+    seed = _overflow(seed * 6364136223846793005 + 1442695040888963407)
     for i in range(255, -1, -1):
-        seed = overflow(seed * 6364136223846793005 + 1442695040888963407)
+        seed = _overflow(seed * 6364136223846793005 + 1442695040888963407)
         r = int((seed + 31) % (i + 1))
         if r < 0:
             r += i + 1
