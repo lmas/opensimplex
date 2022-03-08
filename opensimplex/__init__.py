@@ -2,6 +2,7 @@ __author__ = "Alex"
 __version__ = "0.4.2"
 
 from .opensimplex import OpenSimplex, np
+import time
 
 _default = OpenSimplex()
 
@@ -20,7 +21,15 @@ def seed(seed: int) -> None:
     _default = OpenSimplex(seed)
 
 
-def noise2(x: float, y: float) -> float:
+def random_seed():
+    """
+    Works just like seed(), except it uses the system time (in ns) as a seed value.
+    Not guaranteed to be random so use at your own risk.
+    """
+    seed(time.time_ns())
+
+
+def noise2(x, y):
     """
     Generate 2D OpenSimplex noise from X,Y coordinates.
     """
