@@ -10,24 +10,22 @@ OpenSimplex Noise
         Simplex noise, while continuing to also avoid the visually-significant
         directional artifacts characteristic of Perlin noise.
 
-This is merely a python port of Kurt Spencer's original code (released
-to the public domain) and neatly wrapped up in a package.
+This is merely a python port of Kurt Spencer's original code (released to the public domain) and neatly wrapped up in a
+package.
 
 Status
 ================================================================================
 
 The `master` branch contains the latest, potentially unstable, code.
+
 For the latest stable version, please refer to the [version tags](https://github.com/lmas/opensimplex/tags) for now.
 
-This version has been tested with **Python 3.7, 3.8, 3.9 on Linux,
-MacOS and Windows**.
+This version has been tested with **Python 3.7, 3.8, 3.9 on Linux, MacOS and Windows**.
 
 Updates for **v0.4**:
 
-- Adds a hard dependency on 'Numpy', for array optimizations aimed at heavier
-  workloads.
-- Adds optional dependency on 'Numba', for further speed optimizations using
-  caching.
+- Adds a hard dependency on 'Numpy', for array optimizations aimed at heavier workloads.
+- Adds optional dependency on 'Numba', for further speed optimizations using caching.
 - General refactor and cleanup of the library and tests.
 - **Breaking changes: API function names has been modified.**
 
@@ -210,14 +208,15 @@ Credits
 - /u/redblobgames - Fixed conversion for Java's long type, see [Reddit](https://old.reddit.com/r/proceduralgeneration/comments/327zkm/repeated_patterns_in_opensimplex_python_port/cq8tth7/)
 
 And all the other Github [Contributors](https://github.com/lmas/opensimplex/graphs/contributors) and [Bug Hunters](https://github.com/lmas/opensimplex/issues?q=)!
+
 Thanks!
 
 License
 ================================================================================
 
-While the original work was released to the public domain by Kurt, this
-package is using the MIT license. Please see the file LICENSE for
-details.
+While the original work was released to the public domain by Kurt, this package is using the MIT license.
+
+Please see the file LICENSE for details.
 
 Expected Output
 ================================================================================
