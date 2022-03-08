@@ -206,13 +206,11 @@ Credits
 - Kurt Spencer - Original work
 - Alex - Python port and package author
 
-- CreamyCookie - Cleanup and optimizations
-- Owen Raccuglia - Test cases
+- Owen Raccuglia - Test cases, [Go Module](https://github.com/ojrac/opensimplex-go)
 - /u/redblobgames - Fixed conversion for Java's long type, see [Reddit](https://old.reddit.com/r/proceduralgeneration/comments/327zkm/repeated_patterns_in_opensimplex_python_port/cq8tth7/)
-- PetyaVasya - Found bug with using c_long on Windows systems, see [Issue #7](https://github.com/lmas/opensimplex/issues/7)
-- ktritz - First numba/numpy implementation, see [Issue #4](https://github.com/lmas/opensimplex/issues/4)
-- Thomas Rometsch and MightyBOBcnc - Numba optimization tricks, see [Issue #4](https://github.com/lmas/opensimplex/issues/4)
-- Daniel Shrimpton and Julian Wyatt - Updated shape of output numpy arrays, see [Issue #23](https://github.com/lmas/opensimplex/issues/23)
+
+And all the other Github [Contributors](https://github.com/lmas/opensimplex/graphs/contributors) and [Bug Hunters](https://github.com/lmas/opensimplex/issues?q=)!
+Thanks!
 
 License
 ================================================================================
