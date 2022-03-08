@@ -54,9 +54,7 @@ For more advanced examples, see the files in the `tests` and `example` directory
 > Seeds the underlying permutation array (which produces different outputs), using a 64-bit integer number.
 > If no value is provided, a static default will be used instead.
 
-```
-seed(13)
-```
+        seed(13)
 
 *random_seed()*
 > Works just like seed(), except it uses the system time (in ns) as a seed value.
