@@ -1,8 +1,6 @@
 # It all started with this gist, once upon a time:
 # https://gist.github.com/KdotJPG/b1270127455a94ac5d19
 
-from typing import Tuple
-
 from .constants import *
 from math import floor
 from ctypes import c_int64
@@ -46,7 +44,7 @@ class OpenSimplex(object):
 ################################################################################
 
 
-def overflow(x: int) -> int:
+def overflow(x):
     # Since normal python ints and longs can be quite humongous we have to use
     # self hack to make them be able to overflow.
     # Using a np.int64 won't work either, as it will still complain with:
@@ -54,7 +52,7 @@ def overflow(x: int) -> int:
     return c_int64(x).value
 
 
-def _init(seed: int = DEFAULT_SEED) -> Tuple[np.ndarray, np.ndarray]:
+def _init(seed):
     # Have to zero fill so we can properly loop over it later
     perm = np.zeros(256, dtype=np.int64)
     perm_grad_index3 = np.zeros(256, dtype=np.int64)
@@ -76,28 +74,28 @@ def _init(seed: int = DEFAULT_SEED) -> Tuple[np.ndarray, np.ndarray]:
 
 
 @njit(cache=True)
-def _extrapolate2(perm: np.ndarray, xsb: int, ysb: int, dx: float, dy: float) -> np.ndarray:
+def _extrapolate2(perm, xsb, ysb, dx, dy):
     index = perm[(perm[xsb & 0xFF] + ysb) & 0xFF] & 0x0E
     g1, g2 = GRADIENTS2[index : index + 2]
     return g1 * dx + g2 * dy
 
 
 @njit(cache=True)
-def _extrapolate3(perm: np.ndarray, perm_grad_index3: np.ndarray, xsb: int, ysb: int, zsb: int, dx: float, dy: float, dz: float) -> np.ndarray:
+def _extrapolate3(perm, perm_grad_index3, xsb, ysb, zsb, dx, dy, dz):
     index = perm_grad_index3[(perm[(perm[xsb & 0xFF] + ysb) & 0xFF] + zsb) & 0xFF]
     g1, g2, g3 = GRADIENTS3[index : index + 3]
     return g1 * dx + g2 * dy + g3 * dz
 
 
 @njit(cache=True)
-def _extrapolate4(perm: np.ndarray, xsb: int, ysb: int, zsb: int, wsb: int, dx: float, dy: float, dz: float, dw: float) -> np.ndarray:
+def _extrapolate4(perm, xsb, ysb, zsb, wsb, dx, dy, dz, dw):
     index = perm[(perm[(perm[(perm[xsb & 0xFF] + ysb) & 0xFF] + zsb) & 0xFF] + wsb) & 0xFF] & 0xFC
     g1, g2, g3, g4 = GRADIENTS4[index : index + 4]
     return g1 * dx + g2 * dy + g3 * dz + g4 * dw
 
 
 @njit(cache=True, parallel=True)
-def _noise2a(x: np.ndarray, y: np.ndarray, perm: np.ndarray) -> np.ndarray:
+def _noise2a(x, y, perm):
     noise = np.empty((y.size, x.size), dtype=np.double)
     for y_i in prange(y.size):
         for x_i in prange(x.size):
@@ -106,7 +104,7 @@ def _noise2a(x: np.ndarray, y: np.ndarray, perm: np.ndarray) -> np.ndarray:
 
 
 @njit(cache=True, parallel=True)
-def _noise3a(x: np.ndarray, y: np.ndarray, z: np.ndarray, perm: np.ndarray, perm_grad_index3: np.ndarray) -> np.ndarray:
+def _noise3a(x, y, z, perm, perm_grad_index3):
     noise = np.empty((z.size, y.size, x.size), dtype=np.double)
     for z_i in prange(z.size):
         for y_i in prange(y.size):
@@ -116,7 +114,7 @@ def _noise3a(x: np.ndarray, y: np.ndarray, z: np.ndarray, perm: np.ndarray, perm
 
 
 @njit(cache=True, parallel=True)
-def _noise4a(x: np.ndarray, y: np.ndarray, z: np.ndarray, w: np.ndarray, perm: np.ndarray) -> np.ndarray:
+def _noise4a(x, y, z, w, perm):
     noise = np.empty((w.size, z.size, y.size, x.size), dtype=np.double)
     for w_i in prange(w.size):
         for z_i in prange(z.size):
@@ -131,7 +129,7 @@ def _noise4a(x: np.ndarray, y: np.ndarray, z: np.ndarray, w: np.ndarray, perm: n
 
 
 @njit(cache=True)
-def _noise2(x: float, y: float, perm: np.ndarray) -> float:
+def _noise2(x, y, perm):
     # Place input coordinates onto grid.
     stretch_offset = (x + y) * STRETCH_CONSTANT2
     xs = x + stretch_offset
@@ -232,7 +230,7 @@ def _noise2(x: float, y: float, perm: np.ndarray) -> float:
 
 
 @njit(cache=True)
-def _noise3(x: float, y: float, z: float, perm: np.ndarray, perm_grad_index3: np.ndarray) -> float:
+def _noise3(x, y, z, perm, perm_grad_index3):
     # Place input coordinates on simplectic honeycomb.
     stretch_offset = (x + y + z) * STRETCH_CONSTANT3
     xs = x + stretch_offset
@@ -734,7 +732,7 @@ def _noise3(x: float, y: float, z: float, perm: np.ndarray, perm_grad_index3: np
 
 
 @njit(cache=True)
-def _noise4(x: float, y: float, z: float, w: float, perm: np.ndarray) -> float:
+def _noise4(x, y, z, w, perm):
     # Place input coordinates on simplectic honeycomb.
     stretch_offset = (x + y + z + w) * STRETCH_CONSTANT4
     xs = x + stretch_offset
