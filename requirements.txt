@@ -1,12 +1,13 @@
 # Development requirements, only
 wheel==0.37.1
-setuptools==56.0.0
-twine==3.7.1
-coverage==6.3
-nose==1.3.7
+setuptools==62.6.0
+twine==4.0.1
+coverage==6.4.1
+nose2==0.11.0
 pycodestyle==2.8.0
-black==22.1.0
-numpy==1.21.5
+black==22.6.0
+numpy==1.23.0
 
-# Numba/llvmlite isn't playing nice, see https://llvmlite.readthedocs.io/en/latest/admin-guide/install.html#using-pip
+# Numba/llvmlite doesn't support python v3.9+ yet?? See:
+# https://llvmlite.readthedocs.io/en/latest/admin-guide/install.html#using-pip
 #numba

@@ -1,4 +1,6 @@
 
+# Make sure python v3.8+ and py38-sqlite3 (or higher ver) is installed before anything else
+
 .PHONY: dev
 dev:
 	test -d devenv || python -m venv devenv
@@ -10,7 +12,7 @@ deps:
 
 .PHONY: test
 test:
-	export NUMBA_DISABLE_JIT=1 && nosetests --with-coverage --cover-package=opensimplex tests/test_opensimplex.py
+	nose2 --with-coverage
 
 .PHONY: coverage
 coverage:
