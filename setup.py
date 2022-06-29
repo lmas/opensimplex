@@ -21,7 +21,7 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     install_requires=[
-		'numpy>=1.20',
+		'numpy>=1.22',
     ],
     zip_safe=False,
     classifiers=[
@@ -30,5 +30,5 @@ setup(
         'Operating System :: OS Independent',
         'Topic :: Scientific/Engineering :: Mathematics',
     ],
-    python_requires='>=3.7',
+    python_requires='>=3.8',
 )
