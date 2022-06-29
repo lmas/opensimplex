@@ -20,13 +20,15 @@ The `master` branch contains the latest, potentially unstable, code.
 
 For the latest stable version, please refer to the [version tags](https://github.com/lmas/opensimplex/tags) for now.
 
-This version has been tested with **Python 3.7, 3.8, 3.9 on Linux, MacOS and Windows**.
+This version has been tested with **Python 3.8, 3.9, 3.10 on Linux, MacOS and Windows**.
 
-Updates for **v0.4**:
+Updates for **v0.4+**:
 
 - Adds a hard dependency on 'Numpy', for array optimizations aimed at heavier workloads.
-- Adds optional dependency on 'Numba', for further speed optimizations using caching.
-- General refactor and cleanup of the library and tests.
+- Adds optional dependency on 'Numba', for further speed optimizations using caching (currently untested due to issues
+  with llvmlite).
+- Adds typing support.
+- General refactor and cleanup of the library, tests and docs.
 - **Breaking changes: API function names has been modified.**
 
 Usage
@@ -49,31 +51,35 @@ For more advanced examples, see the files in the `tests` and `example` directory
 **Available functions:**
 
 *opensimplex.seed(seed)*
-> Seeds the underlying permutation array (which produces different outputs), using a 64-bit integer number.
-> If no value is provided, a static default will be used instead.
+
+        Seeds the underlying permutation array (which produces different outputs), using a 64-bit integer number.
+        If no value is provided, a static default will be used instead.
 
         seed(13)
 
 *random_seed()*
-> Works just like seed(), except it uses the system time (in ns) as a seed value.
-> Not guaranteed to be random so use at your own risk.
+
+        Works just like seed(), except it uses the system time (in ns) as a seed value.
+        Not guaranteed to be random so use at your own risk.
 
         random_seed()
 
 *opensimplex.noise2(x, y)*
-> Generate 2D OpenSimplex noise from X,Y coordinates.
-> :param x: x coordinate as float
-> :param y: y coordinate as float
-> :return: generated 2D noise as float, between -1.0 and 1.0
+
+        Generate 2D OpenSimplex noise from X,Y coordinates.
+        :param x: x coordinate as float
+        :param y: y coordinate as float
+        :return: generated 2D noise as float, between -1.0 and 1.0
 
         >>> noise2(0.5, 0.5)
         -0.43906247097569345
 
 *opensimplex.noise2array(x, y)*
-> Generates 2D OpenSimplex noise using Numpy arrays for increased performance.
-> :param x: numpy array of x-coords
-> :param y: numpy array of y-coords
-> :return: 2D numpy array of shape (y.size, x.size) with the generated noise for the supplied coordinates
+
+        Generates 2D OpenSimplex noise using Numpy arrays for increased performance.
+        :param x: numpy array of x-coords
+        :param y: numpy array of y-coords
+        :return: 2D numpy array of shape (y.size, x.size) with the generated noise for the supplied coordinates
 
         >>> rng = numpy.random.default_rng(seed=0)
         >>> ix, iy = rng.random(2), rng.random(2)
@@ -82,21 +88,23 @@ For more advanced examples, see the files in the `tests` and `example` directory
            [-0.00203524, -0.02358477]])
 
 *opensimplex.noise3(x, y, z)*
-> Generate 3D OpenSimplex noise from X,Y,Z coordinates.
-> :param x: x coordinate as float
-> :param y: y coordinate as float
-> :param z: z coordinate as float
-> :return: generated 3D noise as float, between -1.0 and 1.0
+
+        Generate 3D OpenSimplex noise from X,Y,Z coordinates.
+        :param x: x coordinate as float
+        :param y: y coordinate as float
+        :param z: z coordinate as float
+        :return: generated 3D noise as float, between -1.0 and 1.0
 
         >>> noise3(0.5, 0.5, 0.5)
         0.39504955501618155
 
 *opensimplex.noise3array(x, y, z)*
-> Generates 3D OpenSimplex noise using Numpy arrays for increased performance.
-> :param x: numpy array of x-coords
-> :param y: numpy array of y-coords
-> :param z: numpy array of z-coords
-> :return: 3D numpy array of shape (z.size, y.size, x.size) with the generated noise for the supplied coordinates
+
+        Generates 3D OpenSimplex noise using Numpy arrays for increased performance.
+        :param x: numpy array of x-coords
+        :param y: numpy array of y-coords
+        :param z: numpy array of z-coords
+        :return: 3D numpy array of shape (z.size, y.size, x.size) with the generated noise for the supplied coordinates
 
         >>> rng = numpy.random.default_rng(seed=0)
         >>> ix, iy, iz = rng.random(2), rng.random(2), rng.random(2)
@@ -107,23 +115,26 @@ For more advanced examples, see the files in the `tests` and `example` directory
             [0.45971748, 0.46684901]]])
 
 *opensimplex.noise4(x, y, z, w)*
-> Generate 4D OpenSimplex noise from X,Y,Z,W coordinates.
-> :param x: x coordinate as float
-> :param y: y coordinate as float
-> :param z: z coordinate as float
-> :param w: w coordinate as float
-> :return: generated 4D noise as float, between -1.0 and 1.0
+
+        Generate 4D OpenSimplex noise from X,Y,Z,W coordinates.
+        :param x: x coordinate as float
+        :param y: y coordinate as float
+        :param z: z coordinate as float
+        :param w: w coordinate as float
+        :return: generated 4D noise as float, between -1.0 and 1.0
 
         >>> noise4(0.5, 0.5, 0.5, 0.5)
         0.04520359600370195
 
 *opensimplex.noise4array(x, y, z, w)*
-> Generates 4D OpenSimplex noise using Numpy arrays for increased performance.
-> :param x: numpy array of x-coords
-> :param y: numpy array of y-coords
-> :param z: numpy array of z-coords
-> :param w: numpy array of w-coords
-> :return: 4D numpy array of shape (w.size, z.size, y.size, x.size) with the generated noise for the supplied coordinates
+
+        Generates 4D OpenSimplex noise using Numpy arrays for increased performance.
+        :param x: numpy array of x-coords
+        :param y: numpy array of y-coords
+        :param z: numpy array of z-coords
+        :param w: numpy array of w-coords
+        :return: 4D numpy array of shape (w.size, z.size, y.size, x.size) with the generated noise for the supplied
+        coordinates
 
         >>> rng = numpy.random.default_rng(seed=0)
         >>> ix, iy, iz, iw = rng.random(2), rng.random(2), rng.random(2), rng.random(2)
