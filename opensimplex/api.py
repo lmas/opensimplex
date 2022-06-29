@@ -116,7 +116,8 @@ def noise4array(x: np.ndarray, y: np.ndarray, z: np.ndarray, w: np.ndarray) -> n
     :param y: numpy array of y-coords
     :param z: numpy array of z-coords
     :param w: numpy array of w-coords
-    :return: 4D numpy array of shape (w.size, z.size, y.size, x.size) with the generated noise for the supplied coordinates
+    :return: 4D numpy array of shape (w.size, z.size, y.size, x.size) with the generated noise for the supplied
+    coordinates
 
     >>> rng = numpy.random.default_rng(seed=0)
     >>> ix, iy, iz, iw = rng.random(2), rng.random(2), rng.random(2), rng.random(2)
