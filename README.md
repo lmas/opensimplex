@@ -46,7 +46,7 @@ Usage
         >>> print(n)
         0.580279369186297
 
-For more advanced examples, see the files in the `tests` and `example` directory.
+For more advanced examples, see the files in the [tests](./tests/) and [examples](./examples/) directories.
 
 **Available functions:**
 
@@ -167,6 +167,10 @@ Or the benchmark:
 FAQ
 ================================================================================
 
+- What does the distribution of the noise values look like?
+
+![Noise Distribution](./images/distribution.png)
+
 - Is this relevantly different enough to avoid any real trouble with the
 original patent?
 
@@ -229,19 +233,19 @@ While the original work was released to the public domain by Kurt, this package 
 
 Please see the file LICENSE for details.
 
-Expected Output
+Example Output
 ================================================================================
 
 Example images visualising 2D, 3D and 4D noise on a 2D plane, using the default seed:
 
 **2D noise**
 
-![image](images/noise2d.png)
+![Noise 2D](./images/noise2d.png)
 
 **3D noise**
 
-![image](images/noise3d.png)
+![Noise 3D](./images/noise3d.png)
 
 **4D noise**
 
-![image](images/noise4d.png)
+![Noise 4D](./images/noise4d.png)
