@@ -12,7 +12,7 @@ deps:
 
 .PHONY: test
 test:
-	nose2 --with-coverage
+	pytest --cov
 
 .PHONY: coverage
 coverage:
@@ -47,8 +47,9 @@ clean:
 	rm -rf build/
 	rm -rf dist/
 	rm -rf *.egg-info/
-	rm -f noise2d.png noise3d.png noise4d.png README.html
+	rm -rf .pytest_cache/
+	rm -rf htmlcov/
+	rm -f .coverage
 	find ./ -iname '*.pyc' | xargs rm -f
 	find ./ -iname '__pycache__' | xargs rm -rf
-	rm -f .coverage
-	rm -rf htmlcov/
+	rm -f noise2d.png noise3d.png noise4d.png README.html
