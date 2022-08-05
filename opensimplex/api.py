@@ -13,7 +13,8 @@ OpenSimplex n-dimensional gradient noise algorithm, based on work by Kurt Spence
 
 def seed(seed: int = DEFAULT_SEED) -> None:
     """
-    Seeds the underlying permutation array (which produces different outputs), using a 64-bit integer number.
+    Seeds the underlying permutation array (which produces different outputs),
+    using a 64-bit integer number.
     If no value is provided, a static default will be used instead.
 
     >>> seed(13)
@@ -37,7 +38,7 @@ def noise2(x: float, y: float) -> float:
     Generate 2D OpenSimplex noise from X,Y coordinates.
     :param x: x coordinate as float
     :param y: y coordinate as float
-    :return: generated 2D noise as float, between -1.0 and 1.0
+    :return:  generated 2D noise as float, between -1.0 and 1.0
 
     >>> noise2(0.5, 0.5)
     -0.43906247097569345
@@ -50,7 +51,8 @@ def noise2array(x: np.ndarray, y: np.ndarray) -> np.ndarray:
     Generates 2D OpenSimplex noise using Numpy arrays for increased performance.
     :param x: numpy array of x-coords
     :param y: numpy array of y-coords
-    :return: 2D numpy array of shape (y.size, x.size) with the generated noise for the supplied coordinates
+    :return:  2D numpy array of shape (y.size, x.size) with the generated noise
+              for the supplied coordinates
 
     >>> rng = numpy.random.default_rng(seed=0)
     >>> ix, iy = rng.random(2), rng.random(2)
@@ -67,7 +69,7 @@ def noise3(x: float, y: float, z: float) -> float:
     :param x: x coordinate as float
     :param y: y coordinate as float
     :param z: z coordinate as float
-    :return: generated 3D noise as float, between -1.0 and 1.0
+    :return:  generated 3D noise as float, between -1.0 and 1.0
 
     >>> noise3(0.5, 0.5, 0.5)
     0.39504955501618155
@@ -81,7 +83,8 @@ def noise3array(x: np.ndarray, y: np.ndarray, z: np.ndarray) -> np.ndarray:
     :param x: numpy array of x-coords
     :param y: numpy array of y-coords
     :param z: numpy array of z-coords
-    :return: 3D numpy array of shape (z.size, y.size, x.size) with the generated noise for the supplied coordinates
+    :return:  3D numpy array of shape (z.size, y.size, x.size) with the generated
+              noise for the supplied coordinates
 
     >>> rng = numpy.random.default_rng(seed=0)
     >>> ix, iy, iz = rng.random(2), rng.random(2), rng.random(2)
@@ -101,7 +104,7 @@ def noise4(x: float, y: float, z: float, w: float) -> float:
     :param y: y coordinate as float
     :param z: z coordinate as float
     :param w: w coordinate as float
-    :return: generated 4D noise as float, between -1.0 and 1.0
+    :return:  generated 4D noise as float, between -1.0 and 1.0
 
     >>> noise4(0.5, 0.5, 0.5, 0.5)
     0.04520359600370195
@@ -116,8 +119,8 @@ def noise4array(x: np.ndarray, y: np.ndarray, z: np.ndarray, w: np.ndarray) -> n
     :param y: numpy array of y-coords
     :param z: numpy array of z-coords
     :param w: numpy array of w-coords
-    :return: 4D numpy array of shape (w.size, z.size, y.size, x.size) with the generated noise for the supplied
-    coordinates
+    :return:  4D numpy array of shape (w.size, z.size, y.size, x.size) with the
+              generated noise for the supplied coordinates
 
     >>> rng = numpy.random.default_rng(seed=0)
     >>> ix, iy, iz, iw = rng.random(2), rng.random(2), rng.random(2), rng.random(2)
