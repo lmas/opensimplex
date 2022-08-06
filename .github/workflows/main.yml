@@ -1,6 +1,12 @@
 name: Tests
 
-on: [push, pull_request]
+on:
+  pull_request:
+    paths:
+      - '**.py'
+  push:
+    paths:
+      - '**.py'
 
 jobs:
   test:
