@@ -3,7 +3,7 @@
 
 [![build-status](https://github.com/lmas/opensimplex/workflows/Tests/badge.svg?branch=master)](https://github.com/lmas/opensimplex/actions)
 [![pypi-version](https://img.shields.io/pypi/v/opensimplex?label=Version)](https://pypi.org/project/opensimplex/)
-[![pypi-downloads](https://img.shields.io/pypi/dm/opensimplex?label=Downloads)](https://pypi.org/project/opensimplex/)
+[![pypi-downloads](https://img.shields.io/pypi/dm/opensimplex?label=Downloads)](https://pypistats.org/packages/opensimplex)
 
     OpenSimplex noise is an n-dimensional gradient noise function that was
     developed in order to overcome the patent-related issues surrounding
