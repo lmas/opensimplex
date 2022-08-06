@@ -169,7 +169,7 @@ For more advanced examples, see the files in the [tests](./tests/) and [examples
 
 - What does the distribution of the noise values look like?
 
-![Noise Distribution](./images/distribution.png)
+![Noise Distribution](https://github.com/lmas/opensimplex/raw/master/images/distribution.png)
 
 - Is this relevantly different enough to avoid any real trouble with the
 original patent?
@@ -237,12 +237,12 @@ Example images visualising 2D, 3D and 4D noise on a 2D plane, using the default 
 
 **2D noise**
 
-![Noise 2D](./images/noise2d.png)
+![Noise 2D](https://github.com/lmas/opensimplex/raw/master/images/noise2d.png)
 
 **3D noise**
 
-![Noise 3D](./images/noise3d.png)
+![Noise 3D](https://github.com/lmas/opensimplex/raw/master/images/noise3d.png)
 
 **4D noise**
 
-![Noise 4D](./images/noise4d.png)
+![Noise 4D](https://github.com/lmas/opensimplex/raw/master/images/noise4d.png)
