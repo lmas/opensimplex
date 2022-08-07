@@ -11,7 +11,7 @@ setup(
     version=__version__,
     author=__author__,
     author_email='opensimplex@larus.se',
-    description='OpenSimplex n-dimensional gradient noise function.',
+    description='OpenSimplex is a noise generation function like Perlin or Simplex noise, but better.',
     long_description=long_description,
     long_description_content_type="text/markdown",
     keywords='opensimplex simplex noise 2D 3D 4D',
@@ -21,7 +21,7 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     install_requires=[
-		'numpy>=1.22',
+        'numpy>=1.22',
     ],
     zip_safe=False,
     classifiers=[

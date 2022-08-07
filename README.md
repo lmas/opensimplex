@@ -5,21 +5,31 @@
 [![pypi-version](https://img.shields.io/pypi/v/opensimplex?label=Version)](https://pypi.org/project/opensimplex/)
 [![pypi-downloads](https://img.shields.io/pypi/dm/opensimplex?label=Downloads)](https://pypistats.org/packages/opensimplex)
 
+[OpenSimplex] is a noise generation function like [Perlin] or [Simplex] noise, but better.
+
     OpenSimplex noise is an n-dimensional gradient noise function that was
     developed in order to overcome the patent-related issues surrounding
     Simplex noise, while continuing to also avoid the visually-significant
     directional artifacts characteristic of Perlin noise.
+    - Kurt Spencer
 
-This is merely a python port of Kurt Spencer's original code (released to the public domain)
+This is merely a python port of Kurt Spencer's [original code] (released to the public domain)
 and neatly wrapped up in a package.
+
+[OpenSimplex]: https://en.wikipedia.org/wiki/OpenSimplex_noise
+[Perlin]: https://en.wikipedia.org/wiki/Perlin_noise
+[Simplex]: https://en.wikipedia.org/wiki/Simplex_noise
+[original code]: https://gist.github.com/KdotJPG/b1270127455a94ac5d19
 
 ## Status
 
-The `master` branch contains the latest, potentially unstable, code.
+The `master` branch contains the latest code (possibly unstable),
+with automatic tests running for **Python 3.8, 3.9, 3.10 on Linux, MacOS and Windows**.
 
-For the latest stable version, please refer to the [version tags](https://github.com/lmas/opensimplex/tags) for now.
+Please refer to the [version tags] for the latest stable version.
 
-This version has been tested with **Python 3.8, 3.9, 3.10 on Linux, MacOS and Windows**.
+[version tags]: https://github.com/lmas/opensimplex/tags
+
 
 Updates for **v0.4+**:
 
@@ -28,7 +38,7 @@ Updates for **v0.4+**:
   (currently untested due to issues with llvmlite).
 - Adds typing support.
 - General refactor and cleanup of the library, tests and docs.
-- **Breaking changes: API function names has been modified.**
+- **Breaking changes: API functions uses new names.**
 
 ## Usage
 
@@ -211,19 +221,27 @@ original patent?
     > texture that do not have visible grid artifacts," which is
     > probably the biggest similarity between the two algorithms.
     >
-    > - **Kurt**, on [Reddit](https://www.reddit.com/r/proceduralgeneration/comments/2gu3e7/like_perlins_simplex_noise_but_dont_like_the/ckmqz2y)
+    > - **Kurt**, on [Reddit].
+
+[Reddit]: https://www.reddit.com/r/proceduralgeneration/comments/2gu3e7/like_perlins_simplex_noise_but_dont_like_the/ckmqz2y
+
 
 ## Credits
 
 - Kurt Spencer - Original work
 - Alex - Python port and package author
 
-- Owen Raccuglia - Test cases, [Go Module](https://github.com/ojrac/opensimplex-go)
-- /u/redblobgames - Fixed conversion for Java's long type, see [Reddit](https://old.reddit.com/r/proceduralgeneration/comments/327zkm/repeated_patterns_in_opensimplex_python_port/cq8tth7/)
+- Owen Raccuglia - Test cases, [Go Module]
+- /u/redblobgames - Fixed conversion for Java's long type, see [Reddit]
 
-And all the other Github [Contributors](https://github.com/lmas/opensimplex/graphs/contributors) and [Bug Hunters](https://github.com/lmas/opensimplex/issues?q=)!
+And all the other Github [Contributors] and [Bug Hunters]!
 
 Thanks!
+
+[Go Module]: https://github.com/ojrac/opensimplex-go
+[Reddit]: https://old.reddit.com/r/proceduralgeneration/comments/327zkm/repeated_patterns_in_opensimplex_python_port/cq8tth7/
+[Contributors]: https://github.com/lmas/opensimplex/graphs/contributors
+[Bug Hunters]: https://github.com/lmas/opensimplex/issues?q=is%3Aclosed
 
 ## License
 
