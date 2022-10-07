@@ -1,6 +1,6 @@
 from typing import Union
 from .constants import np
-from .internals import _init, _noise2, _noise3, _noise4, _noise2a, _noise3a, _noise4a, _closed_loop_2D_stack
+from .internals import _init, _noise2, _noise3, _noise4, _noise2a, _noise3a, _noise4a, _polar_loop_2D_stack
 import time
 
 try:
@@ -143,7 +143,7 @@ def noise4array(x: np.ndarray, y: np.ndarray, z: np.ndarray, w: np.ndarray) -> n
     return _default.noise4array(x, y, z, w)
 
 
-def closed_loop_2D_stack(
+def polar_loop_2D_stack(
     N_frames: int = 200,
     N_pixels: int = 1000,
     t_step: float = 0.1,
@@ -152,13 +152,13 @@ def closed_loop_2D_stack(
     seed: int = DEFAULT_SEED,
     verbose: bool = True,
 ) -> np.ndarray:
-    """Generates Simplex noise as 2D bitmap images that animate over time in a
-    closed-loop fashion. I.e., the bitmap image of the last time frame will
+    """Generates OpenSimplex noise as a stack of 2D bitmap images that animate
+    over time in a closed-loop fashion. I.e., the bitmap image of the last time frame will
     smoothly animate into the bitmap image of the first time frame again. The
     animation path is /not/ a simple reversal of time in order to have the loop
     closed, but rather is a fully unique path from start to finish.
 
-    It does so by calculating Simplex noise in 4 dimensions. The latter two
+    It does so by calculating OpenSimplex noise in 4 dimensions. The latter two
     dimensions are used to describe a 'circle' in time, in turn used to
     projection map the first two dimensions into bitmap images. The first frame
     is garantueed identical to `noise4array(ix, iy, 0, 0)`.
@@ -174,7 +174,7 @@ def closed_loop_2D_stack(
                      `numba` and `numba_progress` packages are found a progress
                      bar will also be shown.
     :return: The image stack as 3D matrix [time, y-pixel, x-pixel] containing
-             the Simplex noise values as a 'grayscale' intensity in floating
+             the OpenSimplex noise values as a 'grayscale' intensity in floating
              point. The output intensity is garantueed to be in the range
              [-1, 1], but the exact extrema cannot be known a-priori and are
              most probably way smaller than [-1, 1].
@@ -189,10 +189,10 @@ def closed_loop_2D_stack(
         tick = time.perf_counter()
 
     if (ProgressBar is None) or (not verbose):
-        out = _closed_loop_2D_stack(N_frames, N_pixels, t_step, x_step, y_step, perm, None)
+        out = _polar_loop_2D_stack(N_frames, N_pixels, t_step, x_step, y_step, perm, None)
     else:
         with ProgressBar(total=N_frames, dynamic_ncols=True) as numba_progress:
-            out = _closed_loop_2D_stack(N_frames, N_pixels, t_step, x_step, y_step, perm, numba_progress)
+            out = _polar_loop_2D_stack(N_frames, N_pixels, t_step, x_step, y_step, perm, numba_progress)
 
     if verbose:
         print(f"done in {(time.perf_counter() - tick):.2f} s")

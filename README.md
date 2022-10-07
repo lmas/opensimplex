@@ -265,6 +265,6 @@ Example images visualising 2D, 3D and 4D noise on a 2D plane, using the default 
 
 ![Noise 4D](https://github.com/lmas/opensimplex/raw/master/images/noise4d.png)
 
-**Closed-loop 2D stack**
+**Polar loop 2D stack**
 
-![Closed-loop 2D stack](/images/closed_loop_2D_stack.gif)
+![Polar loop 2D stack](/images/polar_loop_2D_stack.gif)

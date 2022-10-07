@@ -109,7 +109,7 @@ def _noise4a(x, y, z, w, perm):
     parallel=True,
     nogil=True,
 )
-def _closed_loop_2D_stack(
+def _polar_loop_2D_stack(
     N_frames: int,
     N_pixels: int,
     t_step: float,
