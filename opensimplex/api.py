@@ -1,6 +1,12 @@
+from typing import Union
 from .constants import np
-from .internals import _init, _noise2, _noise3, _noise4, _noise2a, _noise3a, _noise4a
+from .internals import _init, _noise2, _noise3, _noise4, _noise2a, _noise3a, _noise4a, _closed_loop_2D_stack
 import time
+
+try:
+    from numba_progress import ProgressBar
+except ImportError:
+    ProgressBar = None
 
 # Why 3 (and not just 0 or something)? I ran into a bug with"overflowing int" errors while refactoring in numpy and
 # using a non-zero seed value... This is a reminder
@@ -135,6 +141,78 @@ def noise4array(x: np.ndarray, y: np.ndarray, z: np.ndarray, w: np.ndarray) -> n
              [0.36360679, 0.35500328]]]])
     """
     return _default.noise4array(x, y, z, w)
+
+
+def closed_loop_2D_stack(
+    N_frames: int = 200,
+    N_pixels: int = 1000,
+    t_step: float = 0.1,
+    x_step: float = 0.01,
+    y_step: Union[float, None] = None,
+    seed: int = DEFAULT_SEED,
+    verbose: bool = True,
+) -> np.ndarray:
+    """Generates Simplex noise as 2D bitmap images that animate over time in a
+    closed-loop fashion. I.e., the bitmap image of the last time frame will
+    smoothly animate into the bitmap image of the first time frame again. The
+    animation path is /not/ a simple reversal of time in order to have the loop
+    closed, but rather is a fully unique path from start to finish.
+
+    It does so by calculating Simplex noise in 4 dimensions. The latter two
+    dimensions are used to describe a 'circle' in time, in turn used to
+    projection map the first two dimensions into bitmap images.
+
+    Args:
+        N_frames (int):
+            Number of time frames
+
+        N_pixels (int):
+            Number of pixels on a single axis
+
+        t_step (float):
+            Time step in arb. units
+
+        x_step (float):
+            Spatial step in arb. units
+
+        y_step (float | None):
+            Spatial step in arb. units. When set to None `y_step` will be set
+            equal to `x_step`.
+
+        seed (int):
+            Seed value of the OpenSimplex noise
+
+        verbose (bool):
+            Print 'Generating noise...' to the terminal? If the `numba` and
+            `numba_progress` packages are found a progress bar will also be
+            shown.
+
+    Returns:
+        The image stack as 3D matrix [time, y-pixel, x-pixel] containing the
+        Simplex noise values as a 'grayscale' intensity in floating point.
+        The output intensity is garantueed to be in the range [-1, 1], but the
+        exact extrema cannot be known a-priori and are most probably way smaller
+        than [-1, 1].
+    """
+
+    perm, _ = _init(seed)  # The OpenSimplex seed table
+    if y_step is None:
+        y_step = x_step
+
+    if verbose:
+        print(f"{'Generating noise...':30s}")
+        tick = time.perf_counter()
+
+    if (ProgressBar is None) or (not verbose):
+        out = _closed_loop_2D_stack(N_frames, N_pixels, t_step, x_step, y_step, perm, None)
+    else:
+        with ProgressBar(total=N_frames, dynamic_ncols=True) as numba_progress:
+            out = _closed_loop_2D_stack(N_frames, N_pixels, t_step, x_step, y_step, perm, numba_progress)
+
+    if verbose:
+        print(f"done in {(time.perf_counter() - tick):.2f} s")
+
+    return out
 
 
 ################################################################################

@@ -4,6 +4,7 @@
 from .constants import *
 from math import floor
 from ctypes import c_int64
+from typing import Union
 
 try:
     from numba import njit, prange
@@ -15,6 +16,11 @@ except ImportError:
             return func
 
         return wrapper
+
+try:
+    from numba_progress import ProgressBar
+except ImportError:
+    ProgressBar = None
 
 
 def _overflow(x):
@@ -94,6 +100,40 @@ def _noise4a(x, y, z, w, perm):
             for y_i in prange(y.size):
                 for x_i in prange(x.size):
                     noise[w_i, z_i, y_i, x_i] = _noise4(x[x_i], y[y_i], z[z_i], w[w_i], perm)
+    return noise
+
+
+@njit(
+    # "float32[:, :, :](int64, int64, float64, float64, float64, int64[:])",
+    cache=True,
+    parallel=True,
+    nogil=True,
+)
+def _closed_loop_2D_stack(
+    N_frames: int,
+    N_pixels: int,
+    t_step: float,
+    x_step: float,
+    y_step: float,
+    perm: np.ndarray,
+    progress_hook: Union[ProgressBar, None],
+) -> np.ndarray:
+    t_radius = N_frames * t_step / (2 * np.pi)  # Temporal radius of the loop
+    t_factor = 2 * np.pi / N_frames
+
+    noise = np.empty((N_frames, N_pixels, N_pixels), dtype=np.float32)
+    for t_i in prange(N_frames):
+        t = t_i * t_factor
+        t_cos = t_radius * np.cos(t)
+        t_sin = t_radius * np.sin(t)
+        if progress_hook is not None:
+            progress_hook.update(1)
+        for y_i in prange(N_pixels):
+            y = y_i * y_step
+            for x_i in prange(N_pixels):
+                x = x_i * x_step
+                noise[t_i, y_i, x_i] = _noise4(x, y, t_sin, t_cos, perm)
+
     return noise
 
 
