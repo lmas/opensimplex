@@ -8,15 +8,16 @@ from matplotlib import animation
 
 import opensimplex
 
-N_PIXELS = 100  # Number of pixels on a single axis
-N_FRAMES = 20  # Number of time frames
+N_PIXELS = 256  # Number of pixels on a single axis
+N_FRAMES = 50  # Number of time frames
+FEATURE_SIZE = 24.0
 
 # Generate noise
 img_stack = opensimplex.closed_loop_2D_stack(
     N_pixels=N_PIXELS,
     N_frames=N_FRAMES,
     t_step=0.1,
-    x_step=0.05,
+    x_step=1 / FEATURE_SIZE,
     seed=3,
     verbose=True,
 )
@@ -34,27 +35,30 @@ img = plt.imshow(
 frame_text = ax.text(0, 1.02, "", transform=ax.transAxes)
 
 
-def init_anim():
+def anim_init():
     img.set_data(img_stack[0])
     frame_text.set_text("")
     return img, frame_text
 
 
-def anim(j):
+def anim_fun(j):
     img.set_data(img_stack[j])
     frame_text.set_text(f"frame {j:03d}")
     return img, frame_text
 
 
-ani = animation.FuncAnimation(
+anim = animation.FuncAnimation(
     fig_1,
-    anim,
+    anim_fun,
     frames=N_FRAMES,
     interval=40,
-    init_func=init_anim,
+    init_func=anim_init,
     # blit=True,
 )
 
-# plt.grid(False)
-# plt.axis("off")
+
+plt.grid(False)
+plt.axis("off")
 plt.show()
+
+# anim.save("closed_loop_2D_stack.gif", dpi=69, writer="imagemagick", fps=25)
