@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 #
 # Dennis van Gils (https://github.com/Dennis-van-Gils)
-# Inspiritation taken from https://www.youtube.com/watch?v=ZI1dmHv3MeM by https://www.youtube.com/c/TheCodingTrain
 
 from matplotlib import pyplot as plt
 from matplotlib import animation
@@ -15,8 +14,9 @@ FEATURE_SIZE = 24.0
 
 # Generate noise
 img_stack = opensimplex.polar_loop_2D_stack(
-    N_pixels=N_PIXELS,
     N_frames=N_FRAMES,
+    N_pixels_x=N_PIXELS,
+    N_pixels_y=N_PIXELS,
     t_step=0.1,
     x_step=1 / FEATURE_SIZE,
     seed=3,
@@ -62,4 +62,4 @@ plt.grid(False)
 plt.axis("off")
 plt.show()
 
-anim.save("polar_loop_2D_stack.gif", dpi=69, writer="imagemagick", fps=25)
+# anim.save("polar_loop_2D_stack.gif", dpi=69, writer="imagemagick", fps=25)

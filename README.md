@@ -175,6 +175,39 @@ For more advanced examples, see the files in the [tests](./tests/) and [examples
             [[0.36930335, 0.36046537],
              [0.36360679, 0.35500328]]]])
 
+**polar_loop_2D_stack(N_frames, N_pixels_x, N_pixels_y, t_step, x_step, y_step, seed, verbose)**
+
+    Generates OpenSimplex noise as a stack of 2D bitmap images that animate
+    over time in a closed-loop fashion. I.e., the bitmap image of the last time
+    frame will smoothly animate into the bitmap image of the first time frame
+    again. The animation path is /not/ a simple reversal of time in order to
+    have the loop closed, but rather is a fully unique path from start to
+    finish.
+
+    It does so by calculating OpenSimplex noise in 4 dimensions. The latter two
+    dimensions are used to describe a 'circle' in time, in turn used to
+    projection map the first two dimensions into bitmap images. The first frame
+    is garantueed identical to `noise4array(ix, iy, 0, 0)`.
+
+    Inspiritation taken from [Coding Challenge #136.1: Polar Perlin Noise Loops](https://www.youtube.com/watch?v=ZI1dmHv3MeM) by [The Coding Train](https://www.youtube.com/c/TheCodingTrain).
+
+    :param N_frames:   (int) Number of time frames
+    :param N_pixels_x: (int) Number of pixels on the x-axis
+    :param N_pixels_y: (int) Number of pixels on the y-axis
+    :param t_step:     (float) Time step in arb. units
+    :param x_step:     (float) Spatial step in arb. units
+    :param y_step:     (float | None) Spatial step in arb. units. When set to
+                       None `y_step` will be set equal to `x_step`.
+    :param seed:       (int) Seed value of the OpenSimplex noise
+    :param verbose:    (bool) Print 'Generating noise...' to the terminal? If
+                       the `numba` and `numba_progress` packages are found a
+                       progress bar will also be shown.
+    :return: The image stack as 3D matrix [time, y-pixel, x-pixel] containing
+             the OpenSimplex noise values as a 'grayscale' intensity in floating
+             point. The output intensity is garantueed to be in the range
+             [-1, 1], but the exact extrema cannot be known a-priori and are
+             most probably way smaller than [-1, 1].
+
 ## FAQ
 
 - What does the distribution of the noise values look like?
@@ -266,6 +299,5 @@ Example images visualising 2D, 3D and 4D noise on a 2D plane, using the default 
 ![Noise 4D](https://github.com/lmas/opensimplex/raw/master/images/noise4d.png)
 
 **Polar loop 2D stack**
- 
-Inspiritation taken from [Coding Challenge #136.1: Polar Perlin Noise Loops](https://www.youtube.com/watch?v=ZI1dmHv3MeM) by [The Coding Train](https://www.youtube.com/c/TheCodingTrain)
+
 ![Polar loop 2D stack](/images/polar_loop_2D_stack.gif)

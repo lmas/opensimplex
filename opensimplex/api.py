@@ -145,7 +145,8 @@ def noise4array(x: np.ndarray, y: np.ndarray, z: np.ndarray, w: np.ndarray) -> n
 
 def polar_loop_2D_stack(
     N_frames: int = 200,
-    N_pixels: int = 1000,
+    N_pixels_x: int = 1000,
+    N_pixels_y: int = 1000,
     t_step: float = 0.1,
     x_step: float = 0.01,
     y_step: Union[float, None] = None,
@@ -153,26 +154,31 @@ def polar_loop_2D_stack(
     verbose: bool = True,
 ) -> np.ndarray:
     """Generates OpenSimplex noise as a stack of 2D bitmap images that animate
-    over time in a closed-loop fashion. I.e., the bitmap image of the last time frame will
-    smoothly animate into the bitmap image of the first time frame again. The
-    animation path is /not/ a simple reversal of time in order to have the loop
-    closed, but rather is a fully unique path from start to finish.
+    over time in a closed-loop fashion. I.e., the bitmap image of the last time
+    frame will smoothly animate into the bitmap image of the first time frame
+    again. The animation path is /not/ a simple reversal of time in order to
+    have the loop closed, but rather is a fully unique path from start to
+    finish.
 
     It does so by calculating OpenSimplex noise in 4 dimensions. The latter two
     dimensions are used to describe a 'circle' in time, in turn used to
     projection map the first two dimensions into bitmap images. The first frame
     is garantueed identical to `noise4array(ix, iy, 0, 0)`.
 
-    :param N_frames: (int) Number of time frames
-    :param N_pixels: (int) Number of pixels on a single axis
-    :param t_step:   (float) Time step in arb. units
-    :param x_step:   (float) Spatial step in arb. units
-    :param y_step:   (float | None) Spatial step in arb. units. When set to None
-                     `y_step` will be set equal to `x_step`.
-    :param seed:     (int) Seed value of the OpenSimplex noise
-    :param verbose:  (bool) Print 'Generating noise...' to the terminal? If the
-                     `numba` and `numba_progress` packages are found a progress
-                     bar will also be shown.
+    Inspiritation taken from [Coding Challenge #136.1: Polar Perlin Noise Loops]
+    (https://www.youtube.com/watch?v=ZI1dmHv3MeM) by [The Coding Train](https://www.youtube.com/c/TheCodingTrain).
+
+    :param N_frames:   (int) Number of time frames
+    :param N_pixels_x: (int) Number of pixels on the x-axis
+    :param N_pixels_y: (int) Number of pixels on the y-axis
+    :param t_step:     (float) Time step in arb. units
+    :param x_step:     (float) Spatial step in arb. units
+    :param y_step:     (float | None) Spatial step in arb. units. When set to
+                       None `y_step` will be set equal to `x_step`.
+    :param seed:       (int) Seed value of the OpenSimplex noise
+    :param verbose:    (bool) Print 'Generating noise...' to the terminal? If
+                       the `numba` and `numba_progress` packages are found a
+                       progress bar will also be shown.
     :return: The image stack as 3D matrix [time, y-pixel, x-pixel] containing
              the OpenSimplex noise values as a 'grayscale' intensity in floating
              point. The output intensity is garantueed to be in the range
@@ -189,10 +195,10 @@ def polar_loop_2D_stack(
         tick = time.perf_counter()
 
     if (ProgressBar is None) or (not verbose):
-        out = _polar_loop_2D_stack(N_frames, N_pixels, t_step, x_step, y_step, perm, None)
+        out = _polar_loop_2D_stack(N_frames, N_pixels_x, N_pixels_y, t_step, x_step, y_step, perm, None)
     else:
         with ProgressBar(total=N_frames, dynamic_ncols=True) as numba_progress:
-            out = _polar_loop_2D_stack(N_frames, N_pixels, t_step, x_step, y_step, perm, numba_progress)
+            out = _polar_loop_2D_stack(N_frames, N_pixels_x, N_pixels_y, t_step, x_step, y_step, perm, numba_progress)
 
     if verbose:
         print(f"done in {(time.perf_counter() - tick):.2f} s")

@@ -104,14 +104,15 @@ def _noise4a(x, y, z, w, perm):
 
 
 @njit(
-    # "float32[:, :, :](int64, int64, float64, float64, float64, int64[:])",
+    # "float32[:, :, :](int64, int64, float64, float64, float64, int64[:]), ?",
     cache=True,
     parallel=True,
     nogil=True,
 )
 def _polar_loop_2D_stack(
     N_frames: int,
-    N_pixels: int,
+    N_pixels_x: int,
+    N_pixels_y: int,
     t_step: float,
     x_step: float,
     y_step: float,
@@ -121,16 +122,16 @@ def _polar_loop_2D_stack(
     t_radius = N_frames * t_step / (2 * np.pi)  # Temporal radius of the loop
     t_factor = 2 * np.pi / N_frames
 
-    noise = np.empty((N_frames, N_pixels, N_pixels), dtype=np.float32)
+    noise = np.empty((N_frames, N_pixels_y, N_pixels_x), dtype=np.float32)
     for t_i in prange(N_frames):
         t = t_i * t_factor
         t_cos = t_radius * (np.cos(t) - 1) # `- 1` to enforce t_cos=0 at t=0
         t_sin = t_radius * np.sin(t)
         if progress_hook is not None:
             progress_hook.update(1)
-        for y_i in prange(N_pixels):
+        for y_i in prange(N_pixels_y):
             y = y_i * y_step
-            for x_i in prange(N_pixels):
+            for x_i in prange(N_pixels_x):
                 x = x_i * x_step
                 noise[t_i, y_i, x_i] = _noise4(x, y, t_sin, t_cos, perm)
 
