@@ -160,7 +160,8 @@ def closed_loop_2D_stack(
 
     It does so by calculating Simplex noise in 4 dimensions. The latter two
     dimensions are used to describe a 'circle' in time, in turn used to
-    projection map the first two dimensions into bitmap images.
+    projection map the first two dimensions into bitmap images. The first frame
+    is garantueed identical to `noise4array(ix, iy, 0, 0)`.
 
     :param N_frames: (int) Number of time frames
     :param N_pixels: (int) Number of pixels on a single axis

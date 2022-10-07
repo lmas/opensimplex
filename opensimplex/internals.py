@@ -124,7 +124,7 @@ def _closed_loop_2D_stack(
     noise = np.empty((N_frames, N_pixels, N_pixels), dtype=np.float32)
     for t_i in prange(N_frames):
         t = t_i * t_factor
-        t_cos = t_radius * np.cos(t)
+        t_cos = t_radius * (np.cos(t) - 1) # `- 1` to enforce t_cos=0 at t=0
         t_sin = t_radius * np.sin(t)
         if progress_hook is not None:
             progress_hook.update(1)
