@@ -266,5 +266,6 @@ Example images visualising 2D, 3D and 4D noise on a 2D plane, using the default 
 ![Noise 4D](https://github.com/lmas/opensimplex/raw/master/images/noise4d.png)
 
 **Polar loop 2D stack**
-
+ 
+Inspiritation taken from [Coding Challenge #136.1: Polar Perlin Noise Loops](https://www.youtube.com/watch?v=ZI1dmHv3MeM) by [The Coding Train](https://www.youtube.com/c/TheCodingTrain)
 ![Polar loop 2D stack](/images/polar_loop_2D_stack.gif)
