@@ -162,37 +162,21 @@ def closed_loop_2D_stack(
     dimensions are used to describe a 'circle' in time, in turn used to
     projection map the first two dimensions into bitmap images.
 
-    Args:
-        N_frames (int):
-            Number of time frames
-
-        N_pixels (int):
-            Number of pixels on a single axis
-
-        t_step (float):
-            Time step in arb. units
-
-        x_step (float):
-            Spatial step in arb. units
-
-        y_step (float | None):
-            Spatial step in arb. units. When set to None `y_step` will be set
-            equal to `x_step`.
-
-        seed (int):
-            Seed value of the OpenSimplex noise
-
-        verbose (bool):
-            Print 'Generating noise...' to the terminal? If the `numba` and
-            `numba_progress` packages are found a progress bar will also be
-            shown.
-
-    Returns:
-        The image stack as 3D matrix [time, y-pixel, x-pixel] containing the
-        Simplex noise values as a 'grayscale' intensity in floating point.
-        The output intensity is garantueed to be in the range [-1, 1], but the
-        exact extrema cannot be known a-priori and are most probably way smaller
-        than [-1, 1].
+    :param N_frames: (int) Number of time frames
+    :param N_pixels: (int) Number of pixels on a single axis
+    :param t_step:   (float) Time step in arb. units
+    :param x_step:   (float) Spatial step in arb. units
+    :param y_step:   (float | None) Spatial step in arb. units. When set to None
+                     `y_step` will be set equal to `x_step`.
+    :param seed:     (int) Seed value of the OpenSimplex noise
+    :param verbose:  (bool) Print 'Generating noise...' to the terminal? If the
+                     `numba` and `numba_progress` packages are found a progress
+                     bar will also be shown.
+    :return: The image stack as 3D matrix [time, y-pixel, x-pixel] containing
+             the Simplex noise values as a 'grayscale' intensity in floating
+             point. The output intensity is garantueed to be in the range
+             [-1, 1], but the exact extrema cannot be known a-priori and are
+             most probably way smaller than [-1, 1].
     """
 
     perm, _ = _init(seed)  # The OpenSimplex seed table
