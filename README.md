@@ -13,8 +13,12 @@
     directional artifacts characteristic of Perlin noise.
     - Kurt Spencer
 
-This is merely a python port of Kurt Spencer's [original code] (released to the public domain)
+This is a Python port of Kurt Spencer's [original code] (released to the public domain)
 and neatly wrapped up in a package.
+
+In addition, it provides several higher-level functions for the generation
+of seamlessly-looping animated images and closed curves, and seamlessy-tileable
+images, all drawn from 4D OpenSimplex noise.
 
 [OpenSimplex]: https://en.wikipedia.org/wiki/OpenSimplex_noise
 [Perlin]: https://en.wikipedia.org/wiki/Perlin_noise
@@ -30,6 +34,10 @@ Please refer to the [version tags] for the latest stable version.
 
 [version tags]: https://github.com/lmas/opensimplex/tags
 
+Updates for **v0.5+**:
+- Optional 'Numba' dependency is fully tested and provides major speed optimizations.
+- Adds higher-level functions `looping_animated_2D_image()`, `looping_animated_closed_1D_curve()` and `tileable_2D_image()`.
+- Adds support for optional 'numba-progress' dependency, enabling a progress bar being shown during the generation of noise data for the higher-level functions.
 
 Updates for **v0.4+**:
 
@@ -175,6 +183,102 @@ For more advanced examples, see the files in the [tests](./tests/) and [examples
             [[0.36930335, 0.36046537],
              [0.36360679, 0.35500328]]]])
 
+## API higher-level functions
+
+**looping_animated_2D_image(N_frames, N_pixels_x, N_pixels_y, t_step, x_step, y_step, dtype, seed, verbose)**
+
+    Generates a stack of seamlessly-looping animated 2D images drawn from
+    OpenSimplex noise.
+
+    The algorithm uses OpenSimplex noise in 4 dimensions. The first two
+    dimensions are used to describe a plane in space, which gets projected onto
+    the 2D image. The last two dimensions are used to describe a circle in
+    time.
+
+    :param N_frames:   Number of time frames (int, default=200)
+    :param N_pixels_x: Number of pixels on the x-axis (int, default=1000)
+    :param N_pixels_y: Number of pixels on the y-axis. When set to None
+                       `N_pixels_y` will be set equal to `N_pixels_x`.
+                       (int | None, default=None)
+    :param t_step:     Time step (float, default=0.1)
+    :param x_step:     Spatial step in the x-direction (float, default=0.01)
+    :param y_step:     Spatial step in the y-direction. When set to None
+                       `y_step` will be set equal to `x_step`.
+                       (float | None, default=None)
+    :param dtype:      Return type of the noise array elements. To reduce the
+                       memory footprint one can change from the default
+                       `numpy.double` to e.g. `numpy.float32`.
+                       (type, default=numpy.double)
+    :param seed:       Seed value of the OpenSimplex noise (int, default=3)
+    :param verbose:    Print 'Generating noise...' to the terminal? If the
+                       `numba` and `numba_progress` packages are found a
+                       progress bar will also be shown.
+                       (bool, default=True)
+    :return: The 2D image stack as 3D array [time, y-pixel, x-pixel] containing
+             the OpenSimplex noise values as floating points. The output is
+             garantueed to be in the range [-1, 1], but the exact extrema cannot
+             be known a-priori and are probably quite smaller than [-1, 1].
+
+**looping_animated_closed_1D_curve(N_frames, N_pixels_x, t_step, x_step, dtype, seed, verbose)**
+
+    Generates a stack of seamlessly-looping animated 1D curves, each curve in
+    turn also closing up seamlessly back-to-front, all drawn from OpenSimplex
+    noise.
+
+    The algorithm uses OpenSimplex noise in 4 dimensions. The first two
+    dimensions are used to describe a circle in space, which gets projected onto
+    the 1D curve. The last two dimensions are used to describe a circle in time.
+
+    :param N_frames:   Number of time frames (int, default=200)
+    :param N_pixels_x: Number of pixels of the curve (int, default=1000)
+    :param t_step:     Time step (float, default=0.1)
+    :param x_step:     Spatial step in the x-direction (float, default=0.01)
+    :param dtype:      Return type of the noise array elements. To reduce the
+                       memory footprint one can change from the default
+                       `numpy.double` to e.g. `numpy.float32`.
+                       (type, default=numpy.double)
+    :param seed:       Seed value of the OpenSimplex noise (int, default=3)
+    :param verbose:    Print 'Generating noise...' to the terminal? If the
+                       `numba` and `numba_progress` packages are found a
+                       progress bar will also be shown.
+                       (bool, default=True)
+    :return: The 1D curve stack as 2D array [time, x-pixel] containing
+             the OpenSimplex noise values as floating points. The output is
+             garantueed to be in the range [-1, 1], but the exact extrema cannot
+             be known a-priori and are probably quite smaller than [-1, 1].
+
+**tileable_2D_image(N_pixels_x, N_pixels_y, x_step, y_step, dtype, seed, verbose)**
+
+    Generates a seamlessly-tileable 2D image drawn from OpenSimplex noise.
+
+    The algorithm uses OpenSimplex noise in 4 dimensions. The first two
+    dimensions are used to describe a circle in space, which gets projected onto
+    the x-axis of the 2D image. The last two dimensions are used to describe
+    another circle in space, which gets projected onto the y-axis of the 2D
+    image.
+
+    :param N_pixels_x: Number of pixels on the x-axis (int, default=1000)
+    :param N_pixels_y: Number of pixels on the y-axis. When set to None
+                       `N_pixels_y` will be set equal to `N_pixels_x`.
+                       (int | None, default=None)
+    :param x_step:     Spatial step in the x-direction (float, default=0.01)
+    :param y_step:     Spatial step in the y-direction. When set to None
+                       `y_step` will be set equal to `x_step`.
+                       (float | None, default=None)
+    :param dtype:      Return type of the noise array elements. To reduce the
+                       memory footprint one can change from the default
+                       `numpy.double` to e.g. `numpy.float32`.
+                       (type, default=numpy.double)
+    :param seed:       Seed value of the OpenSimplex noise (int, default=3)
+    :param verbose:    Print 'Generating noise...' to the terminal? If the
+                       `numba` and `numba_progress` packages are found a
+                       progress bar will also be shown.
+                       (bool, default=True)
+    :return: The 2D image stack as 3D array [time, y-pixel, x-pixel] containing
+             the OpenSimplex noise values as floating points. The output is
+             garantueed to be in the range [-1, 1], but the exact extrema cannot
+             be known a-priori and are probably quite smaller than [-1, 1].
+
 ## FAQ
 
 - What does the distribution of the noise values look like?
@@ -233,6 +337,7 @@ original patent?
 
 - Owen Raccuglia - Test cases, [Go Module]
 - /u/redblobgames - Fixed conversion for Java's long type, see [Reddit]
+- [Dennis van Gils](https://github.com/Dennis-van-Gils) - Higher-level functions
 
 And all the other Github [Contributors] and [Bug Hunters]!
 
@@ -264,3 +369,25 @@ Example images visualising 2D, 3D and 4D noise on a 2D plane, using the default 
 **4D noise**
 
 ![Noise 4D](https://github.com/lmas/opensimplex/raw/master/images/noise4d.png)
+
+## Example output higher-level functions
+
+Inspired by [Coding Challenge #136.1: Polar Perlin Noise Loops](https://www.youtube.com/watch?v=ZI1dmHv3MeM) from [The Coding Train](https://www.youtube.com/c/TheCodingTrain).
+
+**looping_animated_2D_image()**
+
+Seamlessly-looping animated 2D images drawn from 4D OpenSimplex noise.
+
+![looping_animated_2D_image](/images/demo_looping_animated_2D_image.gif)
+
+**looping_animated_closed_1D_curve()**
+
+Seamlessly-looping animated 1D curves, each curve in turn also closing up seamlessly back-to-front, all drawn from 4D OpenSimplex noise.
+
+![looping_animated_closed_1D_curve](/images/demo_looping_animated_closed_1D_curve.gif)
+
+**tileable_2D_image()**
+
+Seamlessly-tileable 2D image drawn from 4D OpenSimplex noise.
+
+![tileable_2D_image](/images/demo_tileable_2D_image.png)
