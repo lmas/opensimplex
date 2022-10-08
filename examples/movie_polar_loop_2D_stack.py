@@ -26,9 +26,8 @@ img_stack = opensimplex.polar_loop_2D_stack(
 )
 
 # Plot
-fig_1 = plt.figure()
-ax = plt.axes()
-img = plt.imshow(
+fig, ax = plt.subplots()
+img = ax.imshow(
     img_stack[0],
     cmap="gray",
     vmin=-1,
@@ -51,9 +50,9 @@ def anim_fun(j):
 
 
 anim = animation.FuncAnimation(
-    fig_1,
+    fig,
     anim_fun,
-    frames=N_FRAMES,
+    frames=len(img_stack),
     interval=40,
     init_func=anim_init,
     # blit=True,
