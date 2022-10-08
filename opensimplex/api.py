@@ -160,6 +160,9 @@ def polar_loop_2D_stack(
     the 2D image, smoothly changing over time, also as dictated by OpenSimplex
     noise. The last frame will match up smoothly to the first frame again.
 
+    This function can be useful for e.g. the generation of seamlessly-looping
+    animated textures.
+
     The algorithm uses OpenSimplex noise in 4 dimensions. The first two
     dimensions are used to describe a plane in space, which get projected onto
     a 2D image. The last two dimensions are used to describe a circle in time.
@@ -254,6 +257,9 @@ def double_polar_loop_1D_stack(
     time frames hold the evolution of the 1D line shape, smoothly changing over
     time, also as dictated by OpenSimplex noise. The last frame will match up
     smoothly to the first frame again.
+
+    This function can be useful for e.g. the generation of seamlessly-looping
+    animated closed shapes.
 
     The algorithm uses OpenSimplex noise in 4 dimensions. The first two
     dimensions are used to describe a circle in space, which get projected onto
