@@ -3,6 +3,7 @@
 #
 # Dennis van Gils (https://github.com/Dennis-van-Gils)
 
+import numpy as np
 from matplotlib import pyplot as plt
 from matplotlib import animation
 
@@ -21,6 +22,7 @@ img_stack = opensimplex.polar_loop_2D_stack(
     x_step=1 / FEATURE_SIZE,
     seed=3,
     verbose=True,
+    dtype=np.float32,
 )
 
 # Plot

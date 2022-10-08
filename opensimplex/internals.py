@@ -105,7 +105,7 @@ def _noise4a(x, y, z, w, perm):
 
 
 @njit(
-    # "float32[:, :, :](int64, int64, float64, float64, float64, int64[:]), ?",
+    # "float64[:, :, :](int64, int64, float64, float64, float64, int64[:], ?)",
     cache=True,
     parallel=True,
     nogil=True,
@@ -119,11 +119,12 @@ def _polar_loop_2D_stack(
     y_step: float,
     perm: np.ndarray,
     progress_hook: Union[ProgressBar, None] = None,
+    dtype: type = np.double,
 ) -> np.ndarray:
     t_radius = N_frames * t_step / (2 * np.pi)  # Temporal radius of the loop
     t_factor = 2 * np.pi / N_frames
 
-    noise = np.empty((N_frames, N_pixels_y, N_pixels_x), dtype=np.float32)
+    noise = np.empty((N_frames, N_pixels_y, N_pixels_x), dtype=dtype)
     for t_i in prange(N_frames):
         t = t_i * t_factor
         t_cos = t_radius * (np.cos(t) - 1)  # `- 1` to enforce t_cos=0 at t=0

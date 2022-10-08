@@ -152,6 +152,7 @@ def polar_loop_2D_stack(
     y_step: Union[float, None] = None,
     seed: int = DEFAULT_SEED,
     verbose: bool = True,
+    dtype: type = np.double,
 ) -> np.ndarray:
     """Generates OpenSimplex noise as a stack of 2D bitmap images that animate
     over time in a closed-loop fashion. I.e., the bitmap image of the last time
@@ -183,7 +184,11 @@ def polar_loop_2D_stack(
                        `numba` and `numba_progress` packages are found a
                        progress bar will also be shown.
                        (bool, default=True)
-    :return: The image stack as 3D matrix [time, y-pixel, x-pixel] containing
+    :param dtype:      Return type of the noise array elements. To reduce the
+                       memory footprint one can change from the default
+                       `numpy.double` to e.g. `numpy.float32`.
+                       (type, default=numpy.double)
+    :return: The image stack as 3D array [time, y-pixel, x-pixel] containing
              the OpenSimplex noise values as a 'grayscale' intensity in floating
              point. The output intensity is garantueed to be in the range
              [-1, 1], but the exact extrema cannot be known a-priori and are
@@ -209,6 +214,7 @@ def polar_loop_2D_stack(
             x_step=x_step,
             y_step=y_step,
             perm=perm,
+            dtype=dtype,
         )
     else:
         with ProgressBar(total=N_frames, dynamic_ncols=True) as numba_progress:
@@ -221,6 +227,7 @@ def polar_loop_2D_stack(
                 y_step=y_step,
                 perm=perm,
                 progress_hook=numba_progress,
+                dtype=dtype,
             )
 
     if verbose:
