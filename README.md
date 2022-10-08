@@ -191,17 +191,21 @@ For more advanced examples, see the files in the [tests](./tests/) and [examples
 
     Inspiritation taken from [Coding Challenge #136.1: Polar Perlin Noise Loops](https://www.youtube.com/watch?v=ZI1dmHv3MeM) by [The Coding Train](https://www.youtube.com/c/TheCodingTrain).
 
-    :param N_frames:   (int) Number of time frames
-    :param N_pixels_x: (int) Number of pixels on the x-axis
-    :param N_pixels_y: (int) Number of pixels on the y-axis
-    :param t_step:     (float) Time step in arb. units
-    :param x_step:     (float) Spatial step in arb. units
-    :param y_step:     (float | None) Spatial step in arb. units. When set to
-                       None `y_step` will be set equal to `x_step`.
-    :param seed:       (int) Seed value of the OpenSimplex noise
-    :param verbose:    (bool) Print 'Generating noise...' to the terminal? If
-                       the `numba` and `numba_progress` packages are found a
+    :param N_frames:   Number of time frames (int, default=200)
+    :param N_pixels_x: Number of pixels on the x-axis (int, default=1000)
+    :param N_pixels_y: Number of pixels on the y-axis. When set to None
+                       `N_pixels_y` will be set equal to `N_pixels_x`.
+                       (int | None, default=None)
+    :param t_step:     Time step (float, default=0.1)
+    :param x_step:     Spatial step in the x-direction (float, default=0.01)
+    :param y_step:     Spatial step in the y-direction. When set to None
+                       `y_step` will be set equal to `x_step`.
+                       (float | None, default=None)
+    :param seed:       Seed value of the OpenSimplex noise (int, default=3)
+    :param verbose:    Print 'Generating noise...' to the terminal? If the
+                       `numba` and `numba_progress` packages are found a
                        progress bar will also be shown.
+                       (bool, default=True)
     :return: The image stack as 3D matrix [time, y-pixel, x-pixel] containing
              the OpenSimplex noise values as a 'grayscale' intensity in floating
              point. The output intensity is garantueed to be in the range
