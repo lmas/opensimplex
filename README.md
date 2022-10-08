@@ -177,17 +177,19 @@ For more advanced examples, see the files in the [tests](./tests/) and [examples
 
 **polar_loop_2D_stack(N_frames, N_pixels_x, N_pixels_y, t_step, x_step, y_step, seed, verbose, dtype)**
 
-    Generates OpenSimplex noise as a stack of 2D bitmap images that animate
-    over time in a closed-loop fashion. I.e., the bitmap image of the last time
-    frame will smoothly animate into the bitmap image of the first time frame
-    again. The animation path is /not/ a simple reversal of time in order to
-    have the loop closed, but rather is a fully unique path from start to
-    finish.
+    Generates OpenSimplex noise as a stack of 2D arrays. Simply speaking, the
+    stack can be seen as a set of time frames each containing a 2D pixel image
+    drawn from OpenSimplex noise. Subsequent time frames hold the evolution of
+    the 2D image, smoothly changing over time, also as dictated by OpenSimplex
+    noise. The last frame will match up smoothly to the first frame again.
 
-    It does so by calculating OpenSimplex noise in 4 dimensions. The latter two
-    dimensions are used to describe a 'circle' in time, in turn used to
-    projection map the first two dimensions into bitmap images. The first frame
-    is garantueed identical to `noise4array(ix, iy, 0, 0)`.
+    The algorithm uses OpenSimplex noise in 4 dimensions. The first two
+    dimensions are used to describe a plane in space, which get projected onto
+    a 2D image. The last two dimensions are used to describe a circle in time.
+    Hence the name `polar loop` as there is one circle being followed in 4D
+    space.
+
+    Note: The first frame is always identical to `noise4array(ix, iy, 0, 0)`.
 
     Inspiritation taken from [Coding Challenge #136.1: Polar Perlin Noise Loops]
     (https://www.youtube.com/watch?v=ZI1dmHv3MeM) by [The Coding Train]
@@ -212,11 +214,54 @@ For more advanced examples, see the files in the [tests](./tests/) and [examples
                        memory footprint one can change from the default
                        `numpy.double` to e.g. `numpy.float32`.
                        (type, default=numpy.double)
-    :return: The image stack as 3D array [time, y-pixel, x-pixel] containing
-             the OpenSimplex noise values as a 'grayscale' intensity in floating
-             point. The output intensity is garantueed to be in the range
-             [-1, 1], but the exact extrema cannot be known a-priori and are
-             most probably way smaller than [-1, 1].
+    :return: The 2D image stack as 3D array [time, y-pixel, x-pixel] containing
+             the OpenSimplex noise values as floating points. The output is
+             garantueed to be in the range [-1, 1], but the exact extrema cannot
+             be known a-priori and are probably quite smaller than [-1, 1].
+
+**double_polar_loop_1D_stack(N_frames, N_pixels_x, t_step, x_step, seed, verbose, dtype)**
+
+    Generates OpenSimplex noise as a stack of 1D arrays. Simply speaking, the
+    stack can be seen as a set of time frames each containing an 1D pixel line
+    drawn from OpenSimplex noise. The starting and ending points of each line
+    are smoothly matching up. I.e., it smoothly closes back to front. Subsequent
+    time frames hold the evolution of the 1D line shape, smoothly changing over
+    time, also as dictated by OpenSimplex noise. The last frame will match up
+    smoothly to the first frame again.
+
+    The algorithm uses OpenSimplex noise in 4 dimensions. The first two
+    dimensions are used to describe a circle in space, which get projected onto
+    an 1D line. The last two dimensions are used to describe a circle in time.
+    Hence the name `double polar loop` as there are two circles being followed
+    in 4D space.
+
+    Inspiritation taken from [Coding Challenge #136.1: Polar Perlin Noise Loops]
+    (https://www.youtube.com/watch?v=ZI1dmHv3MeM) by [The Coding Train]
+    (https://www.youtube.com/c/TheCodingTrain).
+
+    :param N_frames:   Number of time frames (int, default=200)
+    :param N_pixels_x: Number of pixels on the x-axis (int, default=1000)
+    :param N_pixels_y: Number of pixels on the y-axis. When set to None
+                       `N_pixels_y` will be set equal to `N_pixels_x`.
+                       (int | None, default=None)
+    :param t_step:     Time step (float, default=0.1)
+    :param x_step:     Spatial step in the x-direction (float, default=0.01)
+    :param y_step:     Spatial step in the y-direction. When set to None
+                       `y_step` will be set equal to `x_step`.
+                       (float | None, default=None)
+    :param seed:       Seed value of the OpenSimplex noise (int, default=3)
+    :param verbose:    Print 'Generating noise...' to the terminal? If the
+                       `numba` and `numba_progress` packages are found a
+                       progress bar will also be shown.
+                       (bool, default=True)
+    :param dtype:      Return type of the noise array elements. To reduce the
+                       memory footprint one can change from the default
+                       `numpy.double` to e.g. `numpy.float32`.
+                       (type, default=numpy.double)
+    :return: The 1D line stack as 2D array [time, x-pixel] containing
+             the OpenSimplex noise values as floating points. The output is
+             garantueed to be in the range [-1, 1], but the exact extrema cannot
+             be known a-priori and are probably quite smaller than [-1, 1].
 
 ## FAQ
 
@@ -311,3 +356,7 @@ Example images visualising 2D, 3D and 4D noise on a 2D plane, using the default 
 **Polar loop 2D stack**
 
 ![Polar loop 2D stack](/images/polar_loop_2D_stack.gif)
+
+**Double polar loop 1D stack**
+
+![Double polar loop 1D stack](/images/double_polar_loop_1D_stack.gif)

@@ -105,7 +105,6 @@ def _noise4a(x, y, z, w, perm):
 
 
 @njit(
-    # "float64[:, :, :](int64, int64, float64, float64, float64, int64[:], ?)",
     cache=True,
     parallel=True,
     nogil=True,
@@ -136,6 +135,41 @@ def _polar_loop_2D_stack(
             for x_i in prange(N_pixels_x):
                 x = x_i * x_step
                 noise[t_i, y_i, x_i] = _noise4(x, y, t_sin, t_cos, perm)
+
+    return noise
+
+
+@njit(
+    cache=True,
+    parallel=True,
+    nogil=True,
+)
+def _double_polar_loop_1D_stack(
+    N_frames: int,
+    N_pixels_x: int,
+    t_step: float,
+    x_step: float,
+    perm: np.ndarray,
+    progress_hook: Union[ProgressBar, None] = None,
+    dtype: type = np.double,
+) -> np.ndarray:
+    t_radius = N_frames * t_step / (2 * np.pi)  # Temporal radius of the loop
+    t_factor = 2 * np.pi / N_frames
+    x_radius = N_pixels_x * x_step / (2 * np.pi)  # Spatial radius of the loop
+    x_factor = 2 * np.pi / N_pixels_x
+
+    noise = np.empty((N_frames, N_pixels_x), dtype=dtype)
+    for t_i in prange(N_frames):
+        t = t_i * t_factor
+        t_cos = t_radius * (np.cos(t) - 1)  # `- 1` to enforce t_cos=0 at t=0
+        t_sin = t_radius * np.sin(t)
+        if progress_hook is not None:
+            progress_hook.update(1)
+        for x_i in prange(N_pixels_x):
+            x = x_i * x_factor
+            x_cos = x_radius * np.cos(x - 1)  # `- 1` to enforce x_cos=0 at x=0
+            x_sin = x_radius * np.sin(x)
+            noise[t_i, x_i] = _noise4(x_sin, x_cos, t_sin, t_cos, perm)
 
     return noise
 
