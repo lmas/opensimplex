@@ -189,7 +189,9 @@ For more advanced examples, see the files in the [tests](./tests/) and [examples
     projection map the first two dimensions into bitmap images. The first frame
     is garantueed identical to `noise4array(ix, iy, 0, 0)`.
 
-    Inspiritation taken from [Coding Challenge #136.1: Polar Perlin Noise Loops](https://www.youtube.com/watch?v=ZI1dmHv3MeM) by [The Coding Train](https://www.youtube.com/c/TheCodingTrain).
+    Inspiritation taken from [Coding Challenge #136.1: Polar Perlin Noise Loops]
+    (https://www.youtube.com/watch?v=ZI1dmHv3MeM) by [The Coding Train]
+    (https://www.youtube.com/c/TheCodingTrain).
 
     :param N_frames:   Number of time frames (int, default=200)
     :param N_pixels_x: Number of pixels on the x-axis (int, default=1000)
