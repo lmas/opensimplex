@@ -361,8 +361,10 @@ Example images visualising 2D, 3D and 4D noise on a 2D plane, using the default 
 
 **Polar loop 2D stack**
 
+E.g., seamlessly looping animated texture
 ![Polar loop 2D stack](/images/polar_loop_2D_stack.gif)
 
 **Double polar loop 1D stack**
 
+E.g., seamlessly looping animated closed shape
 ![Double polar loop 1D stack](/images/double_polar_loop_1D_stack.gif)
