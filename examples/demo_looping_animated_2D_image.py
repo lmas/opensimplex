@@ -63,11 +63,24 @@ anim = animation.FuncAnimation(
     # blit=True,
 )
 
-
 plt.grid(False)
 plt.axis("off")
 plt.show()
 
-# anim.save(
-#     "demo_looping_animated_2D_image.gif", dpi=69, writer="imagemagick", fps=25
-# )
+# Export images to disk
+if 0:
+    from PIL import Image
+
+    pil_imgs = []
+    for j in range(len(img_stack)):
+        pil_img = Image.fromarray((img_stack[j] * 127 + 128).astype(np.uint8))
+        # pil_img.save(f"image_{j:02d}.png")
+        pil_imgs.append(pil_img)
+
+    pil_imgs[0].save(
+        "demo_looping_animated_2D_image.gif",
+        save_all=True,
+        append_images=pil_imgs[1:],
+        duration=40,
+        loop=0,
+    )

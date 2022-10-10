@@ -22,7 +22,7 @@ noise = opensimplex.tileable_2D_image(
     N_pixels_y=N_PIXELS,
     x_step=1 / FEATURE_SIZE,
     y_step=1 / FEATURE_SIZE,
-    seed=3,
+    seed=5,
     verbose=True,
 )
 
@@ -42,6 +42,16 @@ plt.grid(False)
 plt.axis("off")
 plt.show()
 
-# fig.savefig(
-#     "demo_tileable_2D_image.png", dpi=69 * 3, bbox_inches="tight", pad_inches=0
-# )
+# Export image to disk
+if 0:
+    tiled_noise = np.tile((noise + 1) / 2, (3, 3))  # Scaled [0, 1]
+    rgb_img = np.ndarray((3 * h, 3 * w, 3))
+    rgb_img[:, :, 0] = tiled_noise
+    rgb_img[:, :, 1] = tiled_noise
+    rgb_img[:, :, 2] = tiled_noise
+    rgb_img[0 : h + 1, 0, :] = (1, 0, 0)
+    rgb_img[0 : h + 1, w, :] = (1, 0, 0)
+    rgb_img[0, 0 : w + 1, :] = (1, 0, 0)
+    rgb_img[h, 0 : w + 1, :] = (1, 0, 0)
+
+    plt.imsave("demo_tileable_2D_image.png", rgb_img)

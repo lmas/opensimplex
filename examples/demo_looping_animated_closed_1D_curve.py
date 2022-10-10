@@ -60,9 +60,11 @@ anim = animation.FuncAnimation(
 # plt.axis("off")
 plt.show()
 
-# anim.save(
-#     "demo_looping_animated_closed_1D_curve.gif",
-#     dpi=69,
-#     writer="imagemagick",
-#     fps=25,
-# )
+# Export image to disk
+if 0:
+    anim.save(
+        "demo_looping_animated_closed_1D_curve.gif",
+        dpi=150,
+        writer="imagemagick",
+        fps=25,
+    )
