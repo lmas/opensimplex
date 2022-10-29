@@ -40,6 +40,14 @@ Updates for **v0.4+**:
 - General refactor and cleanup of the library, tests and docs.
 - **Breaking changes: API functions uses new names.**
 
+## Contributions
+
+Bug reports, bug fixes and other issues with existing features of the library are welcomed and will be handled during
+the maintainer's free time. New stand-alone examples are also accepted.
+
+However, pull requests with new features for the core internals will not be accepted as it eats up too much weekend
+time, which I would rather spend on library stability instead.
+
 ## Usage
 
 **Installation**
@@ -229,12 +237,10 @@ original patent?
 ## Credits
 
 - Kurt Spencer - Original work
-- Alex - Python port and package author
-
 - Owen Raccuglia - Test cases, [Go Module]
 - /u/redblobgames - Fixed conversion for Java's long type, see [Reddit]
 
-And all the other Github [Contributors] and [Bug Hunters]!
+And all the other Github [Contributors] and [Bug Hunters]. Thanks!
 
 Thanks!
 
@@ -250,6 +256,10 @@ While the original work was released to the public domain by Kurt, this package 
 Please see the file LICENSE for details.
 
 ## Example Output
+
+More example code and trinkets can be found in the [examples] directory.
+
+[examples]: https://github.com/lmas/opensimplex/tree/master/examples
 
 Example images visualising 2D, 3D and 4D noise on a 2D plane, using the default seed:
 
