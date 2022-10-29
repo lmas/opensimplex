@@ -242,8 +242,6 @@ original patent?
 
 And all the other Github [Contributors] and [Bug Hunters]. Thanks!
 
-Thanks!
-
 [Go Module]: https://github.com/ojrac/opensimplex-go
 [Reddit]: https://old.reddit.com/r/proceduralgeneration/comments/327zkm/repeated_patterns_in_opensimplex_python_port/cq8tth7/
 [Contributors]: https://github.com/lmas/opensimplex/graphs/contributors
