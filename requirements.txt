@@ -1,6 +1,6 @@
 # Development requirements, only
 wheel==0.37.1
-setuptools==62.6.0
+setuptools==65.5.1
 twine==4.0.1
 coverage==6.4.1
 pytest==7.1.2
