@@ -1,5 +1,5 @@
 # Development requirements, only
-wheel==0.37.1
+wheel==0.38.1
 setuptools==65.5.1
 twine==4.0.1
 coverage==6.4.1
