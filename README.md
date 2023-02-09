@@ -97,6 +97,14 @@ For more advanced examples, see the files in the [tests](./tests/) and [examples
 
     random_seed()
 
+**get_seed()**
+
+    Return the value used to seed the initial state.
+    :return: seed as integer
+
+    >>> get_seed()
+    3
+
 **opensimplex.noise2(x, y)**
 
     Generate 2D OpenSimplex noise from X,Y coordinates.
