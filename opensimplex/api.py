@@ -33,6 +33,16 @@ def random_seed() -> None:
     seed(time.time_ns())
 
 
+def get_seed() -> int:
+    """
+    Return the value used to seed the initial state.
+    :return: seed as integer
+
+    >>> get_seed()
+    3
+    """
+    return _default.get_seed()
+
 def noise2(x: float, y: float) -> float:
     """
     Generate 2D OpenSimplex noise from X,Y coordinates.
@@ -143,6 +153,10 @@ def noise4array(x: np.ndarray, y: np.ndarray, z: np.ndarray, w: np.ndarray) -> n
 class OpenSimplex(object):
     def __init__(self, seed: int) -> None:
         self._perm, self._perm_grad_index3 = _init(seed)
+        self._seed = seed
+
+    def get_seed(self) -> int:
+        return self._seed
 
     def noise2(self, x: float, y: float) -> float:
         return _noise2(x, y, self._perm)

@@ -26,6 +26,11 @@ class TestOpensimplex(unittest.TestCase):
             if n != row[1]:
                 self.fail("got %s, expected %s (using seed %s)" % (n, row[1], row[0]))
 
+        got = simplex.get_seed()
+        want = test_seeds[-1][0]
+        if got != want:
+            self.fail("got %s, expected %s" % (got, want))
+
     def load_samples(self):
         for line in gzip.open("tests/samples.json.gz"):
             # Python3: need to decode the line as it's a bytes object and json
@@ -53,7 +58,7 @@ class TestOpensimplex(unittest.TestCase):
                 expected = s[4]
                 actual = simplex.noise4(s[0], s[1], s[2], s[3])
             else:
-                self.fail("Unexpected sample size: " + str(len(s)))
+                self.fail("unexpected sample size: " + str(len(s)))
             self.assertEqual(expected, actual)
 
     def test_arrays(self):
