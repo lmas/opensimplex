@@ -25,6 +25,8 @@ and neatly wrapped up in a package.
 
 The `master` branch contains the latest code (possibly unstable),
 with automatic tests running for **Python 3.8, 3.9, 3.10 on Linux, MacOS and Windows**.
+**FreeBSD** is also supported, though it's only locally tested as Github Actions
+don't offer FreeBSD support.
 
 Please refer to the [version tags] for the latest stable version.
 
