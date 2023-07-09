@@ -36,11 +36,11 @@ build: test
 
 .PHONY: upload
 upload: build
-	twine upload -r pypi dist/*
+	twine upload --config-file .pypirc -r pypi dist/*
 
 .PHONY: upload-test
 upload-test: build
-	twine upload -r testpypi dist/*
+	twine upload --config-file .pypirc -r testpypi dist/*
 
 .PHONY: clean
 clean:

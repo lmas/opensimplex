@@ -7,3 +7,4 @@ opensimplex.egg-info/
 devenv/
 .coverage
 htmlcov/
+.pypirc
