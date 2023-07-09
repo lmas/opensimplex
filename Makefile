@@ -8,7 +8,7 @@ dev:
 .PHONY: deps
 deps:
 	python -m pip install --upgrade pip
-	python -m pip install -r requirements.txt
+	python -m pip install -r dev-requirements.txt
 
 .PHONY: test
 test:
