@@ -1,4 +1,10 @@
 
+# Migrated
+
+**This repo has been migrated to https://code.larus.se/lmas/opensimplex.**
+
+
+
 # OpenSimplex Noise
 
 [![build-status](https://github.com/lmas/opensimplex/workflows/Tests/badge.svg?branch=master)](https://github.com/lmas/opensimplex/actions)
